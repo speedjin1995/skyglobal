@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<button style="margin-top: 3%; margin-left: 3%;" type="button" class="btn btn-info" data-toggle="modal"
+    data-target="#modal-xl">
+    Create New Order
+</button>
+
+<div style="margin-top: 3%;" class="card">
+    <!-- /.card-header -->
+    <div class="card-body">
+      <table id="tableforOrder" class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Order</th>
+          <th colspan="2">Details</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td rowspan="8">Dummy 001</td>
+          <td>Handler Name</td><td>dummy data</td>
+          <td rowspan="8"><div>
+            Status: Done
+          </div>
+          <div>
+            Created Dates: 12/4/2023 4:35:00 PM
+          </div></td>
+        </tr>
+        <tr>
+          <td>Customer Name</td>
+          <td>Kankaku Piero</td>
+        </tr>
+        <tr>
+          <td>Contact Number</td>
+          <td>016-7788990</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>dummy@gmail.com</td>
+        </tr>
+        <tr>
+          <td>Shipment Type</td>
+          <td>Airport to airport</td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>44, Sri Aman, Gat Lebuh Mallum, 10300, Pulau Pinang</td>
+        </tr>
+        <tr>
+          <td>Notes (Internal)</td>
+          <td>Dummy Notes</td>
+        </tr>
+        <tr>
+          <td>Notes to Customer</td>
+          <td>-</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>
+
+<div class="modal fade" id="modal-xl">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create New Order</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!---form--->
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-6">
+                            <!-- general form elements -->
+                            <div class="card card-primary">
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="inputHandler">Handler</label>
+                                            <input type="text" class="form-control" id="inputHandler" placeholder="Handler name" value="Dummy User name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputCustomerName">Customer Name</label>
+                                            <input type="text" class="form-control" id="inputCustomerName" placeholder="Enter Customer Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputContactNum">Contact Number</label>
+                                            <input type="text" class="form-control" id="inputContactNum" placeholder="Example: 01X-1234567"
+                                            data-inputmask='"mask": "999-9999999"' data-mask>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputEmail">Email</label>
+                                            <input type="email" class="form-control" id="inputEmail" placeholder="Example: dummy@mail.com">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Shipment Type</label>
+                                            <select id="inputShipmentType" class="form-control">
+                                              <option value="A2A">Airport to airport</option>
+                                              <option value="D2D">Door to door</option>
+                                              <option value="D2OA">Door to origin airport</option>
+                                              <option value="D2DES">Door to destination</option>
+                                              <option value="A2D">Airport to door</option>
+                                              <option value="OA2D">Origin Airport to door</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                            <textarea id="inputAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Notes (Internal)</label>
+                                            <textarea id="inputNotesInternal" class="form-control" rows="3" placeholder="Enter Notes (Internal)"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Notes to Customer</label>
+                                            <textarea id="inputNotestoCustomer" class="form-control" rows="3" placeholder="Enter Notes to Customer"></textarea>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                </form>
+                            </div>
+                            <!-- /.card -->
+                            <!--/.col (right) -->
+                        </div>
+                        <div class="col-md-6">
+                            <!-- general form elements -->
+                            <div class="card card-primary">
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <h4>Add Items</h4>
+                                                <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary add-row">Add New</button>
+                                            </div>
+                                            <div style="margin-top:3%" class="row">
+                                                    <div class="col-sm-6">
+                                                      <!-- text input -->
+                                                      <div class="form-group">
+                                                        <label>Dimension</label>
+                                                        <input id="inputDimension" type="text" class="form-control" placeholder="Enter ...">
+                                                      </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                      <div class="form-group">
+                                                        <label>Number of Carton</label>
+                                                        <input id="inputNumberofCarton" type="text" class="form-control" placeholder="Enter ...">
+                                                      </div>
+                                                    </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                  <!-- text input -->
+                                                  <div class="form-group">
+                                                    <label>Weight of Carton</label>
+                                                    <div class="input-group mb-3">
+                                                        <input id="inputWeightofCarton" type="text" class="form-control">
+                                                        <div class="input-group-append">
+                                                          <span class="input-group-text">kg</span>
+                                                        </div>
+                                                      </div>
+                                                  </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                  <div class="form-group">
+                                                    <label>Cargo Ready Time</label>
+                                                      <div class="input-group date" id="inputCargoReadyTime" data-target-input="nearest">
+                                                          <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
+                                                          <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                                                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                  <!-- text input -->
+                                                  <div class="form-group">
+                                                    <label>Pickup Address</label>
+                                                    <textarea id="inputPickupAddress" class="form-control" rows="3" placeholder="Enter Pickup Address"></textarea>
+                                                  </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                  <div class="form-group">
+                                                    <label>Pickup Charge</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                          <span class="input-group-text">RM</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="inputPickupCharge" placeholder="Enter Pickup Charges"
+                                                               data-inputmask='"mask": "99.99"' data-mask>
+                                                      </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                      <label>Export Clearances</label>
+                                                      <div class="input-group">
+                                                          <div class="input-group-prepend">
+                                                            <span class="input-group-text">RM</span>
+                                                          </div>
+                                                          <input type="text" class="form-control" id="inputExportClearances" placeholder="Enter Export Clearances"
+                                                                 data-inputmask='"mask": "99.99"' data-mask>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                                <div class="col-sm-6">
+                                                  <div class="form-group">
+                                                    <label>Air Ticket</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                          <span class="input-group-text">RM</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="inputAirTicket" placeholder="Enter Air Ticket"
+                                                               data-inputmask='"mask": "99.99"' data-mask>
+                                                      </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                      <label>Flyers Fee</label>
+                                                      <div class="input-group">
+                                                          <div class="input-group-prepend">
+                                                            <span class="input-group-text">RM</span>
+                                                          </div>
+                                                          <input type="text" class="form-control" id="inputFlyersFee" placeholder="Enter Flyers Fee"
+                                                                 data-inputmask='"mask": "99.99"' data-mask>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                                <div class="col-sm-6">
+                                                  <div class="form-group">
+                                                    <label>Import Clearance</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                          <span class="input-group-text">RM</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="inputImportClearance" placeholder="Enter Import Clearance"
+                                                               data-inputmask='"mask": "99.99"' data-mask>
+                                                      </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                      <label>Delivery Charges</label>
+                                                      <div class="input-group">
+                                                          <div class="input-group-prepend">
+                                                            <span class="input-group-text">RM</span>
+                                                          </div>
+                                                          <input type="text" class="form-control" id="inputDeliveryCharges" placeholder="Enter Delivery Charges"
+                                                                 data-inputmask='"mask": "99.99"' data-mask>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </form>
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.row -->
+                    </div><!-- /.container-fluid -->
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+</div>
+
+    <script>
+        $(function () {
+      
+          //Date and time picker
+          $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+
+          $('[data-mask]').inputmask();
+      
+        });
+        
+      </script>
+    </html>
