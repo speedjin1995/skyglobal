@@ -1,7 +1,7 @@
 <?php
-//require_once 'php/db_connect.php';
+require_once 'php/db_connect.php';
 
-/*session_start();
+session_start();
 $role = 'NORMAL';
 
 if(!isset($_SESSION['userID'])){
@@ -10,7 +10,7 @@ if(!isset($_SESSION['userID'])){
 }
 else{
   $role = $_SESSION['role'];
-}*/
+}
 ?>
 
 <!DOCTYPE html>
@@ -91,9 +91,9 @@ else{
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#home" data-file="home.html" class="nav-link link">
+            <a href="#sales" data-file="sales.html" class="nav-link link">
               <i class="nav-icon fas fa-home"></i>
-              <p>Home</p>
+              <p>Sales</p>
             </a>
           </li>
           <?php 
