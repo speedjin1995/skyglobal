@@ -115,52 +115,70 @@
             <!-- form start -->
             <form>
               <div class="card-body">
-                <div class="form-group">
-                  <label for="inputHandler">Handler</label>
-                  <input type="text" class="form-control" id="inputHandler" placeholder="Handler name"
-                    value="Dummy User name">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="inputHandler">Handler</label>
+                      <input type="text" class="form-control" id="inputHandler" placeholder="Handler name" value="Dummy User name">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="inputCustomerName">Customer Name</label>
+                      <input type="text" class="form-control" id="inputCustomerName" placeholder="Enter Customer Name">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="inputContactNum">Contact Number</label>
+                      <input type="text" class="form-control" id="inputContactNum" placeholder="Example: 01X-1234567"
+                        data-inputmask='"mask": "999-9999999"' data-mask>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="inputCustomerName">Customer Name</label>
-                  <input type="text" class="form-control" id="inputCustomerName" placeholder="Enter Customer Name">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="inputEmail">Email</label>
+                      <input type="email" class="form-control" id="inputEmail" placeholder="Example: dummy@mail.com">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>Shipment Type</label>
+                      <select id="inputShipmentType" class="form-control">
+                        <option value="A2A">Airport to airport</option>
+                        <option value="D2D">Door to door</option>
+                        <option value="D2OA">Door to origin airport</option>
+                        <option value="D2DES">Door to destination</option>
+                        <option value="A2D">Airport to door</option>
+                        <option value="OA2D">Origin Airport to door</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>Address</label>
+                      <textarea id="inputAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="inputContactNum">Contact Number</label>
-                  <input type="text" class="form-control" id="inputContactNum" placeholder="Example: 01X-1234567"
-                    data-inputmask='"mask": "999-9999999"' data-mask>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>Notes (Internal)</label>
+                      <textarea id="inputNotesInternal" class="form-control" rows="3"
+                        placeholder="Enter Notes (Internal)"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>Notes to Customer</label>
+                      <textarea id="inputNotestoCustomer" class="form-control" rows="3"
+                        placeholder="Enter Notes to Customer"></textarea>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="inputEmail">Email</label>
-                  <input type="email" class="form-control" id="inputEmail" placeholder="Example: dummy@mail.com">
-                </div>
-
-                <div class="form-group">
-                  <label>Shipment Type</label>
-                  <select id="inputShipmentType" class="form-control">
-                    <option value="A2A">Airport to airport</option>
-                    <option value="D2D">Door to door</option>
-                    <option value="D2OA">Door to origin airport</option>
-                    <option value="D2DES">Door to destination</option>
-                    <option value="A2D">Airport to door</option>
-                    <option value="OA2D">Origin Airport to door</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label>Address</label>
-                  <textarea id="inputAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Notes (Internal)</label>
-                  <textarea id="inputNotesInternal" class="form-control" rows="3"
-                    placeholder="Enter Notes (Internal)"></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Notes to Customer</label>
-                  <textarea id="inputNotestoCustomer" class="form-control" rows="3"
-                    placeholder="Enter Notes to Customer"></textarea>
-                </div>
-
               </div>
               <!-- /.card-body -->
             </form>

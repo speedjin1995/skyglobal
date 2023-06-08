@@ -18,7 +18,7 @@ else{
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prolife | Warehouse Management System</title>
+  <title>Sky Global | Jobs Management System</title>
 
   <link rel="icon" href="images/logo.png" type="image">
   <!-- Google Font: Source Sans Pro -->
@@ -70,17 +70,9 @@ else{
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-      <div class="row">
-        <div class="col-3">
-          <img src="images/logo.png" alt="AdminLTE Logo" class="brand-image elevation-3" style="opacity: .8;margin-top: 13px;">
-        </div>
-        <div class="col-9">
-          <span class="brand-text font-weight-light">Prolife</span>
-        </div>
-      </div>
-      
-      
+    <a href="#" class="brand-link logo-switch">
+      <img src="images/logo-big.png" alt="Sneakercube Logo" class="brand-image-xl logo-xl">
+      <img src="images/logo.png" alt="Sneakercube Logo" class="brand-image-xl logo-xs">
     </a>
 
     <!-- Sidebar -->
@@ -279,7 +271,7 @@ $(function () {
       });
   });
   
-  $("a[href='#home']").click();
+  $("a[href='#sales']").click();
 });
 
 function formatDate(date) {
