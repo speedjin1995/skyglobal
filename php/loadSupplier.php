@@ -14,7 +14,7 @@ $searchValue = mysqli_real_escape_string($db,$_POST['search']['value']); // Sear
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-  $searchQuery = " and (supplier_name like '%".$searchValue."%' or supplier_code like '%".$searchValue."%')";
+  $searchQuery = " and supplier_name like '%".$searchValue."%'";
 }
 
 ## Total number of records without filtering
@@ -23,25 +23,20 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['allcount'];
 
 ## Total number of record with filtering
-$sel = mysqli_query($db,"select count(*) as allcount from suppliers WHERE deleted = '0'".$searchQuery);
+$sel = mysqli_query($db,"select count(*) as allcount from suppliers WHERE supplier_status = '0'".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$empQuery = "select * from suppliers WHERE deleted = '0'".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
+$empQuery = "select * from suppliers WHERE supplier_status = '0'".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
 $empRecords = mysqli_query($db, $empQuery);
 $data = array();
 
 while($row = mysqli_fetch_assoc($empRecords)) {
     $data[] = array( 
       "id"=>$row['id'],
-      "supplier_code"=>$row['supplier_code'],
       "supplier_name"=>$row['supplier_name'],
       "supplier_address"=>$row['supplier_address'],
-      "supplier_address2"=>$row['supplier_address2'],
-      "supplier_address3"=>$row['supplier_address3'],
-      "supplier_address4"=>$row['supplier_address4'],
-      "postcode"=>$row['postcode'],
       "supplier_phone"=>$row['supplier_phone'],
       "supplier_email"=>$row['supplier_email']
     );
@@ -52,7 +47,8 @@ $response = array(
   "draw" => intval($draw),
   "iTotalRecords" => $totalRecords,
   "iTotalDisplayRecords" => $totalRecordwithFilter,
-  "aaData" => $data
+  "aaData" => $data,
+  "query" => $empQuery
 );
 
 echo json_encode($response);

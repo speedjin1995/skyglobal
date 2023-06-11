@@ -83,13 +83,19 @@ else{
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#sales" data-file="sales.html" class="nav-link link">
+            <a href="#sales" data-file="sales.php" class="nav-link link">
               <i class="nav-icon fas fa-home"></i>
               <p>Sales</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="#jobs" data-file="jobs.php" class="nav-link link">
+              <i class="nav-icon fas fa-home"></i>
+              <p>Jobs</p>
+            </a>
+          </li>
           <?php 
-            //if($role == "ADMIN"){
+            if($role == "ADMIN"){
               echo '<li class="nav-item">
                 <a href="#users" data-file="users.php" class="nav-link link">
                   <i class="nav-icon fas fa-user"></i>
@@ -103,26 +109,20 @@ else{
                 </a>
                 <ul class="nav nav-treeview" style="display: none;">
                   <li class="nav-item">
-                    <a href="#customers" data-file="customers.php" class="nav-link link">
-                      <i class="nav-icon fas fa-book"></i>
-                      <p>Customers</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
                     <a href="#suppliers" data-file="suppliers.php" class="nav-link link">
                       <i class="nav-icon fas fa-industry"></i>
-                      <p>Suppliers</p>
+                      <p>Flyer</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#products" data-file="products.php" class="nav-link link">
+                    <a href="#airlines" data-file="airlines.php" class="nav-link link">
                       <i class="nav-icon fas fa-shopping-cart"></i>
-                      <p>Products</p>
+                      <p>Airlines</p>
                     </a>
                   </li>
                 </ul>
               </li>';
-            //}
+            }
           ?>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -181,7 +181,7 @@ else{
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2023 <a href="#">TASV</a>.</strong>All rights reserved.
+    <strong>Copyright &copy; 2023 <a href="#">SKy Global</a>.</strong>All rights reserved.
     <div class="float-right d-none d-sm-inline-block"><b>Version</b> 1.0.0</div>
   </footer>
 </div>

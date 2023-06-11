@@ -1,100 +1,132 @@
-<!DOCTYPE html>
-<html>
-<button style="margin-top: 3%; margin-left: 3%;" type="button" class="btn btn-info" data-toggle="modal"
-  data-target="#modal-xl">
-  Create New Order
-</button>
+<?php
+require_once 'php/db_connect.php';
 
-<div style="margin-top: 3%;" class="card">
-  <!-- /.card-header -->
-  <div class="card-body">
-    <table id="tableforOrder" class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Order</th>
-          <th colspan="2">Details</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td rowspan="8">Dummy 001</td>
-          <td>Handler Name</td>
-          <td>dummy data</td>
-          <td rowspan="8">
-            <div>
-              Status:
-              <p class="state"><small>Status:</small></p>
-              <p>
-                <i class="update-status fa fa-times text-danger tip" data-status="CANCELLED" title="Cancel Order"
-                  style="font-size:22px;top:-1px;"></i>
-                <i class="update-status fa fa-envelope tip" data-status="SENT" title="Send to Client via SMS & E-mail"
-                  style="color:#3F51B5;"></i>
-                <i class="payment-refresh fa fa-refresh tip text-info" title="Check Payment Status"></i>
-                <i class="update-status fa fa-credit-card tip" data-status="PAID" title="Mark as Paid"
-                  style="color:#FF9800;"></i>
-                <i class="update-status fa fa-eye tip" data-status="KIV" title="Mark as KIV"
-                  style="font-size:20px;"></i>
-                <i class="update-status fa fa-cog tip" data-status="PROCESSING" title="Mark as Processing"
-                  style="color:#757575;"></i>
-                <i class="update-status fa fa-truck tip" data-status="SHIPPED"
-                  title="Item delivered / Customer Received" style="color:#3F51B5;"></i>
-                <i class="print-shipment fa fa-print tip" title="Print Shipment" style="color:#3F51B5;"></i>
-                <i class="update-status fa fa-check-circle text-success tip" data-status="COMPLETED"
-                  title="Mark as Completed" style="font-size:19px;"></i>
-              </p>
-            </div>
-            <div>
-              Action:
-              <p>
-                <i class="show-sale fa fa-file-text tip" title="View" style="color:#009688;"></i>
-                <i class="upload fa fa-upload tip" title="Upload File" style="color:#000;"></i>
-                <i class="order-no fa"><i style="padding: 1%;" class="generate-report fa fa-file-text tip"
-                    title="Print Cash Sale"></i></i>
-                <i class="order-no fa"><i style="padding: 1%;" class="cash-sale fa fa-envelope tip"
-                    title="Send Cash Sale"></i></i>
-                <i class="whatsapp-status fa fa-whatsapp tip" data-status="WHATSAPP" title="Send to Client via Whatsapp"
-                  style="color:#25D366;"></i>
-              </p>
-            </div>
-            <div>
-              Created Dates: 12/4/2023 4:35:00 PM
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>Customer Name</td>
-          <td>Kankaku Piero</td>
-        </tr>
-        <tr>
-          <td>Contact Number</td>
-          <td>016-7788990</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>dummy@gmail.com</td>
-        </tr>
-        <tr>
-          <td>Shipment Type</td>
-          <td>Airport to airport</td>
-        </tr>
-        <tr>
-          <td>Address</td>
-          <td>44, Sri Aman, Gat Lebuh Mallum, 10300, Pulau Pinang</td>
-        </tr>
-        <tr>
-          <td>Notes (Internal)</td>
-          <td>Dummy Notes</td>
-        </tr>
-        <tr>
-          <td>Notes to Customer</td>
-          <td>-</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <!-- /.card-body -->
+session_start();
+
+if(!isset($_SESSION['userID'])){
+  echo '<script type="text/javascript">';
+  echo 'window.location.href = "login.html";</script>';
+}
+else{
+  $user = $_SESSION['userID'];
+}
+?>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0 text-dark">Sales</h1>
+			</div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
 </div>
+<!-- /.content-header -->
+
+<section class="content">
+	<div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+                <div class="col-9"></div>
+                <div class="col-3">
+                  <button style="margin-top: 3%; margin-left: 3%;" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-xl">Create New Order</button>
+                </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <table id="tableforOrder" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th colspan="2">Details</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="8">Dummy 001</td>
+                  <td>Handler Name</td>
+                  <td>dummy data</td>
+                  <td rowspan="8">
+                    <div>
+                      Status:
+                      <p class="state"><small>Status:</small></p>
+                      <p>
+                        <i class="update-status fa fa-times text-danger tip" data-status="CANCELLED" title="Cancel Order"
+                          style="font-size:22px;top:-1px;"></i>
+                        <i class="update-status fa fa-envelope tip" data-status="SENT" title="Send to Client via SMS & E-mail"
+                          style="color:#3F51B5;"></i>
+                        <i class="payment-refresh fa fa-refresh tip text-info" title="Check Payment Status"></i>
+                        <i class="update-status fa fa-credit-card tip" data-status="PAID" title="Mark as Paid"
+                          style="color:#FF9800;"></i>
+                        <i class="update-status fa fa-eye tip" data-status="KIV" title="Mark as KIV"
+                          style="font-size:20px;"></i>
+                        <i class="update-status fa fa-cog tip" data-status="PROCESSING" title="Mark as Processing"
+                          style="color:#757575;"></i>
+                        <i class="update-status fa fa-truck tip" data-status="SHIPPED"
+                          title="Item delivered / Customer Received" style="color:#3F51B5;"></i>
+                        <i class="print-shipment fa fa-print tip" title="Print Shipment" style="color:#3F51B5;"></i>
+                        <i class="update-status fa fa-check-circle text-success tip" data-status="COMPLETED"
+                          title="Mark as Completed" style="font-size:19px;"></i>
+                      </p>
+                    </div>
+                    <div>
+                      Action:
+                      <p>
+                        <i class="show-sale fa fa-file-text tip" title="View" style="color:#009688;"></i>
+                        <i class="upload fa fa-upload tip" title="Upload File" style="color:#000;"></i>
+                        <i class="order-no fa"><i style="padding: 1%;" class="generate-report fa fa-file-text tip"
+                            title="Print Cash Sale"></i></i>
+                        <i class="order-no fa"><i style="padding: 1%;" class="cash-sale fa fa-envelope tip"
+                            title="Send Cash Sale"></i></i>
+                        <i class="whatsapp-status fa fa-whatsapp tip" data-status="WHATSAPP" title="Send to Client via Whatsapp"
+                          style="color:#25D366;"></i>
+                      </p>
+                    </div>
+                    <div>
+                      Created Dates: 12/4/2023 4:35:00 PM
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Customer Name</td>
+                  <td>Kankaku Piero</td>
+                </tr>
+                <tr>
+                  <td>Contact Number</td>
+                  <td>016-7788990</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>dummy@gmail.com</td>
+                </tr>
+                <tr>
+                  <td>Shipment Type</td>
+                  <td>Airport to airport</td>
+                </tr>
+                <tr>
+                  <td>Address</td>
+                  <td>44, Sri Aman, Gat Lebuh Mallum, 10300, Pulau Pinang</td>
+                </tr>
+                <tr>
+                  <td>Notes (Internal)</td>
+                  <td>Dummy Notes</td>
+                </tr>
+                <tr>
+                  <td>Notes to Customer</td>
+                  <td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div><!-- /.card-body -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- /.content -->
 
 <div class="modal fade" id="modal-xl">
   <div class="modal-dialog modal-xl">
@@ -156,14 +188,14 @@
                       </select>
                     </div>
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-4">
                     <div class="form-group">
                       <label>Address</label>
                       <textarea id="inputAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
                     </div>
                   </div>
-                </div>
-                <div class="row">
                   <div class="col-4">
                     <div class="form-group">
                       <label>Notes (Internal)</label>
@@ -357,5 +389,3 @@
   });
 
 </script>
-
-</html>

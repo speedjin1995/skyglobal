@@ -23,13 +23,8 @@ if(isset($_POST['userID'])){
             
             while ($row = $result->fetch_assoc()) {
                 $message['id'] = $row['id'];
-                $message['supplier_code'] = $row['supplier_code'];
                 $message['supplier_name'] = $row['supplier_name'];
                 $message['supplier_address'] = $row['supplier_address'];
-                $message['supplier_address2'] = $row['supplier_address2'];
-                $message['supplier_address3'] = $row['supplier_address3'];
-                $message['supplier_address4'] = $row['supplier_address4'];
-                $message['postcode'] = $row['postcode'];
                 $message['supplier_phone'] = $row['supplier_phone'];
                 $message['supplier_email'] = $row['supplier_email'];
             }
