@@ -9,6 +9,7 @@ if(!isset($_SESSION['userID'])){
 }
 else{
   $user = $_SESSION['userID'];
+  $users = $db->query("SELECT * FROM users WHERE deleted = '0'");
 }
 ?>
 
@@ -32,7 +33,7 @@ else{
             <div class="row">
                 <div class="col-9"></div>
                 <div class="col-3">
-                  <button style="margin-top: 3%; margin-left: 3%;" type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-xl">Create New Order</button>
+                  <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addOrder">Create New Order</button>
                 </div>
             </div>
           </div>
@@ -128,42 +129,42 @@ else{
   </div>
 </section><!-- /.content -->
 
-<div class="modal fade" id="modal-xl">
+<div class="modal fade" id="orderModal">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Create New Order</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!---form--->
-
-        <div class="container-fluid">
-          <!-- general form elements -->
-          <div class="card card-primary">
-            <!-- /.card-header -->
-            <!-- form start -->
-            <form>
+      <form role="form" id="orderForm">
+        <div class="modal-header">
+          <h4 class="modal-title">Create New Order</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="card card-primary">
               <div class="card-body">
                 <div class="row">
                   <div class="col-4">
                     <div class="form-group">
                       <label for="inputHandler">Handler</label>
-                      <input type="text" class="form-control" id="inputHandler" placeholder="Handler name" value="Dummy User name">
+                      <select class="form-control" style="width: 100%;" id="inputHandler" name="inputHandler">
+                        <option value="" selected disabled hidden>Please Select</option>
+                        <?php while($usersRow=mysqli_fetch_assoc($users)){ ?>
+                          <option value="<?=$usersRow['id'] ?>"><?=$usersRow['name'] ?></option>
+                        <?php } ?>
+                      </select>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
                       <label for="inputCustomerName">Customer Name</label>
-                      <input type="text" class="form-control" id="inputCustomerName" placeholder="Enter Customer Name">
+                      <input type="text" class="form-control" id="inputCustomerName" name="inputCustomerName" placeholder="Enter Customer Name">
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
                       <label for="inputContactNum">Contact Number</label>
-                      <input type="text" class="form-control" id="inputContactNum" placeholder="Example: 01X-1234567"
+                      <input type="text" class="form-control" id="inputContactNum" name="inputContactNum" placeholder="Example: 01X-1234567"
                         data-inputmask='"mask": "999-9999999"' data-mask>
                     </div>
                   </div>
@@ -172,13 +173,14 @@ else{
                   <div class="col-4">
                     <div class="form-group">
                       <label for="inputEmail">Email</label>
-                      <input type="email" class="form-control" id="inputEmail" placeholder="Example: dummy@mail.com">
+                      <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Example: dummy@mail.com">
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
                       <label>Shipment Type</label>
-                      <select id="inputShipmentType" class="form-control">
+                      <select id="inputShipmentType" name="inputShipmentType" class="form-control">
+                        <option value="" selected disabled hidden>Please Select</option>
                         <option value="A2A">Airport to airport</option>
                         <option value="D2D">Door to door</option>
                         <option value="D2OA">Door to origin airport</option>
@@ -193,199 +195,258 @@ else{
                   <div class="col-4">
                     <div class="form-group">
                       <label>Address</label>
-                      <textarea id="inputAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+                      <textarea id="inputAddress" name="inputAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
                       <label>Notes (Internal)</label>
-                      <textarea id="inputNotesInternal" class="form-control" rows="3"
+                      <textarea id="inputNotesInternal" name="inputNotesInternal" class="form-control" rows="3"
                         placeholder="Enter Notes (Internal)"></textarea>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
                       <label>Notes to Customer</label>
-                      <textarea id="inputNotestoCustomer" class="form-control" rows="3"
+                      <textarea id="inputNotestoCustomer" name="inputNotestoCustomer" class="form-control" rows="3"
                         placeholder="Enter Notes to Customer"></textarea>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- /.card-body -->
-            </form>
-          </div>
-          <div class="card card-primary">
-            <!-- /.card-header -->
-            <!-- form start -->
-            <form>
-              <div class="card-body">
-                <div class="form-group">
-                  <div class="row">
-                    <h4>Add Items</h4>
-                    <button style="margin-left:auto;margin-right: 25px;" type="button"
-                      class="btn btn-primary add-row">Add New</button>
-                  </div>
-                  <div style="margin-top:3%" class="row">
-                    <div class="col-sm-6">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Dimension</label>
-                        <input id="inputDimension" type="text" class="form-control" placeholder="Enter ...">
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Number of Carton</label>
-                        <input id="inputNumberofCarton" type="text" class="form-control" placeholder="Enter ...">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Weight of Carton</label>
-                        <div class="input-group mb-3">
-                          <input id="inputWeightofCarton" type="text" class="form-control">
-                          <div class="input-group-append">
-                            <span class="input-group-text">kg</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Cargo Ready Time</label>
-                        <div class="input-group date" id="inputCargoReadyTime" data-target-input="nearest">
-                          <input type="text" class="form-control datetimepicker-input"
-                            data-target="#reservationdatetime" />
-                          <div class="input-group-append" data-target="#reservationdatetime"
-                            data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Pickup Address</label>
-                        <textarea id="inputPickupAddress" class="form-control" rows="3"
-                          placeholder="Enter Pickup Address"></textarea>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Pickup Charge</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">RM</span>
-                          </div>
-                          <input type="text" class="form-control" id="inputPickupCharge"
-                            placeholder="Enter Pickup Charges" data-inputmask='"mask": "99.99"' data-mask>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Export Clearances</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">RM</span>
-                          </div>
-                          <input type="text" class="form-control" id="inputExportClearances"
-                            placeholder="Enter Export Clearances" data-inputmask='"mask": "99.99"' data-mask>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Air Ticket</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">RM</span>
-                          </div>
-                          <input type="text" class="form-control" id="inputAirTicket" placeholder="Enter Air Ticket"
-                            data-inputmask='"mask": "99.99"' data-mask>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Flyers Fee</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">RM</span>
-                          </div>
-                          <input type="text" class="form-control" id="inputFlyersFee" placeholder="Enter Flyers Fee"
-                            data-inputmask='"mask": "99.99"' data-mask>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Import Clearance</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">RM</span>
-                          </div>
-                          <input type="text" class="form-control" id="inputImportClearance"
-                            placeholder="Enter Import Clearance" data-inputmask='"mask": "99.99"' data-mask>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Delivery Charges</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">RM</span>
-                          </div>
-                          <input type="text" class="form-control" id="inputDeliveryCharges"
-                            placeholder="Enter Delivery Charges" data-inputmask='"mask": "99.99"' data-mask>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            </div>
+            <div class="card card-primary">
+              <div class="card-body" id="itemList">
+                <div class="row">
+                  <h4>Add Items</h4>
+                  <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary add-row">Add New</button>
                 </div>
               </div>
-              <!-- /.card-body -->
-            </form>
-          </div>
-          <!-- /.card -->
-          <!--/.col (right) -->
-
-          <!-- /.row -->
-        </div><!-- /.container-fluid -->
-
-      </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+            </div>
+          </div><!-- /.container-fluid -->
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="submit" id="submitOrder">Save Change</button>
+        </div>
+      </form>
     </div>
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
 </div>
 
+<script type="text/html" id="addContents">
+  <div style="margin-top:3%" class="row details">
+    <div class="col-4">
+      <div class="form-group">
+        <label>Cargo Ready Time</label>
+        <div class="input-group date" id="inputCargoReadyTime" data-target-input="nearest">
+          <input type="text" class="form-control datetimepicker-input" id="cargoReadyTime" data-target="#inputCargoReadyTime" />
+          <div class="input-group-append" data-target="#inputCargoReadyTime" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <!-- text input -->
+      <div class="form-group">
+        <label>Pickup Address</label>
+        <textarea id="inputPickupAddress" class="form-control" rows="3"
+          placeholder="Enter Pickup Address"></textarea>
+      </div>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-danger btn-sm" id="remove"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="col-4">
+      <!-- text input -->
+      <div class="form-group">
+        <label>Dimension</label>
+        <input id="inputDimension" type="text" class="form-control" placeholder="Enter ...">
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Number of Carton</label>
+        <input id="inputNumberofCarton" type="number" class="form-control" placeholder="Enter ...">
+      </div>
+    </div>
+    <div class="col-4">
+      <!-- text input -->
+      <div class="form-group">
+        <label>Weight of Carton</label>
+        <div class="input-group mb-3">
+          <input id="inputWeightofCarton" type="number" class="form-control">
+          <div class="input-group-append">
+            <span class="input-group-text">kg</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Pickup Charge</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">RM</span>
+          </div>
+          <input type="text" class="form-control" id="inputPickupCharge" placeholder="Enter Pickup Charges" data-inputmask='"mask": "99.99"' data-mask>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Export Clearances</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">RM</span>
+          </div>
+          <input type="text" class="form-control" id="inputExportClearances" placeholder="Enter Export Clearances" data-inputmask='"mask": "99.99"' data-mask>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Air Ticket</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">RM</span>
+          </div>
+          <input type="text" class="form-control" id="inputAirTicket" placeholder="Enter Air Ticket" data-inputmask='"mask": "99.99"' data-mask>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Flyers Fee</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">RM</span>
+          </div>
+          <input type="text" class="form-control" id="inputFlyersFee" placeholder="Enter Flyers Fee" data-inputmask='"mask": "99.99"' data-mask>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Import Clearance</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">RM</span>
+          </div>
+          <input type="text" class="form-control" id="inputImportClearance" placeholder="Enter Import Clearance" data-inputmask='"mask": "99.99"' data-mask>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Delivery Charges</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">RM</span>
+          </div>
+          <input type="text" class="form-control" id="inputDeliveryCharges" placeholder="Enter Delivery Charges" data-inputmask='"mask": "99.99"' data-mask>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
 <script>
-  $(function () {
+var contentIndex = 0;
+var size = $("#TableId").find(".details").length
 
-    //Date and time picker
-    $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+$(function () {
 
-    $('[data-mask]').inputmask();
+  $.validator.setDefaults({
+    submitHandler: function () {
+      if($('#orderModal').hasClass('show')){
+        $('#spinnerLoading').show();
+        $.post('php/insertSales.php', $('#orderForm').serialize(), function(data){
+          var obj = JSON.parse(data); 
+          if(obj.status === 'success'){
+            $('#orderModal').modal('hide');
+            toastr["success"](obj.message, "Success:");
+            //$('#weightTable').DataTable().ajax.reload();
+          }
+          else if(obj.status === 'failed'){
+            toastr["error"](obj.message, "Failed:");
+          }
+          else{
+            toastr["error"]("Something wrong when edit", "Failed:");
+          }
 
+          $('#spinnerLoading').hide();
+        });
+      }
+    }
   });
 
+  $('#addOrder').on('click', function(){
+    $('#orderModal').find('#id').val("");
+    $('#orderModal').find('#inputHandler').val("<?=$user ?>");
+    $('#orderModal').find('#inputCustomerName').val("");
+    $('#orderModal').find('#inputContactNum').val("");
+    $('#orderModal').find('#inputEmail').val("");
+    $('#orderModal').find('#inputShipmentType').val("");
+    $('#orderModal').find('#inputAddress').val("");
+    $('#orderModal').find('#inputNotesInternal').val("");
+    $('#orderModal').find('#inputNotestoCustomer').val("");
+    $('#itemList').find('.details').remove();
+    $('[data-mask]').inputmask();
+    $('#orderModal').modal('show');
+    
+    $('#orderForm').validate({
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+      }
+    });
+  });
+
+  $(".add-row").click(function(){
+    var $addContents = $("#addContents").clone();
+    $("#itemList").append($addContents.html());
+
+    $("#itemList").find('.details:last').attr("id", "detail" + size);
+    $("#itemList").find('.details:last').attr("data-index", size);
+    $("#itemList").find('#remove:last').attr("id", "remove" + size);
+
+    $("#itemList").find('#cargoReadyTime:last').attr('name', 'cargoReadyTime['+size+']').attr("id", "cargoReadyTime" + size);
+    $("#itemList").find('#inputPickupAddress:last').attr('name', 'inputPickupAddress['+size+']').attr("id", "inputPickupAddress" + size);
+    $("#itemList").find('#inputDimension:last').attr('name', 'inputDimension['+size+']').attr("id", "inputDimension" + size);
+    $("#itemList").find('#inputNumberofCarton:last').attr('name', 'inputNumberofCarton['+size+']').attr("id", "inputNumberofCarton" + size);
+    $("#itemList").find('#inputWeightofCarton:last').attr('name', 'inputWeightofCarton['+size+']').attr("id", "inputWeightofCarton" + size);
+    $("#itemList").find('#inputPickupCharge:last').attr('name', 'inputPickupCharge['+size+']').attr("id", "inputPickupCharge" + size);
+    $("#itemList").find('#inputExportClearances:last').attr('name', 'inputExportClearances['+size+']').attr("id", "inputExportClearances" + size);
+    $("#itemList").find('#inputAirTicket:last').attr('name', 'inputAirTicket['+size+']').attr("id", "inputAirTicket" + size);
+    $("#itemList").find('#inputFlyersFee:last').attr('name', 'inputFlyersFee['+size+']').attr("id", "inputFlyersFee" + size);
+    $("#itemList").find('#inputImportClearance:last').attr('name', 'inputImportClearance['+size+']').attr("id", "inputImportClearance" + size);
+    $("#itemList").find('#inputDeliveryCharges:last').attr('name', 'inputDeliveryCharges['+size+']').attr("id", "inputDeliveryCharges" + size);
+    
+    //Date and time picker
+    $("#itemList").find('#inputCargoReadyTime:last').datetimepicker({
+      icons: { time: 'far fa-clock' },
+      format: 'YYYY-MM-DD HH:mm:ss'
+    });
+    
+    $('[data-mask]').inputmask();
+
+    size++;
+  });
+
+  $("#itemList").on('click', 'button[id^="remove"]', function () {
+    $("#itemList").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
+    $(this).parents('.details').remove();
+  });addOrder
+});
 </script>
