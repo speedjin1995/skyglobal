@@ -8,15 +8,34 @@ if(!isset($_SESSION['userID'])){
     echo 'window.location.href = "../login.html";</script>';
 }
 
-if(isset($_POST['inputHandler'], $_POST['inputCustomerName'], $_POST['inputContactNum'], $_POST['inputEmail'], $_POST['inputShipmentType'],
+if(isset($_POST['inputHandler'], $_POST['inputCustomerName'], $_POST['inputContactNum'], $_POST['inputEmail'], $_POST['inputShipmentType'], $_POST['totalPrice'],
 $_POST['inputAddress'], $_POST['inputNotesInternal'], $_POST['inputNotestoCustomer'], $_POST['cargoReadyTime'], $_POST['inputPickupAddress'],
 $_POST['inputDimension'], $_POST['inputNumberofCarton'], $_POST['inputWeightofCarton'], $_POST['inputPickupCharge'], $_POST['inputExportClearances'],
 $_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance'], $_POST['inputDeliveryCharges'], $_POST['inputTotalPrice'])){
-    $items=$_POST['items'];
-    $itemWeight=$_POST['itemWeight'];
-    $itemPrice=$_POST['itemPrice'];
-    $totalPrice=$_POST['totalPrice'];
-    $totalPricing = filter_input(INPUT_POST, 'totalPricing', FILTER_SANITIZE_STRING);
+    $inputHandler = filter_input(INPUT_POST, 'inputHandler', FILTER_SANITIZE_STRING);
+    $inputCustomerName = filter_input(INPUT_POST, 'inputCustomerName', FILTER_SANITIZE_STRING);
+    $inputContactNum = filter_input(INPUT_POST, 'inputContactNum', FILTER_SANITIZE_STRING);
+    $inputEmail = filter_input(INPUT_POST, 'inputEmail', FILTER_SANITIZE_STRING);
+    $inputShipmentType = filter_input(INPUT_POST, 'inputShipmentType', FILTER_SANITIZE_STRING);
+    $totalPrice = filter_input(INPUT_POST, 'totalPrice', FILTER_SANITIZE_STRING);
+    $inputAddress = filter_input(INPUT_POST, 'inputAddress', FILTER_SANITIZE_STRING);
+    $inputNotesInternal = filter_input(INPUT_POST, 'inputNotesInternal', FILTER_SANITIZE_STRING);
+    $inputNotestoCustomer = filter_input(INPUT_POST, 'inputNotestoCustomer', FILTER_SANITIZE_STRING);
+    
+    // Arrays
+    $cargoReadyTime=$_POST['cargoReadyTime'];
+    $inputPickupAddress=$_POST['inputPickupAddress'];
+    $inputDimension=$_POST['inputDimension'];
+    $inputNumberofCarton=$_POST['inputNumberofCarton'];
+    $inputWeightofCarton=$_POST['inputWeightofCarton'];
+    $inputPickupCharge=$_POST['inputPickupCharge'];
+    $inputExportClearances=$_POST['inputExportClearances'];
+    $inputAirTicket=$_POST['inputAirTicket'];
+    $inputFlyersFee=$_POST['inputFlyersFee'];
+    $inputImportClearance=$_POST['inputImportClearance'];
+    $inputDeliveryCharges=$_POST['inputDeliveryCharges'];
+    $inputTotalPrice=$_POST['inputTotalPrice'];
+    
     $success = true;
     $today = date("Y-m-d 00:00:00");
     $deleted = $_POST['deleted'];

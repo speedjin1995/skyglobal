@@ -181,13 +181,19 @@ else{
                       <label>Shipment Type</label>
                       <select id="inputShipmentType" name="inputShipmentType" class="form-control">
                         <option value="" selected disabled hidden>Please Select</option>
-                        <option value="A2A">Airport to airport</option>
-                        <option value="D2D">Door to door</option>
-                        <option value="D2OA">Door to origin airport</option>
-                        <option value="D2DES">Door to destination</option>
-                        <option value="A2D">Airport to door</option>
-                        <option value="OA2D">Origin Airport to door</option>
+                        <option value="Airport to airport">Airport to airport</option>
+                        <option value="Door to door">Door to door</option>
+                        <option value="Door to origin airport">Door to origin airport</option>
+                        <option value="Door to destination airport">Door to destination airport</option>
+                        <option value="Airport to door">Airport to door</option>
+                        <option value="Origin Airport to door">Origin Airport to door</option>
                       </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="inputEmail">Total Price</label>
+                      <input type="totalPrice" class="form-control" id="totalPrice" name="totalPrice" value="0.00" readonly>
                     </div>
                   </div>
                 </div>
@@ -286,7 +292,7 @@ else{
       </div>
     </div>
     <div class="col-4">
-      <div class="form-group">
+      <div class="form-group" id="pickupCharges">
         <label>Pickup Charge</label>
         <div class="input-group">
           <div class="input-group-prepend">
@@ -297,7 +303,7 @@ else{
       </div>
     </div>
     <div class="col-4">
-      <div class="form-group">
+      <div class="form-group" id="exportClearance">
         <label>Export Clearances</label>
         <div class="input-group">
           <div class="input-group-prepend">
@@ -307,7 +313,7 @@ else{
         </div>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-4" id="airTicket">
       <div class="form-group">
         <label>Air Ticket</label>
         <div class="input-group">
@@ -318,7 +324,7 @@ else{
         </div>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-4" id="flyersFee">
       <div class="form-group">
         <label>Flyers Fee</label>
         <div class="input-group">
@@ -329,7 +335,7 @@ else{
         </div>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-4" id="importClearance">
       <div class="form-group">
         <label>Import Clearance</label>
         <div class="input-group">
@@ -340,7 +346,7 @@ else{
         </div>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-4" id="deliveryCharges">
       <div class="form-group">
         <label>Delivery Charges</label>
         <div class="input-group">
@@ -348,6 +354,17 @@ else{
             <span class="input-group-text">RM</span>
           </div>
           <input type="text" class="form-control" id="inputDeliveryCharges" placeholder="Enter Delivery Charges" data-inputmask='"mask": "99.99"' data-mask>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Total Charges</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">RM</span>
+          </div>
+          <input type="text" class="form-control" id="inputTotalCharges" placeholder="Enter Delivery Charges" readonly>
         </div>
       </div>
     </div>
@@ -426,13 +443,41 @@ $(function () {
     $("#itemList").find('#inputDimension:last').attr('name', 'inputDimension['+size+']').attr("id", "inputDimension" + size);
     $("#itemList").find('#inputNumberofCarton:last').attr('name', 'inputNumberofCarton['+size+']').attr("id", "inputNumberofCarton" + size);
     $("#itemList").find('#inputWeightofCarton:last').attr('name', 'inputWeightofCarton['+size+']').attr("id", "inputWeightofCarton" + size);
-    $("#itemList").find('#inputPickupCharge:last').attr('name', 'inputPickupCharge['+size+']').attr("id", "inputPickupCharge" + size);
-    $("#itemList").find('#inputExportClearances:last').attr('name', 'inputExportClearances['+size+']').attr("id", "inputExportClearances" + size);
-    $("#itemList").find('#inputAirTicket:last').attr('name', 'inputAirTicket['+size+']').attr("id", "inputAirTicket" + size);
-    $("#itemList").find('#inputFlyersFee:last').attr('name', 'inputFlyersFee['+size+']').attr("id", "inputFlyersFee" + size);
-    $("#itemList").find('#inputImportClearance:last').attr('name', 'inputImportClearance['+size+']').attr("id", "inputImportClearance" + size);
-    $("#itemList").find('#inputDeliveryCharges:last').attr('name', 'inputDeliveryCharges['+size+']').attr("id", "inputDeliveryCharges" + size);
-    
+    $("#itemList").find('#inputPickupCharge:last').attr('name', 'inputPickupCharge['+size+']').attr("id", "inputPickupCharge" + size).val("0.00");
+    $("#itemList").find('#inputExportClearances:last').attr('name', 'inputExportClearances['+size+']').attr("id", "inputExportClearances" + size).val("0.00");
+    $("#itemList").find('#inputAirTicket:last').attr('name', 'inputAirTicket['+size+']').attr("id", "inputAirTicket" + size).val("0.00");
+    $("#itemList").find('#inputFlyersFee:last').attr('name', 'inputFlyersFee['+size+']').attr("id", "inputFlyersFee" + size).val("0.00");
+    $("#itemList").find('#inputImportClearance:last').attr('name', 'inputImportClearance['+size+']').attr("id", "inputImportClearance" + size).val("0.00");
+    $("#itemList").find('#inputDeliveryCharges:last').attr('name', 'inputDeliveryCharges['+size+']').attr("id", "inputDeliveryCharges" + size).val("0.00");
+    $("#itemList").find('#inputTotalCharges:last').attr('name', 'inputTotalCharges['+size+']').attr("id", "inputTotalCharges" + size).val("0.00");
+
+    if($('#inputShipmentType').val() == 'Airport to airport'){
+      $("#itemList").find("#inputPickupCharge" + size).attr('readonly', true);
+      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);;
+      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);;
+      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);;
+    }
+    else if($('#inputShipmentType').val() == 'Door to origin airport'){
+      $("#itemList").find('#inputAirTicket' + size).attr('readonly', true);;
+      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', true);;
+      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);;
+      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);;
+    }
+    else if($('#inputShipmentType').val() == 'Door to destination airport'){
+      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);;
+      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);;
+    }
+    else if($('#inputShipmentType').val() == 'Airport to door'){
+      $("#itemList").find('#inputPickupCharge' + size).attr('readonly', true);;
+      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);;
+      $("#itemList").find('#inputAirTicket' + size).attr('readonly', true);;
+      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', true);;
+    }
+    else if($('#inputShipmentType').val() == 'Origin Airport to door'){
+      $("#itemList").find('#inputPickupCharge:last').attr('readonly', true);;
+      $("#itemList").find('#inputExportClearances:last').attr('readonly', true);;
+    }
+
     //Date and time picker
     $("#itemList").find('#inputCargoReadyTime:last').datetimepicker({
       icons: { time: 'far fa-clock' },
@@ -445,6 +490,7 @@ $(function () {
   });
 
   $("#itemList").on('click', 'button[id^="remove"]', function () {
+    var index = $(this).parents('.details').attr('data-index');
     $("#itemList").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
     $(this).parents('.details').remove();
   });addOrder
