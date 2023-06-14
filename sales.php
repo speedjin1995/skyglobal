@@ -497,7 +497,7 @@ function status(row) {
   
   returnString += '<p><small>Action:</small></p>';
   returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
-  row.id+')" class="btn btn-primary btn-sm"><i class="fas fa fa-times"></i></button></div><div class="col-3"><button type="button" onclick="printSO('+
+  row.id+')" class="btn btn-primary btn-sm"><i class="fa fa-file-text"></i></button></div><div class="col-3"><button type="button" onclick="printSO('+
   row.id+')" class="btn btn-success btn-sm"><i class="fa fa-credit-card"></i></button></div></div>';
 
   return returnString;
@@ -505,12 +505,10 @@ function status(row) {
 
 function printQuote(row) {
   $('#spinnerLoading').show();
-  $.post('php/insertSales.php', $('#orderForm').serialize(), function(data){
+  $.post('php/printQuote.php', {salesID: row}, function(data){
     var obj = JSON.parse(data); 
     if(obj.status === 'success'){
-      $('#orderModal').modal('hide');
       toastr["success"](obj.message, "Success:");
-      $('#tableforOrder').DataTable().ajax.reload();
     }
     else if(obj.status === 'failed'){
       toastr["error"](obj.message, "Failed:");
