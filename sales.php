@@ -505,10 +505,41 @@ function status(row) {
 
 function printQuote(row) {
   $('#spinnerLoading').show();
-  $.post('php/printQuote.php', {salesID: row}, function(data){
+  $.post('php/generateQuo.php', {salesID: row}, function(data){
     var obj = JSON.parse(data); 
+    
     if(obj.status === 'success'){
-      toastr["success"](obj.message, "Success:");
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write(obj.message);
+            printWindow.document.close();
+            setTimeout(function(){
+                printWindow.print();
+                printWindow.close();
+            }, 1000);
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when edit", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
+}
+function printSO(row) {
+  $('#spinnerLoading').show();
+  $.post('php/generateSalesOrder.php', {salesID: row}, function(data){
+    var obj = JSON.parse(data); 
+    
+    if(obj.status === 'success'){
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write(obj.message);
+            printWindow.document.close();
+            setTimeout(function(){
+                printWindow.print();
+                printWindow.close();
+            }, 1000);
     }
     else if(obj.status === 'failed'){
       toastr["error"](obj.message, "Failed:");
