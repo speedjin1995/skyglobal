@@ -38,89 +38,14 @@ else{
             </div>
           </div>
           <div class="card-body">
-            <table id="tableforOrder" class="table table-bordered">
+            <table id="tableforOrder" class="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th>Order</th>
-                  <th colspan="2">Details</th>
+                  <th>Details</th>
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td rowspan="8">Dummy 001</td>
-                  <td>Handler Name</td>
-                  <td>dummy data</td>
-                  <td rowspan="8">
-                    <div>
-                      Status:
-                      <p class="state"><small>Status:</small></p>
-                      <p>
-                        <i class="update-status fa fa-times text-danger tip" data-status="CANCELLED" title="Cancel Order"
-                          style="font-size:22px;top:-1px;"></i>
-                        <i class="update-status fa fa-envelope tip" data-status="SENT" title="Send to Client via SMS & E-mail"
-                          style="color:#3F51B5;"></i>
-                        <i class="payment-refresh fa fa-refresh tip text-info" title="Check Payment Status"></i>
-                        <i class="update-status fa fa-credit-card tip" data-status="PAID" title="Mark as Paid"
-                          style="color:#FF9800;"></i>
-                        <i class="update-status fa fa-eye tip" data-status="KIV" title="Mark as KIV"
-                          style="font-size:20px;"></i>
-                        <i class="update-status fa fa-cog tip" data-status="PROCESSING" title="Mark as Processing"
-                          style="color:#757575;"></i>
-                        <i class="update-status fa fa-truck tip" data-status="SHIPPED"
-                          title="Item delivered / Customer Received" style="color:#3F51B5;"></i>
-                        <i class="print-shipment fa fa-print tip" title="Print Shipment" style="color:#3F51B5;"></i>
-                        <i class="update-status fa fa-check-circle text-success tip" data-status="COMPLETED"
-                          title="Mark as Completed" style="font-size:19px;"></i>
-                      </p>
-                    </div>
-                    <div>
-                      Action:
-                      <p>
-                        <i class="show-sale fa fa-file-text tip" title="View" style="color:#009688;"></i>
-                        <i class="upload fa fa-upload tip" title="Upload File" style="color:#000;"></i>
-                        <i class="order-no fa"><i style="padding: 1%;" class="generate-report fa fa-file-text tip"
-                            title="Print Cash Sale"></i></i>
-                        <i class="order-no fa"><i style="padding: 1%;" class="cash-sale fa fa-envelope tip"
-                            title="Send Cash Sale"></i></i>
-                        <i class="whatsapp-status fa fa-whatsapp tip" data-status="WHATSAPP" title="Send to Client via Whatsapp"
-                          style="color:#25D366;"></i>
-                      </p>
-                    </div>
-                    <div>
-                      Created Dates: 12/4/2023 4:35:00 PM
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Customer Name</td>
-                  <td>Kankaku Piero</td>
-                </tr>
-                <tr>
-                  <td>Contact Number</td>
-                  <td>016-7788990</td>
-                </tr>
-                <tr>
-                  <td>Email</td>
-                  <td>dummy@gmail.com</td>
-                </tr>
-                <tr>
-                  <td>Shipment Type</td>
-                  <td>Airport to airport</td>
-                </tr>
-                <tr>
-                  <td>Address</td>
-                  <td>44, Sri Aman, Gat Lebuh Mallum, 10300, Pulau Pinang</td>
-                </tr>
-                <tr>
-                  <td>Notes (Internal)</td>
-                  <td>Dummy Notes</td>
-                </tr>
-                <tr>
-                  <td>Notes to Customer</td>
-                  <td>-</td>
-                </tr>
-              </tbody>
             </table>
           </div><!-- /.card-body -->
         </div>
@@ -376,6 +301,38 @@ var contentIndex = 0;
 var size = $("#TableId").find(".details").length
 
 $(function () {
+  var table = $("#tableforOrder").DataTable({
+    "responsive": true,
+    "autoWidth": false,
+    'processing': true,
+    'serverSide': true,
+    'searching': false,
+    'serverMethod': 'post',
+    'ordering': false,
+    'ajax': {
+      'url':'php/loadSales.php'
+    },
+    'columns': [
+      { 
+        data: 'id',
+        render: function ( data, type, row ) {
+          return order(row);
+        }
+      },
+      { 
+        data: 'id',
+        render: function ( data, type, row ) {
+          return details(row);
+        }
+      },
+      { 
+        data: 'id',
+        render: function ( data, type, row ) {
+          return status(row);
+        }
+      }
+    ]       
+  });
 
   $.validator.setDefaults({
     submitHandler: function () {
@@ -386,7 +343,7 @@ $(function () {
           if(obj.status === 'success'){
             $('#orderModal').modal('hide');
             toastr["success"](obj.message, "Success:");
-            //$('#weightTable').DataTable().ajax.reload();
+            $('#tableforOrder').DataTable().ajax.reload();
           }
           else if(obj.status === 'failed'){
             toastr["error"](obj.message, "Failed:");
@@ -493,6 +450,76 @@ $(function () {
     var index = $(this).parents('.details').attr('data-index');
     $("#itemList").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
     $(this).parents('.details').remove();
-  });addOrder
+  });
 });
+
+function order(row) {
+  return '<div class="row"><div class="col-12">' + row.quotation_no + '</div></div>';
+}
+
+function details(row) {
+  return '<div class="row"><div class="col-12">Handler Name: ' + row.handled_by 
+  + '</div></div><div class="row"><div class="col-12">Customer Name: ' + row.customer_name 
+  + '</div></div><div class="row"><div class="col-12">Contact Number: ' + row.contact_no 
+  + '</div></div><div class="row"><div class="col-12">Email: ' + row.email 
+  + '</div></div><div class="row"><div class="col-12">Shipment Type: '+ row.shipment_type 
+  + '</div></div><div class="row"><div class="col-12">Address: '+ row.customer_address 
+  + '</div></div><div class="row"><div class="col-12">Notes (Internal): ' + row.internal_notes 
+  + '</div></div><div class="row"><div class="col-12">Notes to Customer: ' + row.customer_notes 
+  + '</div></div>';
+}
+
+function status(row) {
+  var returnString = '<h5>Status:</h5><p>Created at: <br>' + row.created_datetime +'</p><p>Quoted at: <br>' + row.quoted_datetime +'</p>';
+
+  if(row.paid_datetime != null && row.paid_datetime != ''){
+    returnString += '<p>Paid at: <br>' + row.paid_datetime +'</p>';
+  }
+
+  if(row.shipped_datetime != null && row.shipped_datetime != ''){
+    returnString += '<p>Shipped at: <br>' + row.shipped_datetime +'</p>';
+  }
+
+  if(row.completed_datetime != null && row.completed_datetime != ''){
+    returnString += '<p>Completed at: <br>' + row.completed_datetime +'</p>';
+  }
+
+  if(row.cancelled_datetime != null && row.cancelled_datetime != ''){
+    returnString += '<p>Cancelled at: <br>' + row.cancelled_datetime +'</p>';
+  }
+    
+  returnString += '<p><small>Status:</small></p>';
+  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="cancel('+
+  row.id+')" class="btn btn-error btn-sm"><i class="fas fa fa-times"></i></button></div><div class="col-3"><button type="button" onclick="paid('+
+  row.id+')" class="btn btn-warning btn-sm"><i class="fa fa-credit-card"></i></button></div><div class="col-3"><button type="button" onclick="shipped('+
+  row.id+')" class="btn btn-info btn-sm"><i class="fa fa-truck"></i></button></div><div class="col-3"><button type="button" onclick="completed('+
+  row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div></div>';
+  
+  returnString += '<p><small>Action:</small></p>';
+  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
+  row.id+')" class="btn btn-primary btn-sm"><i class="fas fa fa-times"></i></button></div><div class="col-3"><button type="button" onclick="printSO('+
+  row.id+')" class="btn btn-success btn-sm"><i class="fa fa-credit-card"></i></button></div></div>';
+
+  return returnString;
+}
+
+function printQuote(row) {
+  $('#spinnerLoading').show();
+  $.post('php/insertSales.php', $('#orderForm').serialize(), function(data){
+    var obj = JSON.parse(data); 
+    if(obj.status === 'success'){
+      $('#orderModal').modal('hide');
+      toastr["success"](obj.message, "Success:");
+      $('#tableforOrder').DataTable().ajax.reload();
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when edit", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
+}
 </script>

@@ -9,9 +9,9 @@ if(!isset($_SESSION['userID'])){
 }
 
 if(isset($_POST['inputHandler'], $_POST['inputCustomerName'], $_POST['inputContactNum'], $_POST['inputEmail'], $_POST['inputShipmentType'], $_POST['totalPrice'],
-$_POST['inputAddress'], $_POST['inputNotesInternal'], $_POST['inputNotestoCustomer'], $_POST['cargoReadyTime'], $_POST['inputPickupAddress'],
-$_POST['inputDimension'], $_POST['inputNumberofCarton'], $_POST['inputWeightofCarton'], $_POST['inputPickupCharge'], $_POST['inputExportClearances'],
-$_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance'], $_POST['inputDeliveryCharges'], $_POST['inputTotalPrice'])){
+$_POST['inputAddress'], $_POST['cargoReadyTime'], $_POST['inputPickupAddress'], $_POST['inputDimension'], $_POST['inputNumberofCarton'], $_POST['inputWeightofCarton'], 
+$_POST['inputPickupCharge'], $_POST['inputExportClearances'], $_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance'], 
+$_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
     $inputHandler = filter_input(INPUT_POST, 'inputHandler', FILTER_SANITIZE_STRING);
     $inputCustomerName = filter_input(INPUT_POST, 'inputCustomerName', FILTER_SANITIZE_STRING);
     $inputContactNum = filter_input(INPUT_POST, 'inputContactNum', FILTER_SANITIZE_STRING);
@@ -19,8 +19,18 @@ $_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance
     $inputShipmentType = filter_input(INPUT_POST, 'inputShipmentType', FILTER_SANITIZE_STRING);
     $totalPrice = filter_input(INPUT_POST, 'totalPrice', FILTER_SANITIZE_STRING);
     $inputAddress = filter_input(INPUT_POST, 'inputAddress', FILTER_SANITIZE_STRING);
-    $inputNotesInternal = filter_input(INPUT_POST, 'inputNotesInternal', FILTER_SANITIZE_STRING);
-    $inputNotestoCustomer = filter_input(INPUT_POST, 'inputNotestoCustomer', FILTER_SANITIZE_STRING);
+    $inputNotesInternal = "";
+    $inputNotestoCustomer = "";
+    $user = $_SESSION['userID'];
+    $deleted = array();
+
+    if($_POST['inputNotesInternal'] != null && $_POST['inputNotesInternal'] != ""){
+        $inputNotesInternal = filter_input(INPUT_POST, 'inputNotesInternal', FILTER_SANITIZE_STRING);
+    }
+    
+    if($_POST['inputNotestoCustomer'] != null && $_POST['inputNotestoCustomer'] != ""){
+        $inputNotestoCustomer = filter_input(INPUT_POST, 'inputNotestoCustomer', FILTER_SANITIZE_STRING);
+    }
     
     // Arrays
     $cargoReadyTime=$_POST['cargoReadyTime'];
@@ -34,14 +44,17 @@ $_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance
     $inputFlyersFee=$_POST['inputFlyersFee'];
     $inputImportClearance=$_POST['inputImportClearance'];
     $inputDeliveryCharges=$_POST['inputDeliveryCharges'];
-    $inputTotalPrice=$_POST['inputTotalPrice'];
+    $inputTotalPrice=$_POST['inputTotalCharges'];
     
     $success = true;
     $today = date("Y-m-d 00:00:00");
-    $deleted = $_POST['deleted'];
-    $deleted = array_map('intval', $deleted);
 
-    if($_POST['id'] != null && $_POST['id'] != ''){
+    if(isset($_POST['deleted']) && $_POST['deleted'] != null){
+        $deleted = $_POST['deleted'];
+        $deleted = array_map('intval', $deleted);
+    }
+
+    if(isset($_POST['id']) && $_POST['id'] != null && $_POST['id'] != ''){
         if ($update_stmt = $db->prepare("UPDATE weighing SET item_types=?, lot_no=?, tray_weight=?, tray_no=?, grading_net_weight=?, grade, pieces, grading_gross_weight, grading_net_weight, moisture_after_grading=? WHERE id=?")) {
             $update_stmt->bind_param('ssssssss', $itemType, $grossWeight, $lotNo, $bTrayWeight, $bTrayNo, $netWeight, $moistureValue, $_POST['id']);
             
@@ -117,8 +130,8 @@ $_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance
         
                 $firstChar .= strval($count);  //S00009
 
-                if ($insert_stmt = $db->prepare("INSERT INTO purchase (batch_no, total_price) VALUES (?, ?)")) {
-                    $insert_stmt->bind_param('ss', $firstChar, $totalPricing);
+                if ($insert_stmt = $db->prepare("INSERT INTO sales (quotation_no, customer_name, contact_no, email, customer_address, total_amount, customer_notes, internal_notes, shipment_type, created_by, updated_by, handled_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                    $insert_stmt->bind_param('ssssssssssss', $firstChar, $inputCustomerName, $inputContactNum, $inputEmail, $inputAddress, $totalPrice, $inputNotestoCustomer, $inputNotesInternal, $inputShipmentType, $user, $user, $inputHandler);
                     
                     // Execute the prepared query.
                     if (! $insert_stmt->execute()) {
@@ -133,11 +146,10 @@ $_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance
                         $id = $insert_stmt->insert_id;;
                         $insert_stmt->close();
 
-                        for($i=0; $i<sizeof($items); $i++){
-                            if($items[$i] != null && !in_array($i,$deleted)){
-                                if ($insert_stmt2 = $db->prepare("INSERT INTO purchase_cart (purchase_id, purchasing_weight, purchasing_price, purchasing_item) VALUES (?, ?, ?, ?)")) {
-                                    $insert_stmt2->bind_param('ssss', $id, $itemWeight[$i], $totalPrice[$i], $items[$i]);
-                                    
+                        for($i=0; $i<sizeof($cargoReadyTime); $i++){
+                            if($cargoReadyTime[$i] != null && !in_array($i,$deleted)){
+                                if ($insert_stmt2 = $db->prepare("INSERT INTO sales_cart (sale_id, dimension, number_of_carton, weight_of_cargo, cargo_ready_time, pickup_address, pickup_charge, export_clearances, air_ticket, flyers_fee, import_clearance, delivery_charges, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                                    $insert_stmt2->bind_param('sssssssssssss', $id, $inputDimension[$i], $inputNumberofCarton[$i], $inputWeightofCarton[$i], $cargoReadyTime[$i], $inputPickupAddress[$i], $inputPickupCharge[$i] , $inputExportClearances[$i], $inputAirTicket[$i], $inputFlyersFee[$i], $inputImportClearance[$i], $inputDeliveryCharges[$i], $inputTotalPrice[$i]);
                                     // Execute the prepared query.
                                     if (! $insert_stmt2->execute()) {
                                         $success = false;
@@ -164,7 +176,7 @@ $_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance
                             echo json_encode(
                                 array(
                                     "status"=> "failed", 
-                                    "message"=> "Failed to created purchase cart records due to ".$insert_stmt2->error 
+                                    "message"=> "Failed to created sales cart records due to ".$insert_stmt2->error 
                                 )
                             );
                         }
