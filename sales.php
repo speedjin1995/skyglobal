@@ -223,7 +223,7 @@ else{
           <div class="input-group-prepend">
             <span class="input-group-text">RM</span>
           </div>
-          <input type="text" class="form-control" id="inputPickupCharge" placeholder="Enter Pickup Charges" data-inputmask='"mask": "99.99"' data-mask>
+          <input type="number" class="form-control" id="inputPickupCharge" placeholder="Enter Pickup Charges"/>
         </div>
       </div>
     </div>
@@ -234,7 +234,7 @@ else{
           <div class="input-group-prepend">
             <span class="input-group-text">RM</span>
           </div>
-          <input type="text" class="form-control" id="inputExportClearances" placeholder="Enter Export Clearances" data-inputmask='"mask": "99.99"' data-mask>
+          <input type="number" class="form-control" id="inputExportClearances" placeholder="Enter Export Clearances">
         </div>
       </div>
     </div>
@@ -245,7 +245,7 @@ else{
           <div class="input-group-prepend">
             <span class="input-group-text">RM</span>
           </div>
-          <input type="text" class="form-control" id="inputAirTicket" placeholder="Enter Air Ticket" data-inputmask='"mask": "99.99"' data-mask>
+          <input type="number" class="form-control" id="inputAirTicket" placeholder="Enter Air Ticket">
         </div>
       </div>
     </div>
@@ -256,7 +256,7 @@ else{
           <div class="input-group-prepend">
             <span class="input-group-text">RM</span>
           </div>
-          <input type="text" class="form-control" id="inputFlyersFee" placeholder="Enter Flyers Fee" data-inputmask='"mask": "99.99"' data-mask>
+          <input type="number" class="form-control" id="inputFlyersFee" placeholder="Enter Flyers Fee">
         </div>
       </div>
     </div>
@@ -267,7 +267,7 @@ else{
           <div class="input-group-prepend">
             <span class="input-group-text">RM</span>
           </div>
-          <input type="text" class="form-control" id="inputImportClearance" placeholder="Enter Import Clearance" data-inputmask='"mask": "99.99"' data-mask>
+          <input type="number" class="form-control" id="inputImportClearance" placeholder="Enter Import Clearance">
         </div>
       </div>
     </div>
@@ -278,7 +278,7 @@ else{
           <div class="input-group-prepend">
             <span class="input-group-text">RM</span>
           </div>
-          <input type="text" class="form-control" id="inputDeliveryCharges" placeholder="Enter Delivery Charges" data-inputmask='"mask": "99.99"' data-mask>
+          <input type="number" class="form-control" id="inputDeliveryCharges" placeholder="Enter Delivery Charges">
         </div>
       </div>
     </div>
@@ -409,30 +409,44 @@ $(function () {
     $("#itemList").find('#inputTotalCharges:last').attr('name', 'inputTotalCharges['+size+']').attr("id", "inputTotalCharges" + size).val("0.00");
 
     if($('#inputShipmentType').val() == 'Airport to airport'){
+      $("#itemList").find('#inputAirTicket' + size).attr('readonly', false);
+      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', false);
       $("#itemList").find("#inputPickupCharge" + size).attr('readonly', true);
-      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);;
-      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);;
-      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);;
+      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);
+      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);
+      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);
     }
     else if($('#inputShipmentType').val() == 'Door to origin airport'){
-      $("#itemList").find('#inputAirTicket' + size).attr('readonly', true);;
-      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', true);;
-      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);;
-      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);;
+      $("#itemList").find("#inputPickupCharge" + size).attr('readonly', false);
+      $("#itemList").find('#inputExportClearances' + size).attr('readonly', false);
+      $("#itemList").find('#inputAirTicket' + size).attr('readonly', true);
+      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', true);
+      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);
+      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);
     }
     else if($('#inputShipmentType').val() == 'Door to destination airport'){
-      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);;
-      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);;
+      $("#itemList").find("#inputPickupCharge" + size).attr('readonly', false);
+      $("#itemList").find('#inputExportClearances' + size).attr('readonly', false);
+      $("#itemList").find('#inputAirTicket' + size).attr('readonly', false);
+      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', false);
+      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);
+      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);
     }
     else if($('#inputShipmentType').val() == 'Airport to door'){
-      $("#itemList").find('#inputPickupCharge' + size).attr('readonly', true);;
-      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);;
-      $("#itemList").find('#inputAirTicket' + size).attr('readonly', true);;
-      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', true);;
+      $("#itemList").find('#inputPickupCharge' + size).attr('readonly', true);
+      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);
+      $("#itemList").find('#inputAirTicket' + size).attr('readonly', true);
+      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', true);
+      $("#itemList").find('#inputImportClearance' + size).attr('readonly', false);
+      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', false);
     }
     else if($('#inputShipmentType').val() == 'Origin Airport to door'){
-      $("#itemList").find('#inputPickupCharge:last').attr('readonly', true);;
-      $("#itemList").find('#inputExportClearances:last').attr('readonly', true);;
+      $("#itemList").find('#inputPickupCharge' + size).attr('readonly', true);
+      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);
+      $("#itemList").find('#inputAirTicket' + size).attr('readonly', false);
+      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', false);
+      $("#itemList").find('#inputImportClearance' + size).attr('readonly', false);
+      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', false);
     }
 
     //Date and time picker
@@ -451,9 +465,85 @@ $(function () {
     $("#itemList").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
     $(this).parents('.details').remove();
   });
+
+  $("#itemList").on('change', 'input[id^="inputPickupCharge"]', function () {
+    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
+    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
+    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
+    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
+    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
+    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+
+    var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
+    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+  });
+
+  $("#itemList").on('change', 'input[id^="inputExportClearances"]', function () {
+    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
+    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
+    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
+    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
+    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
+    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+
+    var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
+    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+  });
+
+  $("#itemList").on('change', 'input[id^="inputAirTicket"]', function () {
+    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
+    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
+    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
+    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
+    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
+    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+
+    var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
+    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+  });
+
+  $("#itemList").on('change', 'input[id^="inputFlyersFee"]', function () {
+    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
+    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
+    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
+    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
+    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
+    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+
+    var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
+    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+  });
+
+  $('#itemList').on('change', 'input[id^="inputImportClearance"]', function () {
+    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
+    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
+    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
+    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
+    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
+    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+
+    var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
+    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+  });
+
+  $('#itemList').on('change', 'input[id^="inputDeliveryCharges"]', function () {
+    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
+    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
+    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
+    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
+    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
+    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+
+    var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
+    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+  });
 });
 
 function order(row) {
+  if(row.sales_no != null && row.sales_no != ''){
+    return '<div class="row"><div class="col-12">' + row.sales_no + '</div></div>';
+  }
+
   return '<div class="row"><div class="col-12">' + row.quotation_no + '</div></div>';
 }
 
@@ -490,32 +580,27 @@ function status(row) {
     
   returnString += '<p><small>Status:</small></p>';
   returnString += '<div class="row"><div class="col-3"><button type="button" onclick="cancel('+
-  row.id+')" class="btn btn-error btn-sm"><i class="fas fa fa-times"></i></button></div><div class="col-3"><button type="button" onclick="paid('+
-  row.id+')" class="btn btn-warning btn-sm"><i class="fa fa-credit-card"></i></button></div><div class="col-3"><button type="button" onclick="shipped('+
+  row.id+')" class="btn btn-warning btn-sm"><i class="fas fa fa-times"></i></button></div><div class="col-3"><button type="button" onclick="paid('+
+  row.id+')" class="btn btn-primary btn-sm"><i class="fa fa-credit-card"></i></button></div><div class="col-3"><button type="button" onclick="shipped('+
   row.id+')" class="btn btn-info btn-sm"><i class="fa fa-truck"></i></button></div><div class="col-3"><button type="button" onclick="completed('+
   row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div></div>';
   
   returnString += '<p><small>Action:</small></p>';
   returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
-  row.id+')" class="btn btn-primary btn-sm"><i class="fa fa-file-text"></i></button></div><div class="col-3"><button type="button" onclick="printSO('+
-  row.id+')" class="btn btn-success btn-sm"><i class="fa fa-credit-card"></i></button></div></div>';
+  row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file-contract"></i></button></div><div class="col-3"><button type="button" onclick="printSO('+
+  row.id+')" class="btn btn-success btn-sm"><i class="fas fa-file"></i></button></div></div>';
 
   return returnString;
 }
 
-function printQuote(row) {
+function cancel(id) {
   $('#spinnerLoading').show();
-  $.post('php/generateQuo.php', {salesID: row}, function(data){
+  $.post('php/cancelSales.php', {salesID: id}, function(data){
     var obj = JSON.parse(data); 
     
     if(obj.status === 'success'){
-            var printWindow = window.open('', '', 'height=400,width=800');
-            printWindow.document.write(obj.message);
-            printWindow.document.close();
-            setTimeout(function(){
-                printWindow.print();
-                printWindow.close();
-            }, 1000);
+      toastr["success"](obj.message, "Success:");
+      $('#tableforOrder').DataTable().ajax.reload();
     }
     else if(obj.status === 'failed'){
       toastr["error"](obj.message, "Failed:");
@@ -527,19 +612,105 @@ function printQuote(row) {
     $('#spinnerLoading').hide();
   });
 }
+
+function paid(id) {
+  $('#spinnerLoading').show();
+  $.post('php/paidSales.php', {salesID: id}, function(data){
+    var obj = JSON.parse(data); 
+    
+    if(obj.status === 'success'){
+      toastr["success"](obj.message, "Success:");
+      $('#tableforOrder').DataTable().ajax.reload();
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when edit", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
+}
+
+function shipped(id) {
+  $('#spinnerLoading').show();
+  $.post('php/shipSales.php', {salesID: id}, function(data){
+    var obj = JSON.parse(data); 
+    
+    if(obj.status === 'success'){
+      toastr["success"](obj.message, "Success:");
+      $('#tableforOrder').DataTable().ajax.reload();
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when edit", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
+}
+
+function completed(id) {
+  $('#spinnerLoading').show();
+  $.post('php/completeSales.php', {salesID: id}, function(data){
+    var obj = JSON.parse(data); 
+    
+    if(obj.status === 'success'){
+      toastr["success"](obj.message, "Success:");
+      $('#tableforOrder').DataTable().ajax.reload();
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when edit", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
+}
+
+function printQuote(row) {
+  $('#spinnerLoading').show();
+  $.post('php/generateQuo.php', {salesID: row}, function(data){
+    var obj = JSON.parse(data); 
+    
+    if(obj.status === 'success'){
+      var printWindow = window.open('', '', 'height=400,width=800');
+      printWindow.document.write(obj.message);
+      printWindow.document.close();
+      setTimeout(function(){
+          printWindow.print();
+          printWindow.close();
+      }, 1000);
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when edit", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
+}
+
 function printSO(row) {
   $('#spinnerLoading').show();
   $.post('php/generateSalesOrder.php', {salesID: row}, function(data){
     var obj = JSON.parse(data); 
     
     if(obj.status === 'success'){
-            var printWindow = window.open('', '', 'height=400,width=800');
-            printWindow.document.write(obj.message);
-            printWindow.document.close();
-            setTimeout(function(){
-                printWindow.print();
-                printWindow.close();
-            }, 1000);
+      var printWindow = window.open('', '', 'height=400,width=800');
+      printWindow.document.write(obj.message);
+      printWindow.document.close();
+      setTimeout(function(){
+          printWindow.print();
+          printWindow.close();
+      }, 1000);
     }
     else if(obj.status === 'failed'){
       toastr["error"](obj.message, "Failed:");

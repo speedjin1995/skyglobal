@@ -90,7 +90,7 @@ else{
           </li>
           <li class="nav-item">
             <a href="#jobs" data-file="jobs.php" class="nav-link link">
-              <i class="nav-icon fas fa-home"></i>
+              <i class="nav-icon fas fa-tasks"></i>
               <p>Jobs</p>
             </a>
           </li>
@@ -288,6 +288,12 @@ function formatDate(date) {
     day = '0' + day;
 
   return [year, month, day].join('-');
+}
+
+function calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges){
+  var total = parseFloat(inputPickupCharge) + parseFloat(inputExportClearances) + parseFloat(inputAirTicket) + parseFloat(inputFlyersFee) + parseFloat(inputImportClearance) + parseFloat(inputDeliveryCharges);
+
+  return parseFloat(total).toFixed(2);
 }
 
 /*function report(type){

@@ -8,7 +8,7 @@ if(!isset($_SESSION['userID'])){
     echo 'window.location.href = "../login.html";</script>';
 }
 
-if(isset($_POST['inputHandler'], $_POST['inputCustomerName'], $_POST['inputContactNum'], $_POST['inputEmail'], $_POST['inputShipmentType'], $_POST['totalPrice'],
+if(isset($_POST['inputHandler'], $_POST['inputCustomerName'], $_POST['inputContactNum'], $_POST['inputEmail'], $_POST['inputShipmentType'],
 $_POST['inputAddress'], $_POST['cargoReadyTime'], $_POST['inputPickupAddress'], $_POST['inputDimension'], $_POST['inputNumberofCarton'], $_POST['inputWeightofCarton'], 
 $_POST['inputPickupCharge'], $_POST['inputExportClearances'], $_POST['inputAirTicket'], $_POST['inputFlyersFee'], $_POST['inputImportClearance'], 
 $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
@@ -17,12 +17,26 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
     $inputContactNum = filter_input(INPUT_POST, 'inputContactNum', FILTER_SANITIZE_STRING);
     $inputEmail = filter_input(INPUT_POST, 'inputEmail', FILTER_SANITIZE_STRING);
     $inputShipmentType = filter_input(INPUT_POST, 'inputShipmentType', FILTER_SANITIZE_STRING);
-    $totalPrice = filter_input(INPUT_POST, 'totalPrice', FILTER_SANITIZE_STRING);
     $inputAddress = filter_input(INPUT_POST, 'inputAddress', FILTER_SANITIZE_STRING);
+    $cargoReadyTime = filter_input(INPUT_POST, 'cargoReadyTime', FILTER_SANITIZE_STRING);
+    $inputPickupAddress = filter_input(INPUT_POST, 'inputPickupAddress', FILTER_SANITIZE_STRING);
+    $inputDimension = filter_input(INPUT_POST, 'inputDimension', FILTER_SANITIZE_STRING);
+    $inputNumberofCarton = filter_input(INPUT_POST, 'inputNumberofCarton', FILTER_SANITIZE_STRING);
+    $inputWeightofCarton = filter_input(INPUT_POST, 'inputWeightofCarton', FILTER_SANITIZE_STRING);
+    $inputPickupCharge = filter_input(INPUT_POST, 'inputPickupCharge', FILTER_SANITIZE_STRING);
+    $inputExportClearances = filter_input(INPUT_POST, 'inputExportClearances', FILTER_SANITIZE_STRING);
+    $inputAirTicket = filter_input(INPUT_POST, 'inputAirTicket', FILTER_SANITIZE_STRING);
+    $inputFlyersFee = filter_input(INPUT_POST, 'inputFlyersFee', FILTER_SANITIZE_STRING);
+    $inputImportClearance = filter_input(INPUT_POST, 'inputImportClearance', FILTER_SANITIZE_STRING);
+    $inputDeliveryCharges = filter_input(INPUT_POST, 'inputDeliveryCharges', FILTER_SANITIZE_STRING);
+    $inputTotalCharges = filter_input(INPUT_POST, 'inputTotalCharges', FILTER_SANITIZE_STRING);
+
+    $totalPrice = $inputTotalCharges;
     $inputNotesInternal = "";
     $inputNotestoCustomer = "";
     $user = $_SESSION['userID'];
-    $deleted = array();
+    $paid_datetime = date("Y-m-d H:i:s");
+    $today = date("Y-m-d 00:00:00");
 
     if($_POST['inputNotesInternal'] != null && $_POST['inputNotesInternal'] != ""){
         $inputNotesInternal = filter_input(INPUT_POST, 'inputNotesInternal', FILTER_SANITIZE_STRING);
@@ -30,28 +44,6 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
     
     if($_POST['inputNotestoCustomer'] != null && $_POST['inputNotestoCustomer'] != ""){
         $inputNotestoCustomer = filter_input(INPUT_POST, 'inputNotestoCustomer', FILTER_SANITIZE_STRING);
-    }
-    
-    // Arrays
-    $cargoReadyTime=$_POST['cargoReadyTime'];
-    $inputPickupAddress=$_POST['inputPickupAddress'];
-    $inputDimension=$_POST['inputDimension'];
-    $inputNumberofCarton=$_POST['inputNumberofCarton'];
-    $inputWeightofCarton=$_POST['inputWeightofCarton'];
-    $inputPickupCharge=$_POST['inputPickupCharge'];
-    $inputExportClearances=$_POST['inputExportClearances'];
-    $inputAirTicket=$_POST['inputAirTicket'];
-    $inputFlyersFee=$_POST['inputFlyersFee'];
-    $inputImportClearance=$_POST['inputImportClearance'];
-    $inputDeliveryCharges=$_POST['inputDeliveryCharges'];
-    $inputTotalPrice=$_POST['inputTotalCharges'];
-    
-    $success = true;
-    $today = date("Y-m-d 00:00:00");
-
-    if(isset($_POST['deleted']) && $_POST['deleted'] != null){
-        $deleted = $_POST['deleted'];
-        $deleted = array_map('intval', $deleted);
     }
 
     if(isset($_POST['id']) && $_POST['id'] != null && $_POST['id'] != ''){
@@ -101,7 +93,7 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
         }
     }
     else{
-        if ($select_stmt = $db->prepare("SELECT COUNT(*) FROM sales WHERE sales_no IS NULL AND created_datetime >= ?")) {
+        if ($select_stmt = $db->prepare("SELECT COUNT(*) FROM sales WHERE sales_no IS NOT NULL AND created_datetime >= ?")) {
             $select_stmt->bind_param('s', $today);
             
             // Execute the prepared query.
@@ -115,7 +107,7 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
             else{
                 $result = $select_stmt->get_result();
                 $count = 1;
-                $firstChar = 'Q'.date("Ymd");
+                $firstChar = 'S'.date("Ymd");
                 
                 if ($row = $result->fetch_assoc()) {
                     $count = (int)$row['COUNT(*)'] + 1;
@@ -130,15 +122,15 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
         
                 $firstChar .= strval($count);  //S00009
 
-                if ($insert_stmt = $db->prepare("INSERT INTO sales (quotation_no, customer_name, contact_no, email, customer_address, total_amount, customer_notes, internal_notes, shipment_type, created_by, updated_by, handled_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                    $insert_stmt->bind_param('ssssssssssss', $firstChar, $inputCustomerName, $inputContactNum, $inputEmail, $inputAddress, $totalPrice, $inputNotestoCustomer, $inputNotesInternal, $inputShipmentType, $user, $user, $inputHandler);
+                if ($insert_stmt = $db->prepare("INSERT INTO sales (sales_no, customer_name, contact_no, email, customer_address, total_amount, customer_notes, internal_notes, shipment_type, created_by, updated_by, handled_by, paid_datetime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                    $insert_stmt->bind_param('sssssssssssss', $firstChar, $inputCustomerName, $inputContactNum, $inputEmail, $inputAddress, $totalPrice, $inputNotestoCustomer, $inputNotesInternal, $inputShipmentType, $user, $user, $inputHandler, $paid_datetime);
                     
                     // Execute the prepared query.
                     if (! $insert_stmt->execute()) {
                         echo json_encode(
                             array(
                                 "status"=> "failed", 
-                                "message"=> "Failed to created purchase records due to ".$insert_stmt->error
+                                "message"=> "Failed to created sales records due to ".$insert_stmt->error
                             )
                         );
                     }
@@ -146,37 +138,65 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
                         $id = $insert_stmt->insert_id;;
                         $insert_stmt->close();
 
-                        for($i=0; $i<sizeof($cargoReadyTime); $i++){
-                            if($cargoReadyTime[$i] != null && !in_array($i,$deleted)){
-                                if ($insert_stmt2 = $db->prepare("INSERT INTO sales_cart (sale_id, dimension, number_of_carton, weight_of_cargo, cargo_ready_time, pickup_address, pickup_charge, export_clearances, air_ticket, flyers_fee, import_clearance, delivery_charges, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                                    $insert_stmt2->bind_param('sssssssssssss', $id, $inputDimension[$i], $inputNumberofCarton[$i], $inputWeightofCarton[$i], $cargoReadyTime[$i], $inputPickupAddress[$i], $inputPickupCharge[$i] , $inputExportClearances[$i], $inputAirTicket[$i], $inputFlyersFee[$i], $inputImportClearance[$i], $inputDeliveryCharges[$i], $inputTotalPrice[$i]);
+                        if ($insert_stmt2 = $db->prepare("INSERT INTO sales_cart (sale_id, dimension, number_of_carton, weight_of_cargo, cargo_ready_time, pickup_address, pickup_charge, export_clearances, air_ticket, flyers_fee, import_clearance, delivery_charges, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                            $insert_stmt2->bind_param('sssssssssssss', $id, $inputDimension, $inputNumberofCarton, $inputWeightofCarton, $cargoReadyTime, $inputPickupAddress, $inputPickupCharge, $inputExportClearances, $inputAirTicket, $inputFlyersFee, $inputImportClearance, $inputDeliveryCharges, $inputTotalCharges);
+                            // Execute the prepared query.
+                            if (! $insert_stmt2->execute()) {
+                                $insert_stmt2->close();
+                                $db->close();
+
+                                echo json_encode(
+                                    array(
+                                        "status"=> "failed", 
+                                        "message"=> "Failed to created sales cart records due to ".$insert_stmt2->error 
+                                    )
+                                );
+                            }
+                            else{
+                                $sales_cart_id = $insert_stmt2->insert_id;;
+                                $insert_stmt2->close();
+
+                                if ($insert_stmt3 = $db->prepare("INSERT INTO job (sales_cart_id, created_by) VALUES (?, ?)")) {
+                                    $insert_stmt3->bind_param('ss', $sales_cart_id, $user);
                                     // Execute the prepared query.
-                                    if (! $insert_stmt2->execute()) {
-                                        $success = false;
+                                    if (! $insert_stmt3->execute()) {
+                                        $insert_stmt3->close();
+                                        $db->close();
+
+                                        echo json_encode(
+                                            array(
+                                                "status"=> "failed", 
+                                                "message"=> "Failed to created job due to ".$insert_stmt3->error 
+                                            )
+                                        );
                                     }
+                                    else{
+                                        $insert_stmt3->close();
+                                        $db->close();
+
+                                        echo json_encode(
+                                            array(
+                                                "status"=> "success", 
+                                                "message"=> "Added Successfully!!"
+                                            )
+                                        );
+                                    }
+                                }
+                                else{
+                                    echo json_encode(
+                                        array(
+                                            "status"=> "failed", 
+                                            "message"=> "Failed to created job"
+                                        )
+                                    );
                                 }
                             }
                         }
-
-                        if($success){
-                            $insert_stmt2->close();
-                            $db->close();
-
-                            echo json_encode(
-                                array(
-                                    "status"=> "success", 
-                                    "message"=> "Added Successfully!!"
-                                )
-                            );
-                        }
                         else{
-                            $insert_stmt2->close();
-                            $db->close();
-
                             echo json_encode(
                                 array(
                                     "status"=> "failed", 
-                                    "message"=> "Failed to created sales cart records due to ".$insert_stmt2->error 
+                                    "message"=> "Failed to created sales cart records"
                                 )
                             );
                         }
