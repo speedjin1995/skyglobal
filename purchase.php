@@ -31,39 +31,6 @@ else{
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            Filters
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="inputHandler">Handler</label>
-                  <select class="form-control" style="width: 100%;" id="inputHandler" name="inputHandler">
-                    <option value="" selected disabled hidden>Please Select</option>
-                    <?php while($usersRow=mysqli_fetch_assoc($users)){ ?>
-                      <option value="<?=$usersRow['id'] ?>"><?=$usersRow['name'] ?></option>
-                    <?php } ?>
-                  </select>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="inputCustomerName">Customer Name</label>
-                  <select class="form-control" style="width: 100%;" id="inputCustomerName" name="inputCustomerName">
-                    <option value="" selected disabled hidden>Please Select</option>
-                    <?php while($customersRow=mysqli_fetch_assoc($customers)){ ?>
-                      <option value="<?=$customersRow['customer_name'] ?>"><?=$customersRow['customer_name'] ?></option>
-                    <?php } ?>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div><!-- /.card-body -->
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header">
             <div class="row">
                 <div class="col-9"></div>
                 <div class="col-3">
@@ -260,7 +227,7 @@ else{
         <label>Pickup Charge</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
+            <span class="input-group-text">RM</span>
           </div>
           <input type="number" class="form-control" id="inputPickupCharge" placeholder="Enter Pickup Charges"/>
         </div>
@@ -271,7 +238,7 @@ else{
         <label>Export Clearances</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
+            <span class="input-group-text">RM</span>
           </div>
           <input type="number" class="form-control" id="inputExportClearances" placeholder="Enter Export Clearances">
         </div>
@@ -282,7 +249,7 @@ else{
         <label>Air Ticket</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
+            <span class="input-group-text">RM</span>
           </div>
           <input type="number" class="form-control" id="inputAirTicket" placeholder="Enter Air Ticket">
         </div>
@@ -293,7 +260,7 @@ else{
         <label>Flyers Fee</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
+            <span class="input-group-text">RM</span>
           </div>
           <input type="number" class="form-control" id="inputFlyersFee" placeholder="Enter Flyers Fee">
         </div>
@@ -304,7 +271,7 @@ else{
         <label>Import Clearance</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
+            <span class="input-group-text">RM</span>
           </div>
           <input type="number" class="form-control" id="inputImportClearance" placeholder="Enter Import Clearance">
         </div>
@@ -315,7 +282,7 @@ else{
         <label>Delivery Charges</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
+            <span class="input-group-text">RM</span>
           </div>
           <input type="number" class="form-control" id="inputDeliveryCharges" placeholder="Enter Delivery Charges">
         </div>
@@ -326,7 +293,7 @@ else{
         <label>Total Charges</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
+            <span class="input-group-text">RM</span>
           </div>
           <input type="text" class="form-control" id="inputTotalCharges" placeholder="Enter Delivery Charges" readonly>
         </div>

@@ -71,7 +71,7 @@ else{
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link logo-switch">
-      <img src="images/logo-big.png" alt="Sneakercube Logo" class="brand-image-xl logo-xl">
+      <img src="images/logo.png" alt="Sneakercube Logo" class="brand-image-xl logo-xl">
       <img src="images/logo.png" alt="Sneakercube Logo" class="brand-image-xl logo-xs">
     </a>
 
@@ -88,6 +88,12 @@ else{
               <p>Sales</p>
             </a>
           </li>
+          <!--li class="nav-item">
+            <a href="#purchase" data-file="purchase.php" class="nav-link link">
+              <i class="nav-icon fas fa-home"></i>
+              <p>Purchase</p>
+            </a>
+          </li-->
           <li class="nav-item">
             <a href="#jobs" data-file="jobs.php" class="nav-link link">
               <i class="nav-icon fas fa-tasks"></i>
@@ -110,18 +116,32 @@ else{
                 <ul class="nav nav-treeview" style="display: none;">
                   <li class="nav-item">
                     <a href="#suppliers" data-file="suppliers.php" class="nav-link link">
-                      <i class="nav-icon fas fa-industry"></i>
+                      <i class="nav-icon fas fa-box"></i>
                       <p>Flyer</p>
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="#customers" data-file="customers.php" class="nav-link link">
+                      <i class="nav-icon fas fa-book"></i>
+                      <p>Customer</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>';
+                  /*<li class="nav-item">
                     <a href="#airlines" data-file="airlines.php" class="nav-link link">
                       <i class="nav-icon fas fa-shopping-cart"></i>
                       <p>Airlines</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a href="#airports" data-file="airports.php" class="nav-link link">
+                      <i class="nav-icon fas fa-shopping-cart"></i>
+                      <p>Airports</p>
+                    </a>
+                  </li>
                 </ul>
-              </li>';
+              </li>';*/
             }
           ?>
           <li class="nav-item has-treeview">

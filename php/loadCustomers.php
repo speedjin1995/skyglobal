@@ -23,25 +23,20 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['allcount'];
 
 ## Total number of record with filtering
-$sel = mysqli_query($db,"select count(*) as allcount from customers WHERE deleted = '0'".$searchQuery);
+$sel = mysqli_query($db,"select count(*) as allcount from customers WHERE customer_status = '0'".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$empQuery = "select * from customers WHERE deleted = '0'".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
+$empQuery = "select * from customers WHERE customer_status = '0'".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
 $empRecords = mysqli_query($db, $empQuery);
 $data = array();
 
 while($row = mysqli_fetch_assoc($empRecords)) {
     $data[] = array( 
       "id"=>$row['id'],
-      "customer_code"=>$row['customer_code'],
       "customer_name"=>$row['customer_name'],
       "customer_address"=>$row['customer_address'],
-      "customer_address2"=>$row['customer_address2'],
-      "customer_address3"=>$row['customer_address3'],
-      "customer_address4"=>$row['customer_address4'],
-      "postcode"=>$row['postcode'],
       "customer_phone"=>$row['customer_phone'],
       "customer_email"=>$row['customer_email']
     );

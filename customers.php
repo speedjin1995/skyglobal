@@ -41,13 +41,8 @@ else{
 						<table id="customerTable" class="table table-bordered table-striped">
 							<thead>
 								<tr>
-                                    <th>Code</th>
-									<th>Name</th>
+                                    <th>Name</th>
 									<th>Address</th>
-                                    <th>Address 2</th>
-                                    <th>Address 3</th>
-                                    <th>Address 4</th>
-                                    <th>PostCode</th>
 									<th>Phone</th>
 									<th>Email</th>
 									<th>Actions</th>
@@ -77,32 +72,12 @@ else{
                   <input type="hidden" class="form-control" id="id" name="id">
                 </div>
                 <div class="form-group">
-                  <label for="code">Customer Code *</label>
-                  <input type="text" class="form-control" name="code" id="code" placeholder="Enter Customer Code" maxlength="10" required>
-                </div>
-                <div class="form-group">
                   <label for="name">Customer Name *</label>
                   <input type="text" class="form-control" name="name" id="name" placeholder="Enter Customer Name" required>
                 </div>
                 <div class="form-group"> 
                   <label for="address">Address *</label>
                   <textarea class="form-control" id="address" name="address" placeholder="Enter your address" required></textarea>
-                </div>
-                <div class="form-group"> 
-                  <label for="address2">Address 2*</label>
-                  <textarea class="form-control" id="address2" name="address2" placeholder="Enter your address 2" required></textarea>
-                </div>
-                <div class="form-group"> 
-                  <label for="address3">Address 3*</label>
-                  <textarea class="form-control" id="address3" name="address3" placeholder="Enter your address 3" required></textarea>
-                </div>
-                <div class="form-group"> 
-                  <label for="address4">Address 4*</label>
-                  <textarea class="form-control" id="address4" name="address4" placeholder="Enter your address 4" required></textarea>
-                </div>
-                <div class="form-group"> 
-                  <label for="postCode">Postcode *</label>
-                  <input class="form-control" id="postCode" name="postCode" placeholder="Enter your post code" required>
                 </div>
                 <div class="form-group">
                   <label for="phone">Phone *</label>
@@ -137,13 +112,8 @@ $(function () {
             'url':'php/loadCustomers.php'
         },
         'columns': [
-            { data: 'customer_code' },
             { data: 'customer_name' },
             { data: 'customer_address' },
-            { data: 'customer_address2' },
-            { data: 'customer_address3' },
-            { data: 'customer_address4' },
-            { data: 'postcode' },
             { data: 'customer_phone' },
             { data: 'customer_email' },
             { 
@@ -188,13 +158,8 @@ $(function () {
 
     $('#addCustomers').on('click', function(){
         $('#addModal').find('#id').val("");
-        $('#addModal').find('#code').val("");
         $('#addModal').find('#name').val("");
         $('#addModal').find('#address').val("");
-        $('#addModal').find('#address2').val("");
-        $('#addModal').find('#address3').val("");
-        $('#addModal').find('#address4').val("");
-        $('#addModal').find('#postCode').val("");
         $('#addModal').find('#phone').val("");
         $('#addModal').find('#email').val("");
         $('#addModal').modal('show');
@@ -222,13 +187,8 @@ function edit(id){
         
         if(obj.status === 'success'){
             $('#addModal').find('#id').val(obj.message.id);
-            $('#addModal').find('#code').val(obj.message.customer_code);
             $('#addModal').find('#name').val(obj.message.customer_name);
             $('#addModal').find('#address').val(obj.message.customer_address);
-            $('#addModal').find('#address2').val(obj.message.customer_address2);
-            $('#addModal').find('#address3').val(obj.message.customer_address3);
-            $('#addModal').find('#address4').val(obj.message.customer_address4);
-            $('#addModal').find('#postCode').val(obj.message.postcode);
             $('#addModal').find('#phone').val(obj.message.customer_phone);
             $('#addModal').find('#email').val(obj.message.customer_email);
             $('#addModal').modal('show');
