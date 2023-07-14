@@ -226,7 +226,6 @@ else{
 <script src="plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard3.js"></script>
-<script src="plugins/heatmap/build/heatmap.js"></script>
 <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
@@ -316,14 +315,22 @@ function calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inpu
   return parseFloat(total).toFixed(2);
 }
 
-/*function report(type){
-  if(type == 'passedingroundmonthly' || type =='passedinlvl1monthly' || type =='groundlvl1monthly' || type =='dastotalvisitorsmonthly' || type =='dastotalzonevisitorsmonthly'){
-    window.open("php/export.php?fromDate="+ouStartDate+"&toDate="+ouEndDate+"&type="+type);
+function calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit){
+  if(inputUnit == 'CM'){
+    var total = (parseFloat(inputDimensionW) * parseFloat(inputDimensionL) * parseFloat(inputDimensionH)) / 5000;
   }
-  else if(type == 'passedingrounddaily' || type =='passedinlvl1daily' || type =='groundlvl1daily' || type =='dastotalvisitorsdaily' || type =='dastotalzonevisitorsdaily'){
-    window.open("php/export.php?fromDate="+ouStartTime+"&toDate="+ouEndTime+"&type="+type);
+  else{
+    var total = (parseFloat(inputDimensionW) * 100 * parseFloat(inputDimensionL) * 100 * parseFloat(inputDimensionH) * 100) / 5000;
   }
-}*/
+
+  return parseFloat(total).toFixed(2);
+}
+
+function calWeight(inputNumberofCarton, inputCartonPiecesWeight){
+  var total = parseFloat(inputNumberofCarton) * parseFloat(inputCartonPiecesWeight);
+
+  return parseFloat(total).toFixed(2);
+}
 </script>
 </body>
 </html>

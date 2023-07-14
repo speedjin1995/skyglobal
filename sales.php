@@ -38,11 +38,11 @@ else{
             <div class="row">
               <div class="col-4">
                 <div class="form-group">
-                  <label for="inputCustomerName">Customer Name</label>
-                  <select class="form-control" style="width: 100%;" id="inputCustomerName" name="inputCustomerName">
+                  <label for="filterCustomerName">Customer Name</label>
+                  <select class="form-control" style="width: 100%;" id="filterCustomerName" name="filterCustomerName">
                     <option value="" selected disabled hidden>Please Select</option>
                     <?php while($customersRow=mysqli_fetch_assoc($customers)){ ?>
-                      <option value="<?=$customersRow['customer_name'] ?>"><?=$customersRow['customer_name'] ?></option>
+                      <option value="<?=$customersRow['id'] ?>"><?=$customersRow['customer_name'] ?></option>
                     <?php } ?>
                   </select>
                 </div>
@@ -83,7 +83,7 @@ else{
     <div class="modal-content">
       <form role="form" id="orderForm">
         <div class="modal-header">
-          <h4 class="modal-title">Create New Order</h4>
+          <h4 class="modal-title">Create New Job Quotation</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -109,8 +109,8 @@ else{
                       <label for="inputCustomerName">Customer Name</label>
                       <select class="form-control" style="width: 100%;" id="inputCustomerName" name="inputCustomerName">
                         <option value="" selected disabled hidden>Please Select</option>
-                        <?php while($customersRow=mysqli_fetch_assoc($customers)){ ?>
-                          <option value="<?=$customersRow['customer_name'] ?>"><?=$customersRow['customer_name'] ?></option>
+                        <?php while($customers2Row=mysqli_fetch_assoc($customers2)){ ?>
+                          <option value="<?=$customers2Row['id'] ?>"><?=$customers2Row['customer_name'] ?></option>
                         <?php } ?>
                       </select>
                     </div>
@@ -144,12 +144,6 @@ else{
                       </select>
                     </div>
                   </div>
-                  <!--div class="col-4">
-                    <div class="form-group">
-                      <label for="inputEmail">Total Price</label>
-                      <input type="totalPrice" class="form-control" id="totalPrice" name="totalPrice" value="0.00" readonly>
-                    </div>
-                  </div-->
                 </div>
                 
                 <div class="row">
@@ -176,26 +170,26 @@ else{
                   <div class="col-3">
                     <div class="form-group">
                       <label>Pickup Company Name & Address</label>
-                      <textarea id="inputAddress" name="inputAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+                      <textarea id="inputPickupAddress" name="inputPickupAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
                       <label for="inputEmail">Pickup Company PIC</label>
-                      <input type="text" class="form-control" id="inputEmail" name="inputEmail" placeholder="Example: dummy@mail.com">
+                      <input type="text" class="form-control" id="inputPickupName" name="inputPickupName" placeholder="Example: dummy@mail.com">
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
                       <label for="inputContactNum">Pickup Company PIC Phone</label>
-                      <input type="text" class="form-control" id="inputContactNum" name="inputContactNum" placeholder="Example: 01X-1234567"
+                      <input type="text" class="form-control" id="inputPickupContactNum" name="inputPickupContactNum" placeholder="Example: 01X-1234567"
                         data-inputmask='"mask": "999-9999999"' data-mask>
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
                       <label for="inputEmail">Pickup Company PIC Email</label>
-                      <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Example: dummy@mail.com">
+                      <input type="email" class="form-control" id="inputPickupEmail" name="inputPickupEmail" placeholder="Example: dummy@mail.com">
                     </div>
                   </div>
                 </div>
@@ -203,26 +197,26 @@ else{
                   <div class="col-3">
                     <div class="form-group">
                       <label>Delivery Company Name & Address</label>
-                      <textarea id="inputAddress" name="inputAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+                      <textarea id="inputAddress" name="inputDeliveryAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
                       <label for="inputEmail">Delivery Company PIC</label>
-                      <input type="text" class="form-control" id="inputEmail" name="inputEmail" placeholder="Example: dummy@mail.com">
+                      <input type="text" class="form-control" id="inputDeliveryName" name="inputDeliveryName" placeholder="Example: dummy@mail.com">
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
                       <label for="inputContactNum">Delivery Company PIC Phone</label>
-                      <input type="text" class="form-control" id="inputContactNum" name="inputContactNum" placeholder="Example: 01X-1234567"
+                      <input type="text" class="form-control" id="inputDeliveryContactNum" name="inputDeliveryContactNum" placeholder="Example: 01X-1234567"
                         data-inputmask='"mask": "999-9999999"' data-mask>
                     </div>
                   </div>
                   <div class="col-3">
                     <div class="form-group">
                       <label for="inputEmail">Delivery Company PIC Email</label>
-                      <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Example: dummy@mail.com">
+                      <input type="email" class="form-control" id="inputDeliveryEmail" name="inputDeliveryEmail" placeholder="Example: dummy@mail.com">
                     </div>
                   </div>
                 </div>
@@ -239,7 +233,7 @@ else{
                     <div class="form-group">
                       <label>Cargo Ready Time</label>
                       <div class="input-group date" id="inputCargoReadyTime" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" id="cargoReadyTime" data-target="#inputCargoReadyTime" />
+                        <input type="text" class="form-control datetimepicker-input" id="cargoReadyTime" name="cargoReadyTime" data-target="#inputCargoReadyTime" />
                         <div class="input-group-append" data-target="#inputCargoReadyTime" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -249,53 +243,66 @@ else{
                   <div class="col-4">
                     <div class="form-group">
                       <label>Departure Airport</label>
-                      <select id="inputShipmentType" name="inputShipmentType" class="form-control">
+                      <select id="inputDepAirport" name="inputDepAirport" class="form-control">
                         <option value="" selected disabled hidden>Please Select</option>
-                        <option value="Airport to airport">Airport to airport</option>
-                        <option value="Door to door">Door to door</option>
-                        <option value="Door to origin airport">Door to origin airport</option>
-                        <option value="Door to destination airport">Door to destination airport</option>
-                        <option value="Airport to door">Airport to door</option>
-                        <option value="Origin Airport to door">Origin Airport to door</option>
+                        <option value="KUL">KUL</option>
+                        <option value="NRT">NRT</option>
+                        <option value="TOL">TOL</option>
+                        <option value="DOH">DOH</option>
+                        <option value="LON">LON</option>
+                        <option value="LIS">LIS</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
                       <label>Destination Airport</label>
-                      <select id="inputShipmentType" name="inputShipmentType" class="form-control">
+                      <select id="inputDesAirport" name="inputDesAirport" class="form-control">
                         <option value="" selected disabled hidden>Please Select</option>
-                        <option value="Airport to airport">Airport to airport</option>
-                        <option value="Door to door">Door to door</option>
-                        <option value="Door to origin airport">Door to origin airport</option>
-                        <option value="Door to destination airport">Door to destination airport</option>
-                        <option value="Airport to door">Airport to door</option>
-                        <option value="Origin Airport to door">Origin Airport to door</option>
+                        <option value="KUL">KUL</option>
+                        <option value="NRT">NRT</option>
+                        <option value="TOL">TOL</option>
+                        <option value="DOH">DOH</option>
+                        <option value="LON">LON</option>
+                        <option value="LIS">LIS</option>
                       </select>
                     </div>
                   </div>
                   <!--div class="col-4">
                     <button class="btn btn-danger btn-sm" id="remove"><i class="fa fa-times"></i></button>
                   </div-->
-                  <div class="col-4">
-                    <!-- text input -->
+                  <div class="col-2">
                     <div class="form-group">
-                      <label>Dimension</label>
-                      <input id="inputDimension" type="text" class="form-control" placeholder="Enter ...">
+                      <label>Dimension Width</label>
+                      <input id="inputDimensionW" name="inputDimensionW" type="text" class="form-control" placeholder="Enter ...">
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label>Dimension Length</label>
+                      <input id="inputDimensionL" name="inputDimensionL" type="text" class="form-control" placeholder="Enter ...">
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label>Dimension Height</label>
+                      <input id="inputDimensionH" name="inputDimensionH" type="text" class="form-control" placeholder="Enter ...">
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <div class="form-group">
+                      <label>Units</label>
+                      <select id="inputUnit" name="inputUnit" class="form-control">
+                        <option value="CM" selected>CM</option>
+                        <option value="M">M</option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group">
-                      <label>Number of Carton</label>
-                      <input id="inputNumberofCarton" type="number" class="form-control" placeholder="Enter ...">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <!-- text input -->
-                    <div class="form-group">
-                      <label>Weight of Carton</label>
+                      <label>Volumetric Weight</label>
                       <div class="input-group mb-3">
-                        <input id="inputWeightofCarton" type="number" class="form-control">
+                        <input id="inputVolumetricWeight" name="inputVolumetricWeight" type="number" class="form-control" value="0.00" readonly>
                         <div class="input-group-append">
                           <span class="input-group-text">kg</span>
                         </div>
@@ -303,68 +310,144 @@ else{
                     </div>
                   </div>
                   <div class="col-4">
+                    <div class="form-group">
+                      <label>Number of Carton</label>
+                      <input id="inputNumberofCarton" name="inputNumberofCarton" type="number" class="form-control" value="0">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>
+                        Carton Pieces Weight &nbsp&nbsp
+                        <input type="checkbox" id="checkboxSamePieceWeight">Same Piece Weight</input>
+                      </label>
+                      <div class="input-group mb-3">
+                        <input id="inputCartonPiecesWeight" name="inputCartonPiecesWeight" type="number" class="form-control">
+                        <div class="input-group-append">
+                          <span class="input-group-text">kg</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>Total Carton Weight</label>
+                      <div class="input-group mb-3">
+                        <input id="inputTotalCartonWeight" name="inputTotalCartonWeight" type="number" class="form-control">
+                        <div class="input-group-append">
+                          <span class="input-group-text">kg</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-primary">
+              <div class="card-body">
+                <div class="row">
+                  <h4>Job Quotation Route Informations</h4>
+                  <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary add-row">Add Route</button>
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Route</th>
+                      <th>Departure</th>
+                      <th>Departure Time</th>
+                      <th>Arrival</th>
+                      <th>Arrival time</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="TableId"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card card-primary">
+              <div class="card-body" id="itemList">
+                <div class="row">
+                  <div class="col-4">
                     <div class="form-group" id="pickupCharges">
-                      <label>Pickup Charge</label>
+                      <label>
+                        Pickup Charge &nbsp&nbsp
+                        <input type="checkbox" id="checkboxPickup">Quote</input>
+                      </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">USD</span>
                         </div>
-                        <input type="number" class="form-control" id="inputPickupCharge" placeholder="Enter Pickup Charges"/>
+                        <input type="number" class="form-control" id="inputPickupCharge" name="inputPickupCharge" placeholder="Enter Pickup Charges"/>
                       </div>
                     </div>
                   </div>
                   <div class="col-4">
                     <div class="form-group" id="exportClearance">
-                      <label>Export Clearances</label>
+                      <label>
+                        Export Clearances &nbsp&nbsp
+                        <input type="checkbox" id="checkboxExport">Quote</input>
+                      </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">USD</span>
                         </div>
-                        <input type="number" class="form-control" id="inputExportClearances" placeholder="Enter Export Clearances">
+                        <input type="number" class="form-control" id="inputExportClearances" name="inputExportClearances" placeholder="Enter Export Clearances">
                       </div>
                     </div>
                   </div>
                   <div class="col-4" id="airTicket">
                     <div class="form-group">
-                      <label>Air Ticket</label>
+                      <label>
+                        Air Ticket &nbsp&nbsp
+                        <input type="checkbox" id="checkboxAir">Quote</input>
+                      </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">USD</span>
                         </div>
-                        <input type="number" class="form-control" id="inputAirTicket" placeholder="Enter Air Ticket">
+                        <input type="number" class="form-control" id="inputAirTicket" name="inputAirTicket" placeholder="Enter Air Ticket">
                       </div>
                     </div>
                   </div>
                   <div class="col-4" id="flyersFee">
                     <div class="form-group">
-                      <label>Flyers Fee</label>
+                      <label>
+                        Flyers Fee &nbsp&nbsp
+                        <input type="checkbox" id="checkboxFlyers">Quote</input>
+                      </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">USD</span>
                         </div>
-                        <input type="number" class="form-control" id="inputFlyersFee" placeholder="Enter Flyers Fee">
+                        <input type="number" class="form-control" id="inputFlyersFee" name="inputFlyersFee" placeholder="Enter Flyers Fee">
                       </div>
                     </div>
                   </div>
                   <div class="col-4" id="importClearance">
                     <div class="form-group">
-                      <label>Import Clearance</label>
+                      <label>
+                        Import Clearance &nbsp&nbsp
+                        <input type="checkbox" id="checkboxImport">Quote</input>
+                      </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">USD</span>
                         </div>
-                        <input type="number" class="form-control" id="inputImportClearance" placeholder="Enter Import Clearance">
+                        <input type="number" class="form-control" id="inputImportClearance" name="inputImportClearance" placeholder="Enter Import Clearance">
                       </div>
                     </div>
                   </div>
                   <div class="col-4" id="deliveryCharges">
                     <div class="form-group">
-                      <label>Delivery Charges</label>
+                      <label>
+                        Delivery Charges &nbsp&nbsp
+                        <input type="checkbox" id="checkboxDelivery">Quote</input>
+                      </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">USD</span>
                         </div>
-                        <input type="number" class="form-control" id="inputDeliveryCharges" placeholder="Enter Delivery Charges">
+                        <input type="number" class="form-control" id="inputDeliveryCharges" name="inputDeliveryCharges" placeholder="Enter Delivery Charges">
                       </div>
                     </div>
                   </div>
@@ -375,7 +458,7 @@ else{
                         <div class="input-group-prepend">
                           <span class="input-group-text">USD</span>
                         </div>
-                        <input type="text" class="form-control" id="inputTotalCharges" placeholder="Enter Delivery Charges" readonly>
+                        <input type="text" class="form-control" id="inputTotalCharges" name="inputTotalCharges" placeholder="Enter Delivery Charges" readonly>
                       </div>
                     </div>
                   </div>
@@ -396,132 +479,48 @@ else{
 </div>
 
 <script type="text/html" id="addContents">
-  <div style="margin-top:3%" class="row details">
-    <div class="col-4">
-      <div class="form-group">
-        <label>Cargo Ready Time</label>
-        <div class="input-group date" id="inputCargoReadyTime" data-target-input="nearest">
-          <input type="text" class="form-control datetimepicker-input" id="cargoReadyTime" data-target="#inputCargoReadyTime" />
-          <div class="input-group-append" data-target="#inputCargoReadyTime" data-toggle="datetimepicker">
-            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-          </div>
+  <tr class="details">
+    <td><input id="route" type="text" class="form-control" readonly></td>
+    <td>
+      <select id="departure" class="form-control">
+        <option value="" selected disabled hidden>Please Select</option>
+        <option value="KUL">KUL</option>
+        <option value="NRT">NRT</option>
+        <option value="TOL">TOL</option>
+        <option value="DOH">DOH</option>
+        <option value="LON">LON</option>
+        <option value="LIS">LIS</option>
+      </select>
+    </td>
+    <td>
+      <div class="input-group date" id="depatureTimePicker" data-target-input="nearest">
+        <input type="text" class="form-control datetimepicker-input" id="depatureTime" data-target="#depatureTimePicker" />
+        <div class="input-group-append" data-target="#depatureTimePicker" data-toggle="datetimepicker">
+          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
         </div>
       </div>
-    </div>
-    <div class="col-4">
-      <!-- text input -->
-      <div class="form-group">
-        <label>Pickup Address</label>
-        <textarea id="inputPickupAddress" class="form-control" rows="3"
-          placeholder="Enter Pickup Address"></textarea>
-      </div>
-    </div>
-    <div class="col-4">
-      <button class="btn btn-danger btn-sm" id="remove"><i class="fa fa-times"></i></button>
-    </div>
-    <div class="col-4">
-      <!-- text input -->
-      <div class="form-group">
-        <label>Dimension</label>
-        <input id="inputDimension" type="text" class="form-control" placeholder="Enter ...">
-      </div>
-    </div>
-    <div class="col-4">
-      <div class="form-group">
-        <label>Number of Carton</label>
-        <input id="inputNumberofCarton" type="number" class="form-control" placeholder="Enter ...">
-      </div>
-    </div>
-    <div class="col-4">
-      <!-- text input -->
-      <div class="form-group">
-        <label>Weight of Carton</label>
-        <div class="input-group mb-3">
-          <input id="inputWeightofCarton" type="number" class="form-control">
-          <div class="input-group-append">
-            <span class="input-group-text">kg</span>
-          </div>
+    </td>
+    <td>
+      <select id="arrival" class="form-control">
+        <option value="" selected disabled hidden>Please Select</option>
+        <option value="KUL">KUL</option>
+        <option value="NRT">NRT</option>
+        <option value="TOL">TOL</option>
+        <option value="DOH">DOH</option>
+        <option value="LON">LON</option>
+        <option value="LIS">LIS</option>
+      </select>
+    </td>
+    <td>
+      <div class="input-group date" id="arrivalTimePicker" data-target-input="nearest">
+        <input type="text" class="form-control datetimepicker-input" id="arrivalTime" data-target="#arrivalTimePicker" />
+        <div class="input-group-append" data-target="#arrivalTimePicker" data-toggle="datetimepicker">
+          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
         </div>
       </div>
-    </div>
-    <div class="col-4">
-      <div class="form-group" id="pickupCharges">
-        <label>Pickup Charge</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
-          </div>
-          <input type="number" class="form-control" id="inputPickupCharge" placeholder="Enter Pickup Charges"/>
-        </div>
-      </div>
-    </div>
-    <div class="col-4">
-      <div class="form-group" id="exportClearance">
-        <label>Export Clearances</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
-          </div>
-          <input type="number" class="form-control" id="inputExportClearances" placeholder="Enter Export Clearances">
-        </div>
-      </div>
-    </div>
-    <div class="col-4" id="airTicket">
-      <div class="form-group">
-        <label>Air Ticket</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
-          </div>
-          <input type="number" class="form-control" id="inputAirTicket" placeholder="Enter Air Ticket">
-        </div>
-      </div>
-    </div>
-    <div class="col-4" id="flyersFee">
-      <div class="form-group">
-        <label>Flyers Fee</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
-          </div>
-          <input type="number" class="form-control" id="inputFlyersFee" placeholder="Enter Flyers Fee">
-        </div>
-      </div>
-    </div>
-    <div class="col-4" id="importClearance">
-      <div class="form-group">
-        <label>Import Clearance</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
-          </div>
-          <input type="number" class="form-control" id="inputImportClearance" placeholder="Enter Import Clearance">
-        </div>
-      </div>
-    </div>
-    <div class="col-4" id="deliveryCharges">
-      <div class="form-group">
-        <label>Delivery Charges</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
-          </div>
-          <input type="number" class="form-control" id="inputDeliveryCharges" placeholder="Enter Delivery Charges">
-        </div>
-      </div>
-    </div>
-    <div class="col-4">
-      <div class="form-group">
-        <label>Total Charges</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">USD</span>
-          </div>
-          <input type="text" class="form-control" id="inputTotalCharges" placeholder="Enter Delivery Charges" readonly>
-        </div>
-      </div>
-    </div>
-  </div>
+    </td>
+    <td><button class="btn btn-danger btn-sm" id="remove"><i class="fa fa-times"></i></button></td>
+  </tr>
 </script>
 
 <script>
@@ -586,6 +585,11 @@ $(function () {
     }
   });
 
+  $('#inputCargoReadyTime').datetimepicker({
+      icons: { time: 'far fa-clock' },
+      format: 'YYYY-MM-DD HH:mm:ss'
+    });
+
   $('#addOrder').on('click', function(){
     $('#orderModal').find('#id').val("");
     $('#orderModal').find('#inputHandler').val("<?=$user ?>");
@@ -596,7 +600,7 @@ $(function () {
     $('#orderModal').find('#inputAddress').val("");
     $('#orderModal').find('#inputNotesInternal').val("");
     $('#orderModal').find('#inputNotestoCustomer').val("");
-    //$('#itemList').find('.details').remove();
+    $('#itemList').find('.TableId').remove();
     $('[data-mask]').inputmask();
     $('#orderModal').modal('show');
     
@@ -615,155 +619,235 @@ $(function () {
     });
   });
 
-  $(".add-row").click(function(){
-    var $addContents = $("#addContents").clone();
-    $("#itemList").append($addContents.html());
+  $("#inputCustomerName").change(function(){
+    var id = $("#inputCustomerName").val();
 
-    $("#itemList").find('.details:last').attr("id", "detail" + size);
-    $("#itemList").find('.details:last').attr("data-index", size);
-    $("#itemList").find('#remove:last').attr("id", "remove" + size);
+    $.post('php/getCustomer.php', {userID: id}, function(data){
+      var obj = JSON.parse(data);
+      
+      if(obj.status === 'success'){
+        $('#inputContactNum').val(obj.message.customer_phone);
+        $('#inputEmail').val(obj.message.customer_email);
+      }
+      else if(obj.status === 'failed'){
+          toastr["error"](obj.message, "Failed:");
+      }
+      else{
+          toastr["error"]("Something wrong when activate", "Failed:");
+      }
+    });
+  });
 
-    $("#itemList").find('#cargoReadyTime:last').attr('name', 'cargoReadyTime['+size+']').attr("id", "cargoReadyTime" + size);
-    $("#itemList").find('#inputPickupAddress:last').attr('name', 'inputPickupAddress['+size+']').attr("id", "inputPickupAddress" + size);
-    $("#itemList").find('#inputDimension:last').attr('name', 'inputDimension['+size+']').attr("id", "inputDimension" + size);
-    $("#itemList").find('#inputNumberofCarton:last').attr('name', 'inputNumberofCarton['+size+']').attr("id", "inputNumberofCarton" + size);
-    $("#itemList").find('#inputWeightofCarton:last').attr('name', 'inputWeightofCarton['+size+']').attr("id", "inputWeightofCarton" + size);
-    $("#itemList").find('#inputPickupCharge:last').attr('name', 'inputPickupCharge['+size+']').attr("id", "inputPickupCharge" + size).val("0.00");
-    $("#itemList").find('#inputExportClearances:last').attr('name', 'inputExportClearances['+size+']').attr("id", "inputExportClearances" + size).val("0.00");
-    $("#itemList").find('#inputAirTicket:last').attr('name', 'inputAirTicket['+size+']').attr("id", "inputAirTicket" + size).val("0.00");
-    $("#itemList").find('#inputFlyersFee:last').attr('name', 'inputFlyersFee['+size+']').attr("id", "inputFlyersFee" + size).val("0.00");
-    $("#itemList").find('#inputImportClearance:last').attr('name', 'inputImportClearance['+size+']').attr("id", "inputImportClearance" + size).val("0.00");
-    $("#itemList").find('#inputDeliveryCharges:last').attr('name', 'inputDeliveryCharges['+size+']').attr("id", "inputDeliveryCharges" + size).val("0.00");
-    $("#itemList").find('#inputTotalCharges:last').attr('name', 'inputTotalCharges['+size+']').attr("id", "inputTotalCharges" + size).val("0.00");
-
+  $("#inputShipmentType").change(function(){
     if($('#inputShipmentType').val() == 'Airport to airport'){
-      $("#itemList").find('#inputAirTicket' + size).attr('readonly', false);
-      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', false);
-      $("#itemList").find("#inputPickupCharge" + size).attr('readonly', true);
-      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);
-      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);
-      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);
+      $('#inputAirTicket').attr('readonly', false);
+      $('#inputFlyersFee').attr('readonly', false);
+      $("#inputPickupCharge").attr('readonly', true);
+      $('#inputExportClearances').attr('readonly', true);
+      $('#inputImportClearance').attr('readonly', true);
+      $('#inputDeliveryCharges').attr('readonly', true);
     }
     else if($('#inputShipmentType').val() == 'Door to origin airport'){
-      $("#itemList").find("#inputPickupCharge" + size).attr('readonly', false);
-      $("#itemList").find('#inputExportClearances' + size).attr('readonly', false);
-      $("#itemList").find('#inputAirTicket' + size).attr('readonly', true);
-      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', true);
-      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);
-      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);
+      $("#inputPickupCharge").attr('readonly', false);
+      $('#inputExportClearances').attr('readonly', false);
+      $('#inputAirTicket').attr('readonly', true);
+      $('#inputFlyersFee').attr('readonly', true);
+      $('#inputImportClearance').attr('readonly', true);
+      $('#inputDeliveryCharges').attr('readonly', true);
     }
     else if($('#inputShipmentType').val() == 'Door to destination airport'){
-      $("#itemList").find("#inputPickupCharge" + size).attr('readonly', false);
-      $("#itemList").find('#inputExportClearances' + size).attr('readonly', false);
-      $("#itemList").find('#inputAirTicket' + size).attr('readonly', false);
-      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', false);
-      $("#itemList").find('#inputImportClearance' + size).attr('readonly', true);
-      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', true);
+      $("#inputPickupCharge").attr('readonly', false);
+      $('#inputExportClearances').attr('readonly', false);
+      $('#inputAirTicket').attr('readonly', false);
+      $('#inputFlyersFee').attr('readonly', false);
+      $('#inputImportClearance').attr('readonly', true);
+      $('#inputDeliveryCharges').attr('readonly', true);
     }
     else if($('#inputShipmentType').val() == 'Airport to door'){
-      $("#itemList").find('#inputPickupCharge' + size).attr('readonly', true);
-      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);
-      $("#itemList").find('#inputAirTicket' + size).attr('readonly', true);
-      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', true);
-      $("#itemList").find('#inputImportClearance' + size).attr('readonly', false);
-      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', false);
+      $('#inputPickupCharge').attr('readonly', true);
+      $('#inputExportClearances').attr('readonly', true);
+      $('#inputAirTicket').attr('readonly', true);
+      $('#inputFlyersFee').attr('readonly', true);
+      $('#inputImportClearance').attr('readonly', false);
+      $('#inputDeliveryCharges').attr('readonly', false);
     }
     else if($('#inputShipmentType').val() == 'Origin Airport to door'){
-      $("#itemList").find('#inputPickupCharge' + size).attr('readonly', true);
-      $("#itemList").find('#inputExportClearances' + size).attr('readonly', true);
-      $("#itemList").find('#inputAirTicket' + size).attr('readonly', false);
-      $("#itemList").find('#inputFlyersFee' + size).attr('readonly', false);
-      $("#itemList").find('#inputImportClearance' + size).attr('readonly', false);
-      $("#itemList").find('#inputDeliveryCharges' + size).attr('readonly', false);
+      $('#inputPickupCharge').attr('readonly', true);
+      $('#inputExportClearances').attr('readonly', true);
+      $('#inputAirTicket').attr('readonly', false);
+      $('#inputFlyersFee').attr('readonly', false);
+      $('#inputImportClearance').attr('readonly', false);
+      $('#inputDeliveryCharges').attr('readonly', false);
     }
+  });
 
-    //Date and time picker
-    $("#itemList").find('#inputCargoReadyTime:last').datetimepicker({
+  $(".add-row").click(function(){
+    var $addContents = $("#addContents").clone();
+    $("#TableId").append($addContents.html());
+
+    $("#TableId").find('.details:last').attr("id", "detail" + size);
+    $("#TableId").find('.details:last').attr("data-index", size);
+    $("#TableId").find('#remove:last').attr("id", "remove" + size);
+
+    $("#TableId").find('#route:last').attr('name', 'route['+size+']').attr("id", "route" + size).val((size+1).toString());
+    $("#TableId").find('#departure:last').attr('name', 'departure['+size+']').attr("id", "departure" + size);
+    $("#TableId").find('#depatureTime:last').attr('name', 'depatureTime['+size+']').attr("id", "depatureTime" + size).attr("data-target", "#depatureTimePicker" + size);
+    $("#TableId").find('#arrival:last').attr('name', 'arrival['+size+']').attr("id", "arrival" + size);
+    $("#TableId").find('#arrivalTime:last').attr('name', 'arrivalTime['+size+']').attr("id", "arrivalTime" + size).attr("data-target", "#arrivalTimePicker" + size);
+    $("#TableId").find('#depatureTimePicker:last').attr("id", "depatureTimePicker" + size);
+    $("#TableId").find("#depatureTimePicker" + size).find('.input-group-append').attr("data-target", "#depatureTimePicker" + size);
+    $("#TableId").find('#arrivalTimePicker:last').attr("id", "arrivalTimePicker" + size);
+    $("#TableId").find("#arrivalTimePicker" + size).find('.input-group-append').attr("data-target", "#arrivalTimePicker" + size);
+
+    $("#depatureTimePicker" + size).datetimepicker({
       icons: { time: 'far fa-clock' },
       format: 'YYYY-MM-DD HH:mm:ss'
     });
-    
-    $('[data-mask]').inputmask();
+
+    $("#arrivalTimePicker" + size).datetimepicker({
+      icons: { time: 'far fa-clock' },
+      format: 'YYYY-MM-DD HH:mm:ss'
+    });
 
     size++;
   });
 
-  $("#itemList").on('click', 'button[id^="remove"]', function () {
+  $("#TableId").on('click', 'button[id^="remove"]', function () {
     var index = $(this).parents('.details').attr('data-index');
-    $("#itemList").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
+    $("#TableId").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
     $(this).parents('.details').remove();
   });
 
-  $("#itemList").on('change', 'input[id^="inputPickupCharge"]', function () {
-    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
-    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
-    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
-    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
-    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
-    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+  $("#inputPickupCharge").on('change', function () {
+    var inputPickupCharge = $("#inputPickupCharge").val() ? $("#inputPickupCharge").val() : 0.00;
+    var inputExportClearances = $("#inputExportClearances").val() ? $("#inputExportClearances").val() : 0.00;
+    var inputAirTicket = $("#inputAirTicket").val() ? $("#inputAirTicket").val() : 0.00;
+    var inputFlyersFee = $("#inputFlyersFee").val() ? $("#inputFlyersFee").val() : 0.00;
+    var inputImportClearance = $("#inputImportClearance").val() ? $("#inputImportClearance").val() : 0.00;
+    var inputDeliveryCharges = $("#inputDeliveryCharges").val() ? $("#inputDeliveryCharges").val() : 0.00;
 
     var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
-    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+    $("#inputTotalCharges").val(inputTotalCharges);
   });
 
-  $("#itemList").on('change', 'input[id^="inputExportClearances"]', function () {
-    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
-    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
-    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
-    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
-    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
-    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+  $("#inputExportClearances").on('change', function () {
+    var inputPickupCharge = $("#inputPickupCharge").val() ? $("#inputPickupCharge").val() : 0.00;
+    var inputExportClearances = $("#inputExportClearances").val() ? $("#inputExportClearances").val() : 0.00;
+    var inputAirTicket = $("#inputAirTicket").val() ? $("#inputAirTicket").val() : 0.00;
+    var inputFlyersFee = $("#inputFlyersFee").val() ? $("#inputFlyersFee").val() : 0.00;
+    var inputImportClearance = $("#inputImportClearance").val() ? $("#inputImportClearance").val() : 0.00;
+    var inputDeliveryCharges = $("#inputDeliveryCharges").val() ? $("#inputDeliveryCharges").val() : 0.00;
 
     var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
-    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+    $("#inputTotalCharges").val(inputTotalCharges);
   });
 
-  $("#itemList").on('change', 'input[id^="inputAirTicket"]', function () {
-    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
-    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
-    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
-    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
-    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
-    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+  $("#inputAirTicket").on('change', function () {
+    var inputPickupCharge = $("#inputPickupCharge").val() ? $("#inputPickupCharge").val() : 0.00;
+    var inputExportClearances = $("#inputExportClearances").val() ? $("#inputExportClearances").val() : 0.00;
+    var inputAirTicket = $("#inputAirTicket").val() ? $("#inputAirTicket").val() : 0.00;
+    var inputFlyersFee = $("#inputFlyersFee").val() ? $("#inputFlyersFee").val() : 0.00;
+    var inputImportClearance = $("#inputImportClearance").val() ? $("#inputImportClearance").val() : 0.00;
+    var inputDeliveryCharges = $("#inputDeliveryCharges").val() ? $("#inputDeliveryCharges").val() : 0.00;
 
     var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
-    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+    $("#inputTotalCharges").val(inputTotalCharges);
   });
 
-  $("#itemList").on('change', 'input[id^="inputFlyersFee"]', function () {
-    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
-    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
-    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
-    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
-    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
-    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+  $("#inputFlyersFee").on('change', function () {
+    var inputPickupCharge = $("#inputPickupCharge").val() ? $("#inputPickupCharge").val() : 0.00;
+    var inputExportClearances = $("#inputExportClearances").val() ? $("#inputExportClearances").val() : 0.00;
+    var inputAirTicket = $("#inputAirTicket").val() ? $("#inputAirTicket").val() : 0.00;
+    var inputFlyersFee = $("#inputFlyersFee").val() ? $("#inputFlyersFee").val() : 0.00;
+    var inputImportClearance = $("#inputImportClearance").val() ? $("#inputImportClearance").val() : 0.00;
+    var inputDeliveryCharges = $("#inputDeliveryCharges").val() ? $("#inputDeliveryCharges").val() : 0.00;
 
     var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
-    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+    $("#inputTotalCharges").val(inputTotalCharges);
   });
 
-  $('#itemList').on('change', 'input[id^="inputImportClearance"]', function () {
-    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
-    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
-    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
-    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
-    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
-    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+  $('#inputImportClearance').on('change', function () {
+    var inputPickupCharge = $("#inputPickupCharge").val() ? $("#inputPickupCharge").val() : 0.00;
+    var inputExportClearances = $("#inputExportClearances").val() ? $("#inputExportClearances").val() : 0.00;
+    var inputAirTicket = $("#inputAirTicket").val() ? $("#inputAirTicket").val() : 0.00;
+    var inputFlyersFee = $("#inputFlyersFee").val() ? $("#inputFlyersFee").val() : 0.00;
+    var inputImportClearance = $("#inputImportClearance").val() ? $("#inputImportClearance").val() : 0.00;
+    var inputDeliveryCharges = $("#inputDeliveryCharges").val() ? $("#inputDeliveryCharges").val() : 0.00;
 
     var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
-    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+    $("#inputTotalCharges").val(inputTotalCharges);
   });
 
-  $('#itemList').on('change', 'input[id^="inputDeliveryCharges"]', function () {
-    var inputPickupCharge = $(this).parents('.details').find('input[id^="inputPickupCharge"]').val();
-    var inputExportClearances = $(this).parents('.details').find('input[id^="inputExportClearances"]').val();
-    var inputAirTicket = $(this).parents('.details').find('input[id^="inputAirTicket"]').val();
-    var inputFlyersFee = $(this).parents('.details').find('input[id^="inputFlyersFee"]').val();
-    var inputImportClearance = $(this).parents('.details').find('input[id^="inputImportClearance"]').val();
-    var inputDeliveryCharges = $(this).parents('.details').find('input[id^="inputDeliveryCharges"]').val();
+  $('#inputDeliveryCharges').on('change', function () {
+    var inputPickupCharge = $("#inputPickupCharge").val() ? $("#inputPickupCharge").val() : 0.00;
+    var inputExportClearances = $("#inputExportClearances").val() ? $("#inputExportClearances").val() : 0.00;
+    var inputAirTicket = $("#inputAirTicket").val() ? $("#inputAirTicket").val() : 0.00;
+    var inputFlyersFee = $("#inputFlyersFee").val() ? $("#inputFlyersFee").val() : 0.00;
+    var inputImportClearance = $("#inputImportClearance").val() ? $("#inputImportClearance").val() : 0.00;
+    var inputDeliveryCharges = $("#inputDeliveryCharges").val() ? $("#inputDeliveryCharges").val() : 0.00;
 
     var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
-    $(this).parents('.details').find('input[id^="inputTotalCharges"]').val(inputTotalCharges);
+    $("#inputTotalCharges").val(inputTotalCharges);
+  });
+
+  $('#inputDimensionW').on('change', function () {
+    var inputDimensionW = $("#inputDimensionW").val() ? $("#inputDimensionW").val() : 0.00;
+    var inputDimensionL = $("#inputDimensionL").val() ? $("#inputDimensionL").val() : 0.00;
+    var inputDimensionH = $("#inputDimensionH").val() ? $("#inputDimensionH").val() : 0.00;
+    var inputUnit = $("#inputUnit").val();
+
+    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
+    $("#inputVolumetricWeight").val(inputTotalCharges);
+  });
+
+  $('#inputDimensionL').on('change', function () {
+    var inputDimensionW = $("#inputDimensionW").val() ? $("#inputDimensionW").val() : 0.00;
+    var inputDimensionL = $("#inputDimensionL").val() ? $("#inputDimensionL").val() : 0.00;
+    var inputDimensionH = $("#inputDimensionH").val() ? $("#inputDimensionH").val() : 0.00;
+    var inputUnit = $("#inputUnit").val();
+
+    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
+    $("#inputVolumetricWeight").val(inputTotalCharges);
+  });
+
+  $('#inputDimensionH').on('change', function () {
+    var inputDimensionW = $("#inputDimensionW").val() ? $("#inputDimensionW").val() : 0.00;
+    var inputDimensionL = $("#inputDimensionL").val() ? $("#inputDimensionL").val() : 0.00;
+    var inputDimensionH = $("#inputDimensionH").val() ? $("#inputDimensionH").val() : 0.00;
+    var inputUnit = $("#inputUnit").val();
+
+    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
+    $("#inputVolumetricWeight").val(inputTotalCharges);
+  });
+
+  $('#inputUnit').on('change', function () {
+    var inputDimensionW = $("#inputDimensionW").val() ? $("#inputDimensionW").val() : 0.00;
+    var inputDimensionL = $("#inputDimensionL").val() ? $("#inputDimensionL").val() : 0.00;
+    var inputDimensionH = $("#inputDimensionH").val() ? $("#inputDimensionH").val() : 0.00;
+    var inputUnit = $("#inputUnit").val();
+
+    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
+    $("#inputVolumetricWeight").val(inputTotalCharges);
+  });
+
+  $('#inputNumberofCarton').on('change', function () {
+    var inputNumberofCarton = $("#inputNumberofCarton").val() ? $("#inputNumberofCarton").val() : 0.00;
+    var inputCartonPiecesWeight = $("#inputCartonPiecesWeight").val() ? $("#inputCartonPiecesWeight").val() : 0.00;
+
+    if($('#checkboxSamePieceWeight').prop('checked')){
+      var inputTotalCharges = calWeight(inputNumberofCarton, inputCartonPiecesWeight);
+      $("#inputTotalCartonWeight").val(inputTotalCharges);
+    }
+  });
+
+  $('#inputCartonPiecesWeight').on('change', function () {
+    var inputNumberofCarton = $("#inputNumberofCarton").val() ? $("#inputNumberofCarton").val() : 0.00;
+    var inputCartonPiecesWeight = $("#inputCartonPiecesWeight").val() ? $("#inputCartonPiecesWeight").val() : 0.00;
+
+    if($('#checkboxSamePieceWeight').prop('checked')){
+      var inputTotalCharges = calWeight(inputNumberofCarton, inputCartonPiecesWeight);
+      $("#inputTotalCartonWeight").val(inputTotalCharges);
+    }
   });
 });
 
