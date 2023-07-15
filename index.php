@@ -126,22 +126,20 @@ else{
                       <p>Customer</p>
                     </a>
                   </li>
-                </ul>
-              </li>';
-                  /*<li class="nav-item">
+                  <li class="nav-item">
                     <a href="#airlines" data-file="airlines.php" class="nav-link link">
-                      <i class="nav-icon fas fa-shopping-cart"></i>
+                      <i class="nav-icon fas fa-file"></i>
                       <p>Airlines</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#airports" data-file="airports.php" class="nav-link link">
-                      <i class="nav-icon fas fa-shopping-cart"></i>
+                      <i class="nav-icon fas fa-plane"></i>
                       <p>Airports</p>
                     </a>
                   </li>
                 </ul>
-              </li>';*/
+              </li>';
             }
           ?>
           <li class="nav-item has-treeview">

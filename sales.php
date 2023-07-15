@@ -12,6 +12,8 @@ else{
   $users = $db->query("SELECT * FROM users WHERE deleted = '0'");
   $customers = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
   $customers2 = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
+  $airport = $db->query("SELECT * FROM airport");
+  $airport2 = $db->query("SELECT * FROM airport");
 }
 ?>
 
@@ -19,7 +21,7 @@ else{
     <div class="container-fluid">
         <div class="row mb-2">
 			<div class="col-sm-6">
-				<h1 class="m-0 text-dark">Sales</h1>
+				<h1 class="m-0 text-dark">Quotation</h1>
 			</div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -169,7 +171,7 @@ else{
                 <div class="row">
                   <div class="col-3">
                     <div class="form-group">
-                      <label>Pickup Company Name & Address</label>
+                      <label>Pickup Company Name & Address (Shipper)</label>
                       <textarea id="inputPickupAddress" name="inputPickupAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
                     </div>
                   </div>
@@ -196,7 +198,7 @@ else{
                 <div class="row">
                   <div class="col-3">
                     <div class="form-group">
-                      <label>Delivery Company Name & Address</label>
+                      <label>Delivery Company Name & Address (Consignee)</label>
                       <textarea id="inputAddress" name="inputDeliveryAddress" class="form-control" rows="3" placeholder="Enter Address"></textarea>
                     </div>
                   </div>
@@ -319,7 +321,7 @@ else{
                     <div class="form-group">
                       <label>
                         Carton Pieces Weight &nbsp&nbsp
-                        <input type="checkbox" id="checkboxSamePieceWeight">Same Piece Weight</input>
+                        <input type="checkbox" id="checkboxSamePieceWeight" name="checkboxSamePieceWeight">Same Piece Weight</input>
                       </label>
                       <div class="input-group mb-3">
                         <input id="inputCartonPiecesWeight" name="inputCartonPiecesWeight" type="number" class="form-control">
@@ -371,7 +373,7 @@ else{
                     <div class="form-group" id="pickupCharges">
                       <label>
                         Pickup Charge &nbsp&nbsp
-                        <input type="checkbox" id="checkboxPickup">Quote</input>
+                        <input type="checkbox" id="checkboxPickup" name="checkboxPickup">Customer RFQ</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -385,7 +387,7 @@ else{
                     <div class="form-group" id="exportClearance">
                       <label>
                         Export Clearances &nbsp&nbsp
-                        <input type="checkbox" id="checkboxExport">Quote</input>
+                        <input type="checkbox" id="checkboxExport" name="checkboxExport">Customer RFQ</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -399,7 +401,7 @@ else{
                     <div class="form-group">
                       <label>
                         Air Ticket &nbsp&nbsp
-                        <input type="checkbox" id="checkboxAir">Quote</input>
+                        <input type="checkbox" id="checkboxAir" name="checkboxAir">Customer RFQ</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -413,7 +415,7 @@ else{
                     <div class="form-group">
                       <label>
                         Flyers Fee &nbsp&nbsp
-                        <input type="checkbox" id="checkboxFlyers">Quote</input>
+                        <input type="checkbox" id="checkboxFlyers" name="checkboxFlyers">Customer RFQ</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -427,7 +429,7 @@ else{
                     <div class="form-group">
                       <label>
                         Import Clearance &nbsp&nbsp
-                        <input type="checkbox" id="checkboxImport">Quote</input>
+                        <input type="checkbox" id="checkboxImport" name="checkboxImport">Customer RFQ</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -441,7 +443,7 @@ else{
                     <div class="form-group">
                       <label>
                         Delivery Charges &nbsp&nbsp
-                        <input type="checkbox" id="checkboxDelivery">Quote</input>
+                        <input type="checkbox" id="checkboxDelivery" name="checkboxDelivery">Customer RFQ</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -484,12 +486,9 @@ else{
     <td>
       <select id="departure" class="form-control">
         <option value="" selected disabled hidden>Please Select</option>
-        <option value="KUL">KUL</option>
-        <option value="NRT">NRT</option>
-        <option value="TOL">TOL</option>
-        <option value="DOH">DOH</option>
-        <option value="LON">LON</option>
-        <option value="LIS">LIS</option>
+        <?php while($airportRow2=mysqli_fetch_assoc($airport2)){ ?>
+          <option value="<?=$airportRow2['iata'] ?>"><?=$airportRow2['iata'] ?></option>
+        <?php } ?>
       </select>
     </td>
     <td>
@@ -503,12 +502,9 @@ else{
     <td>
       <select id="arrival" class="form-control">
         <option value="" selected disabled hidden>Please Select</option>
-        <option value="KUL">KUL</option>
-        <option value="NRT">NRT</option>
-        <option value="TOL">TOL</option>
-        <option value="DOH">DOH</option>
-        <option value="LON">LON</option>
-        <option value="LIS">LIS</option>
+        <?php while($airportRow=mysqli_fetch_assoc($airport)){ ?>
+          <option value="<?=$airportRow['iata'] ?>"><?=$airportRow['iata'] ?></option>
+        <?php } ?>
       </select>
     </td>
     <td>
@@ -891,16 +887,11 @@ function status(row) {
   }
     
   returnString += '<p><small>Status:</small></p>';
-  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="cancel('+
-  row.id+')" class="btn btn-warning btn-sm"><i class="fas fa fa-times"></i></button></div><div class="col-3"><button type="button" onclick="paid('+
-  row.id+')" class="btn btn-primary btn-sm"><i class="fa fa-credit-card"></i></button></div><div class="col-3"><button type="button" onclick="shipped('+
-  row.id+')" class="btn btn-info btn-sm"><i class="fa fa-truck"></i></button></div><div class="col-3"><button type="button" onclick="completed('+
-  row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div></div>';
-  
-  returnString += '<p><small>Action:</small></p>';
-  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
+  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="completed('+
+  row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div><div class="col-3"><button type="button" onclick="printQuote('+
   row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file-contract"></i></button></div><div class="col-3"><button type="button" onclick="printSO('+
-  row.id+')" class="btn btn-success btn-sm"><i class="fas fa-file"></i></button></div></div>';
+  row.id+')" class="btn btn-warning btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
+  row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
 
   return returnString;
 }

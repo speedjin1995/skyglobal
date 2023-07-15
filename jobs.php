@@ -30,12 +30,12 @@ else{
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <div class="row">
+            <!--div class="row">
                 <div class="col-9"></div>
                 <div class="col-3">
                   <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addOrder">Create New Jobs</button>
                 </div>
-            </div>
+            </div-->
           </div>
           <div class="card-body">
             <table id="tableforOrder" class="table table-bordered table-striped">

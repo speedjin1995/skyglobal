@@ -12,7 +12,7 @@ $rowperpage = $_POST['length']; // Rows display per page
 $searchValue = mysqli_real_escape_string($db,$_POST['search']['value']); // Search value
 
 ## Search 
-$searchQuery = " ";
+$searchQuery = " WHERE customers.id = sales.customer_name AND users.id = sales.handled_by";
 //if($searchValue != ''){
   //$searchQuery = " and (customer_name like '%".$searchValue."%' or customer_code like '%".$searchValue."%')";
 //}
@@ -23,12 +23,15 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['allcount'];
 
 ## Total number of record with filtering
-$sel = mysqli_query($db,"select count(*) as allcount from sales".$searchQuery);
+$sel = mysqli_query($db,"select count(*) as allcount from sales, customers, users".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$empQuery = "select * from sales".$searchQuery." limit ".$row.",".$rowperpage;
+$empQuery = "select sales.id, sales.quotation_no, sales.sales_no, customers.customer_name, sales.contact_no, sales.email, customers.customer_address, 
+sales.total_amount, sales.customer_notes, sales.internal_notes, sales.shipment_type, sales.created_by, sales.created_datetime, sales.updated_by, 
+sales.updated_datetime, users.name, sales.quoted_datetime, sales.paid_datetime, sales.shipped_datetime, sales.completed_datetime, 
+sales.cancelled_datetime from sales, customers, users".$searchQuery." limit ".$row.",".$rowperpage;
 $empRecords = mysqli_query($db, $empQuery);
 $data = array();
 
@@ -49,7 +52,7 @@ while($row = mysqli_fetch_assoc($empRecords)) {
       "created_datetime"=>$row['created_datetime'],
       "updated_by"=>$row['updated_by'],
       "updated_datetime"=>$row['updated_datetime'],
-      "handled_by"=>$row['handled_by'],
+      "handled_by"=>$row['name'],
       "quoted_datetime"=>$row['quoted_datetime'],
       "paid_datetime"=>$row['paid_datetime'],
       "shipped_datetime"=>$row['shipped_datetime'],
@@ -63,7 +66,8 @@ $response = array(
   "draw" => intval($draw),
   "iTotalRecords" => $totalRecords,
   "iTotalDisplayRecords" => $totalRecordwithFilter,
-  "aaData" => $data
+  "aaData" => $data,
+  "query" => $empQuery
 );
 
 echo json_encode($response);
