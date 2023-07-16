@@ -230,8 +230,8 @@ else{
                   <h4>Job Quotation Shipment Informations</h4>
                   <!--button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary add-row">Add Shipment</button-->
                 </div>
-                <div style="margin-top:3%" class="row details">
-                  <div class="col-4">
+                <div class="row">
+                  <div class="col-3">
                     <div class="form-group">
                       <label>Cargo Ready Time</label>
                       <div class="input-group date" id="inputCargoReadyTime" data-target-input="nearest">
@@ -242,56 +242,41 @@ else{
                       </div>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-3">
                     <div class="form-group">
-                      <label>Departure Airport</label>
-                      <select id="inputDepAirport" name="inputDepAirport" class="form-control">
-                        <option value="" selected disabled hidden>Please Select</option>
-                        <option value="KUL">KUL</option>
-                        <option value="NRT">NRT</option>
-                        <option value="TOL">TOL</option>
-                        <option value="DOH">DOH</option>
-                        <option value="LON">LON</option>
-                        <option value="LIS">LIS</option>
+                      <label>Number of Carton</label>
+                      <input id="inputNumberofCarton" name="inputNumberofCarton" type="number" class="form-control" value="1">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Different Piece Weight&Size</label>
+                      <select id="checkboxSamePieceWeight" name="checkboxSamePieceWeight" class="form-control">
+                        <option value="Y">Yes</option>
+                        <option value="N" selected>No</option>
                       </select>
                     </div>
                   </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label>Destination Airport</label>
-                      <select id="inputDesAirport" name="inputDesAirport" class="form-control">
-                        <option value="" selected disabled hidden>Please Select</option>
-                        <option value="KUL">KUL</option>
-                        <option value="NRT">NRT</option>
-                        <option value="TOL">TOL</option>
-                        <option value="DOH">DOH</option>
-                        <option value="LON">LON</option>
-                        <option value="LIS">LIS</option>
-                      </select>
-                    </div>
+                  <div class="col-3">
+                    <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary new-pieces" id="newPieces">Add New Pieces</button>
                   </div>
-                  <!--div class="col-4">
-                    <button class="btn btn-danger btn-sm" id="remove"><i class="fa fa-times"></i></button>
-                  </div-->
-                  <div class="col-2">
-                    <div class="form-group">
-                      <label>Dimension Width</label>
-                      <input id="inputDimensionW" name="inputDimensionW" type="text" class="form-control" placeholder="Enter ...">
-                    </div>
-                  </div>
-                  <div class="col-2">
-                    <div class="form-group">
-                      <label>Dimension Length</label>
-                      <input id="inputDimensionL" name="inputDimensionL" type="text" class="form-control" placeholder="Enter ...">
-                    </div>
-                  </div>
-                  <div class="col-2">
-                    <div class="form-group">
-                      <label>Dimension Height</label>
-                      <input id="inputDimensionH" name="inputDimensionH" type="text" class="form-control" placeholder="Enter ...">
-                    </div>
-                  </div>
-                  <div class="col-2">
+                </div>
+                <div class="row">
+                  <table style="width: 100%;">
+                    <thead>
+                      <tr>
+                        <th>Piece Densed Weight</th>
+                        <th>Dimension Length (cm)</th>
+                        <th>Dimension Width (cm)</th>
+                        <th>Dimension Height (cm)</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="shipmentlist"></tbody>
+                  </table>
+                </div>
+                <div class="row">
+                  <div class="col-2" id="unitsCol">
                     <div class="form-group">
                       <label>Units</label>
                       <select id="inputUnit" name="inputUnit" class="form-control">
@@ -300,9 +285,9 @@ else{
                       </select>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-6">
                     <div class="form-group">
-                      <label>Volumetric Weight</label>
+                      <label>Total Volumetric Weight</label>
                       <div class="input-group mb-3">
                         <input id="inputVolumetricWeight" name="inputVolumetricWeight" type="number" class="form-control" value="0.00" readonly>
                         <div class="input-group-append">
@@ -311,31 +296,11 @@ else{
                       </div>
                     </div>
                   </div>
-                  <div class="col-4">
+                  <div class="col-6">
                     <div class="form-group">
-                      <label>Number of Carton</label>
-                      <input id="inputNumberofCarton" name="inputNumberofCarton" type="number" class="form-control" value="0">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label>
-                        Carton Pieces Weight &nbsp&nbsp
-                        <input type="checkbox" id="checkboxSamePieceWeight" name="checkboxSamePieceWeight">Same Piece Weight</input>
-                      </label>
+                      <label>Total Densed Weight</label>
                       <div class="input-group mb-3">
-                        <input id="inputCartonPiecesWeight" name="inputCartonPiecesWeight" type="number" class="form-control">
-                        <div class="input-group-append">
-                          <span class="input-group-text">kg</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="form-group">
-                      <label>Total Carton Weight</label>
-                      <div class="input-group mb-3">
-                        <input id="inputTotalCartonWeight" name="inputTotalCartonWeight" type="number" class="form-control">
+                        <input id="inputTotalCartonWeight" name="inputTotalCartonWeight" type="number" class="form-control"  value="0.00" readonly>
                         <div class="input-group-append">
                           <span class="input-group-text">kg</span>
                         </div>
@@ -351,7 +316,7 @@ else{
                   <h4>Job Quotation Route Informations</h4>
                   <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary add-row">Add Route</button>
                 </div>
-                <table>
+                <table style="width: 100%;">
                   <thead>
                     <tr>
                       <th>Route</th>
@@ -367,7 +332,7 @@ else{
               </div>
             </div>
             <div class="card card-primary">
-              <div class="card-body" id="itemList">
+              <div class="card-body">
                 <div class="row">
                   <div class="col-4">
                     <div class="form-group" id="pickupCharges">
@@ -519,9 +484,33 @@ else{
   </tr>
 </script>
 
+<script type="text/html" id="addShipments">
+  <tr class="details">
+    <td>
+      <div class="input-group mb-3">
+        <input id="inputCartonPiecesWeight" type="number" class="form-control">
+        <div class="input-group-append">
+          <span class="input-group-text">kg</span>
+        </div>
+      </div>
+    </td>
+    <td>
+      <input id="inputDimensionW" type="text" class="form-control" placeholder="Enter ...">
+    </td>
+    <td>
+      <input id="inputDimensionL" type="text" class="form-control" placeholder="Enter ...">
+    </td>
+    <td>
+      <input id="inputDimensionH" type="text" class="form-control" placeholder="Enter ...">
+    </td>
+    <td><button class="btn btn-danger btn-sm" id="remove"><i class="fa fa-times"></i></button></td>
+  </tr>
+</script>
+
 <script>
 var contentIndex = 0;
 var size = $("#TableId").find(".details").length
+var size2 = $("#shipmentlist").find(".details").length
 
 $(function () {
   var table = $("#tableforOrder").DataTable({
@@ -581,10 +570,12 @@ $(function () {
     }
   });
 
+  $('#unitsCol').hide();
+
   $('#inputCargoReadyTime').datetimepicker({
-      icons: { time: 'far fa-clock' },
-      format: 'YYYY-MM-DD HH:mm:ss'
-    });
+    icons: { time: 'far fa-clock' },
+    format: 'YYYY-MM-DD HH:mm:ss'
+  });
 
   $('#addOrder').on('click', function(){
     $('#orderModal').find('#id').val("");
@@ -597,6 +588,11 @@ $(function () {
     $('#orderModal').find('#inputNotesInternal').val("");
     $('#orderModal').find('#inputNotestoCustomer').val("");
     $('#itemList').find('.TableId').remove();
+    $('#itemList').find('.shipmentlist').remove();
+    size2 = 0;
+    size = 0;
+    $("#newPieces").trigger('click');
+    $('#newPieces').hide();
     $('[data-mask]').inputmask();
     $('#orderModal').modal('show');
     
@@ -708,6 +704,91 @@ $(function () {
     size++;
   });
 
+  $('#checkboxSamePieceWeight').on('change', function () {
+    if($(this).val() == 'Y'){
+      $('#newPieces').show();
+    }
+    else{
+      $('#newPieces').hide();
+    }
+  });
+
+  $("#newPieces").click(function(){
+    if(parseInt($("#inputNumberofCarton").val()) > size2){
+      var $addContents = $("#addShipments").clone();
+      $("#shipmentlist").append($addContents.html());
+
+      $("#shipmentlist").find('.details:last').attr("id", "detail" + size2);
+      $("#shipmentlist").find('.details:last').attr("data-index", size2);
+      $("#shipmentlist").find('#remove:last').attr("id", "remove" + size2);
+
+      $("#shipmentlist").find('#inputCartonPiecesWeight:last').attr('name', 'inputCartonPiecesWeight['+size2+']').attr("id", "inputCartonPiecesWeight" + size2);
+      $("#shipmentlist").find('#inputDimensionW:last').attr('name', 'inputDimensionW['+size2+']').attr("id", "inputDimensionW" + size2);
+      $("#shipmentlist").find('#inputDimensionL:last').attr('name', 'inputDimensionL['+size2+']').attr("id", "inputDimensionL" + size2);
+      $("#shipmentlist").find('#inputDimensionH:last').attr('name', 'inputDimensionH['+size2+']').attr("id", "inputDimensionH" + size2);
+
+      size2++;
+    }
+  });
+
+  $("#shipmentlist").on('click', 'button[id^="remove"]', function () {
+    var index = $(this).parents('.details').attr('data-index');
+    $("#shipmentlist").append('<input type="hidden" name="deletedShip[]" value="'+index+'"/>');
+    $(this).parents('.details').remove();
+  });
+
+  $("#shipmentlist").on('change', 'input[id^="inputDimensionW"]', function () {
+    var inputDimensionW = $(this).parents('.details').find('input[id^="inputDimensionW"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionW"]').val() : 0.00;
+    var inputDimensionL = $(this).parents('.details').find('input[id^="inputDimensionL"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionL"]').val() : 0.00;
+    var inputDimensionH = $(this).parents('.details').find('input[id^="inputDimensionH"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionH"]').val() : 0.00;
+    var inputUnit = $("#inputUnit").val();
+    var oldWeight = $("#inputVolumetricWeight").val();
+
+    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
+
+    if(inputTotalCharges > 0.00){
+      var newWeight = parseFloat(oldWeight) + parseFloat(inputTotalCharges);
+      $("#inputVolumetricWeight").val(parseFloat(newWeight).toFixed(2));
+    }
+  });
+
+  $("#shipmentlist").on('change', 'input[id^="inputDimensionL"]', function () {
+    var inputDimensionW = $(this).parents('.details').find('input[id^="inputDimensionW"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionW"]').val() : 0.00;
+    var inputDimensionL = $(this).parents('.details').find('input[id^="inputDimensionL"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionL"]').val() : 0.00;
+    var inputDimensionH = $(this).parents('.details').find('input[id^="inputDimensionH"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionH"]').val() : 0.00;
+    var inputUnit = $("#inputUnit").val();
+    var oldWeight = $("#inputVolumetricWeight").val();
+
+    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
+    
+    if(inputTotalCharges > 0.00){
+      var newWeight = parseFloat(oldWeight) + parseFloat(inputTotalCharges);
+      $("#inputVolumetricWeight").val(parseFloat(newWeight).toFixed(2));
+    }
+  });
+
+  $("#shipmentlist").on('change', 'input[id^="inputDimensionH"]', function () {
+    var inputDimensionW = $(this).parents('.details').find('input[id^="inputDimensionW"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionW"]').val() : 0.00;
+    var inputDimensionL = $(this).parents('.details').find('input[id^="inputDimensionL"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionL"]').val() : 0.00;
+    var inputDimensionH = $(this).parents('.details').find('input[id^="inputDimensionH"]').val() ? $(this).parents('.details').find('input[id^="inputDimensionH"]').val() : 0.00;
+    var inputUnit = $("#inputUnit").val();
+    var oldWeight = $("#inputVolumetricWeight").val();
+
+    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
+
+    if(inputTotalCharges > 0.00){
+      var newWeight = parseFloat(oldWeight) + parseFloat(inputTotalCharges);
+      $("#inputVolumetricWeight").val(parseFloat(newWeight).toFixed(2));
+    }
+  });
+
+  $("#shipmentlist").on('change', 'input[id^="inputCartonPiecesWeight"]', function () {
+    var inputCartonPiecesWeight = $(this).parents('.details').find('input[id^="inputCartonPiecesWeight"]').val() ? $(this).parents('.details').find('input[id^="inputCartonPiecesWeight"]').val() : 0.00;
+    var inputTotalCharges = $('#inputTotalCartonWeight').val();
+    var newWeight = parseFloat(inputTotalCharges) + parseFloat(inputCartonPiecesWeight);
+    $("#inputTotalCartonWeight").val(parseFloat(newWeight).toFixed(2));
+  });
+
   $("#TableId").on('click', 'button[id^="remove"]', function () {
     var index = $(this).parents('.details').attr('data-index');
     $("#TableId").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
@@ -786,112 +867,91 @@ $(function () {
     $("#inputTotalCharges").val(inputTotalCharges);
   });
 
-  $('#inputDimensionW').on('change', function () {
-    var inputDimensionW = $("#inputDimensionW").val() ? $("#inputDimensionW").val() : 0.00;
-    var inputDimensionL = $("#inputDimensionL").val() ? $("#inputDimensionL").val() : 0.00;
-    var inputDimensionH = $("#inputDimensionH").val() ? $("#inputDimensionH").val() : 0.00;
-    var inputUnit = $("#inputUnit").val();
+  
 
-    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
-    $("#inputVolumetricWeight").val(inputTotalCharges);
-  });
-
-  $('#inputDimensionL').on('change', function () {
-    var inputDimensionW = $("#inputDimensionW").val() ? $("#inputDimensionW").val() : 0.00;
-    var inputDimensionL = $("#inputDimensionL").val() ? $("#inputDimensionL").val() : 0.00;
-    var inputDimensionH = $("#inputDimensionH").val() ? $("#inputDimensionH").val() : 0.00;
-    var inputUnit = $("#inputUnit").val();
-
-    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
-    $("#inputVolumetricWeight").val(inputTotalCharges);
-  });
-
-  $('#inputDimensionH').on('change', function () {
-    var inputDimensionW = $("#inputDimensionW").val() ? $("#inputDimensionW").val() : 0.00;
-    var inputDimensionL = $("#inputDimensionL").val() ? $("#inputDimensionL").val() : 0.00;
-    var inputDimensionH = $("#inputDimensionH").val() ? $("#inputDimensionH").val() : 0.00;
-    var inputUnit = $("#inputUnit").val();
-
-    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
-    $("#inputVolumetricWeight").val(inputTotalCharges);
-  });
-
-  $('#inputUnit').on('change', function () {
-    var inputDimensionW = $("#inputDimensionW").val() ? $("#inputDimensionW").val() : 0.00;
-    var inputDimensionL = $("#inputDimensionL").val() ? $("#inputDimensionL").val() : 0.00;
-    var inputDimensionH = $("#inputDimensionH").val() ? $("#inputDimensionH").val() : 0.00;
-    var inputUnit = $("#inputUnit").val();
-
-    var inputTotalCharges = calVolumetric(inputDimensionW, inputDimensionL, inputDimensionH, inputUnit);
-    $("#inputVolumetricWeight").val(inputTotalCharges);
-  });
-
-  $('#inputNumberofCarton').on('change', function () {
-    var inputNumberofCarton = $("#inputNumberofCarton").val() ? $("#inputNumberofCarton").val() : 0.00;
-    var inputCartonPiecesWeight = $("#inputCartonPiecesWeight").val() ? $("#inputCartonPiecesWeight").val() : 0.00;
-
-    if($('#checkboxSamePieceWeight').prop('checked')){
-      var inputTotalCharges = calWeight(inputNumberofCarton, inputCartonPiecesWeight);
-      $("#inputTotalCartonWeight").val(inputTotalCharges);
-    }
-  });
-
-  $('#inputCartonPiecesWeight').on('change', function () {
-    var inputNumberofCarton = $("#inputNumberofCarton").val() ? $("#inputNumberofCarton").val() : 0.00;
-    var inputCartonPiecesWeight = $("#inputCartonPiecesWeight").val() ? $("#inputCartonPiecesWeight").val() : 0.00;
-
-    if($('#checkboxSamePieceWeight').prop('checked')){
-      var inputTotalCharges = calWeight(inputNumberofCarton, inputCartonPiecesWeight);
-      $("#inputTotalCartonWeight").val(inputTotalCharges);
-    }
-  });
+  
 });
 
 function order(row) {
+  var returnString = "";
+
   if(row.sales_no != null && row.sales_no != ''){
-    return '<div class="row"><div class="col-12">' + row.sales_no + '</div></div>';
+    returnString += '<div class="row"><div class="col-12">' + row.sales_no + '</div></div><br>';
+  }
+  else{
+    returnString += '<div class="row"><div class="col-12">' + row.quotation_no + '</div></div><br>';
   }
 
-  return '<div class="row"><div class="col-12">' + row.quotation_no + '</div></div>';
+  returnString += '<div class="row"><div class="col-8">Items</div><div class="col-4">Amount</div></div><hr>';
+
+  if(row.pickup_charge != null && row.pickup_charge != ''){
+    returnString += '<div class="row"><div class="col-8">Pickup Charges</div><div class="col-4">' + row.pickup_charge + '</div></div>';
+  }
+
+  if(row.export_clearances != null && row.export_clearances != ''){
+    returnString += '<div class="row"><div class="col-8">Export Clearance</div><div class="col-4">' + row.export_clearances + '</div></div>';
+  }
+
+  if(row.air_ticket != null && row.air_ticket != ''){
+    returnString += '<div class="row"><div class="col-8">Air Ticket</div><div class="col-4">' + row.air_ticket + '</div></div>';
+  }
+
+  if(row.flyers_fee != null && row.flyers_fee != ''){
+    returnString += '<div class="row"><div class="col-8">Flyers Fee</div><div class="col-4">' + row.flyers_fee + '</div></div>';
+  }
+
+  if(row.import_clearance != null && row.import_clearance != ''){
+    returnString += '<div class="row"><div class="col-8">Import Clearance</div><div class="col-4">' + row.import_clearance + '</div></div>';
+  }
+
+  if(row.delivery_charges != null && row.delivery_charges != ''){
+    returnString += '<div class="row"><div class="col-8">Delivery Charges</div><div class="col-4">' + row.delivery_charges + '</div></div>';
+  }
+
+  returnString += '<hr><div class="row"><div class="col-8">Total Amount (USD)</div><div class="col-4">' + row.total_amount + '</div></div><hr>';
+
+  return returnString;
 }
 
 function details(row) {
   return '<div class="row"><div class="col-12">Handler Name: ' + row.handled_by 
   + '</div></div><div class="row"><div class="col-12">Customer Name: ' + row.customer_name 
+  + '</div></div><div class="row"><div class="col-12">Address: '+ row.customer_address 
   + '</div></div><div class="row"><div class="col-12">Contact Number: ' + row.contact_no 
   + '</div></div><div class="row"><div class="col-12">Email: ' + row.email 
   + '</div></div><div class="row"><div class="col-12">Shipment Type: '+ row.shipment_type 
-  + '</div></div><div class="row"><div class="col-12">Address: '+ row.customer_address 
+  + '</div></div><div class="row"><div class="col-12">Route: '+ row.departure_airport + ' -> ' + row.destination_airport 
   + '</div></div><div class="row"><div class="col-12">Notes (Internal): ' + row.internal_notes 
   + '</div></div><div class="row"><div class="col-12">Notes to Customer: ' + row.customer_notes 
   + '</div></div>';
 }
 
 function status(row) {
-  var returnString = '<h5>Status:</h5><p>Created at: <br>' + row.created_datetime +'</p><p>Quoted at: <br>' + row.quoted_datetime +'</p>';
+  var returnString = '<h5>Status:</h5><p>Created at: ' + row.created_datetime +'</p><p>Quoted at: ' + row.quoted_datetime +'</p>';
 
   if(row.paid_datetime != null && row.paid_datetime != ''){
-    returnString += '<p>Paid at: <br>' + row.paid_datetime +'</p>';
+    returnString += '<p>Paid at: ' + row.paid_datetime +'</p>';
   }
 
   if(row.shipped_datetime != null && row.shipped_datetime != ''){
-    returnString += '<p>Shipped at: <br>' + row.shipped_datetime +'</p>';
+    returnString += '<p>Shipped at: ' + row.shipped_datetime +'</p>';
   }
 
   if(row.completed_datetime != null && row.completed_datetime != ''){
-    returnString += '<p>Completed at: <br>' + row.completed_datetime +'</p>';
+    returnString += '<p>Completed at: ' + row.completed_datetime +'</p>';
   }
 
   if(row.cancelled_datetime != null && row.cancelled_datetime != ''){
-    returnString += '<p>Cancelled at: <br>' + row.cancelled_datetime +'</p>';
+    returnString += '<p>Cancelled at: ' + row.cancelled_datetime +'</p>';
   }
     
   returnString += '<p><small>Status:</small></p>';
-  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="completed('+
+  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="shipped('+
   row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div><div class="col-3"><button type="button" onclick="printQuote('+
-  row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file-contract"></i></button></div><div class="col-3"><button type="button" onclick="printSO('+
-  row.id+')" class="btn btn-warning btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
+  row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
   row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
+
+  //returnString += '<h5>Files:</h5>';
 
   return returnString;
 }

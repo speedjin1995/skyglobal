@@ -8,11 +8,11 @@ if(!isset($_SESSION['userID'])){
     echo 'window.location.href = "../login.html";</script>';
 }
 
-if(isset($_POST['inputHandler'], $_POST['inputCustomerName'], $_POST['inputContactNum'], $_POST['inputEmail'], $_POST['inputShipmentType'], $_POST['inputPickupAddress'], $_POST['route'],
+if(isset($_POST['inputHandler'], $_POST['inputCustomerName'], $_POST['inputContactNum'], $_POST['inputEmail'], $_POST['inputShipmentType'], $_POST['inputPickupAddress'],
 $_POST['inputPickupContactNum'], $_POST['inputPickupEmail'], $_POST['inputDeliveryAddress'], $_POST['inputDeliveryName'], $_POST['inputDeliveryContactNum'], $_POST['inputDeliveryEmail'], 
-$_POST['inputDepAirport'], $_POST['inputDesAirport'], $_POST['inputDimensionW'], $_POST['inputDimensionL'], $_POST['inputDimensionH'], $_POST['inputUnit'], $_POST['inputVolumetricWeight'],
-$_POST['inputNumberofCarton'], $_POST['inputCartonPiecesWeight'], $_POST['inputTotalCartonWeight'], $_POST['cargoReadyTime'], $_POST['departure'], $_POST['inputPickupName'], 
-$_POST['inputTotalCharges'], $_POST['depatureTime'], $_POST['arrival'], $_POST['arrivalTime'])){
+$_POST['inputDimensionW'], $_POST['inputDimensionL'], $_POST['inputDimensionH'], $_POST['inputUnit'], $_POST['inputVolumetricWeight'],
+$_POST['inputNumberofCarton'], $_POST['inputCartonPiecesWeight'], $_POST['inputTotalCartonWeight'], $_POST['cargoReadyTime'], $_POST['inputPickupName'], 
+$_POST['inputTotalCharges'])){
     $inputHandler = filter_input(INPUT_POST, 'inputHandler', FILTER_SANITIZE_STRING);
     $inputCustomerName = filter_input(INPUT_POST, 'inputCustomerName', FILTER_SANITIZE_STRING);
     $inputContactNum = filter_input(INPUT_POST, 'inputContactNum', FILTER_SANITIZE_STRING);
@@ -27,17 +27,12 @@ $_POST['inputTotalCharges'], $_POST['depatureTime'], $_POST['arrival'], $_POST['
     $inputDeliveryContactNum = filter_input(INPUT_POST, 'inputDeliveryContactNum', FILTER_SANITIZE_STRING);
     $inputDeliveryEmail = filter_input(INPUT_POST, 'inputDeliveryEmail', FILTER_SANITIZE_STRING);
     $cargoReadyTime = filter_input(INPUT_POST, 'cargoReadyTime', FILTER_SANITIZE_STRING);
-    $inputDepAirport = filter_input(INPUT_POST, 'inputDepAirport', FILTER_SANITIZE_STRING);
-    $inputDesAirport = filter_input(INPUT_POST, 'inputDesAirport', FILTER_SANITIZE_STRING);
-    $inputDimensionW = filter_input(INPUT_POST, 'inputDimensionW', FILTER_SANITIZE_STRING);
-    $inputDimensionL = filter_input(INPUT_POST, 'inputDimensionL', FILTER_SANITIZE_STRING);
-    $inputDimensionH = filter_input(INPUT_POST, 'inputDimensionH', FILTER_SANITIZE_STRING);
+    $inputDepAirport = null;
+    $inputDesAirport = null;
     $inputUnit = filter_input(INPUT_POST, 'inputUnit', FILTER_SANITIZE_STRING);
     $inputVolumetricWeight = filter_input(INPUT_POST, 'inputVolumetricWeight', FILTER_SANITIZE_STRING);
     $inputNumberofCarton = filter_input(INPUT_POST, 'inputNumberofCarton', FILTER_SANITIZE_STRING);
-    $inputCartonPiecesWeight = filter_input(INPUT_POST, 'inputCartonPiecesWeight', FILTER_SANITIZE_STRING);
     $inputTotalCartonWeight = filter_input(INPUT_POST, 'inputTotalCartonWeight', FILTER_SANITIZE_STRING);
-    $inputPickupCharge = filter_input(INPUT_POST, 'inputPickupCharge', FILTER_SANITIZE_STRING);
     $inputTotalCharges = filter_input(INPUT_POST, 'inputTotalCharges', FILTER_SANITIZE_STRING);
     $inputNotesInternal = "";
     $inputNotestoCustomer = "";
@@ -49,7 +44,9 @@ $_POST['inputTotalCharges'], $_POST['depatureTime'], $_POST['arrival'], $_POST['
     $checkboxDelivery = "NO";
     $user = $_SESSION['userID'];
     $deleted = array();
+    $deletedShip = array();
     $message = array();
+    $message2 = array();
 
     if($_POST['inputNotesInternal'] != null && $_POST['inputNotesInternal'] != ""){
         $inputNotesInternal = filter_input(INPUT_POST, 'inputNotesInternal', FILTER_SANITIZE_STRING);
@@ -83,6 +80,10 @@ $_POST['inputTotalCharges'], $_POST['depatureTime'], $_POST['arrival'], $_POST['
         $checkboxDelivery = "YES";
     }
 
+    if(isset($_POST['inputPickupCharge']) && $_POST['inputPickupCharge'] != null && $_POST['inputPickupCharge'] != ""){
+        $inputPickupCharge = filter_input(INPUT_POST, 'inputPickupCharge', FILTER_SANITIZE_STRING);
+    }
+
     if(isset($_POST['inputExportClearances']) && $_POST['inputExportClearances'] != null && $_POST['inputExportClearances'] != ""){
         $inputExportClearances = filter_input(INPUT_POST, 'inputExportClearances', FILTER_SANITIZE_STRING);
     }
@@ -104,11 +105,10 @@ $_POST['inputTotalCharges'], $_POST['depatureTime'], $_POST['arrival'], $_POST['
     }
 
     // Arrays
-    $route = $_POST['route'];
-    $departure = $_POST['departure']; 
-    $depatureTime = $_POST['depatureTime'];
-    $arrival = $_POST['arrival'];
-    $arrivalTime = $_POST['arrivalTime'];
+    $inputDimensionW = $_POST['inputDimensionW'];
+    $inputDimensionL = $_POST['inputDimensionL'];
+    $inputDimensionH = $_POST['inputDimensionH'];
+    $inputCartonPiecesWeight = $_POST['inputCartonPiecesWeight'];
     
     $success = true;
     $today = date("Y-m-d 00:00:00");
@@ -118,14 +118,48 @@ $_POST['inputTotalCharges'], $_POST['depatureTime'], $_POST['arrival'], $_POST['
         $deleted = array_map('intval', $deleted);
     }
 
-    for($i=0; $i<count($route); $i++){
-        if(!in_array($i, $deleted)){
-            $message[] = array( 
-                'route' => $route[$i],
-                'departure' => $departure[$i],
-                'depatureTime' => $depatureTime[$i],
-                'arrival' => $arrival[$i],
-                'arrivalTime' => $arrivalTime[$i]
+    if(isset($_POST['deletedShip']) && $_POST['deletedShip'] != null){
+        $deletedShip = $_POST['deletedShip'];
+        $deletedShip = array_map('intval', $deletedShip);
+    }
+
+    if(isset($_POST['route']) && $_POST['route']){
+        $route = $_POST['route'];
+        $departure = $_POST['departure']; 
+        $depatureTime = $_POST['depatureTime'];
+        $arrival = $_POST['arrival'];
+        $arrivalTime = $_POST['arrivalTime'];
+
+        for($i=0; $i<count($route); $i++){
+            if(!in_array($i, $deleted)){
+                $message[] = array( 
+                    'route' => $route[$i],
+                    'departure' => $departure[$i],
+                    'depatureTime' => $depatureTime[$i],
+                    'arrival' => $arrival[$i],
+                    'arrivalTime' => $arrivalTime[$i]
+                );
+
+                if($i == 0){
+                    $inputDepAirport = $departure[$i];
+                }
+
+                if($i == (count($route) - 1)){
+                    $inputDesAirport = $arrival[$i];
+                }
+            }
+        }
+    }
+    
+
+    for($i=0; $i<count($inputDimensionW); $i++){
+        if(!in_array($i, $deletedShip)){
+            $message2[] = array( 
+                'W' => $inputDimensionW[$i],
+                'L' => $inputDimensionL[$i],
+                'H' => $inputDimensionH[$i],
+                'Weight' => $inputCartonPiecesWeight[$i],
+                'Unit' => $inputUnit
             );
         }
     }
@@ -222,9 +256,10 @@ $_POST['inputTotalCharges'], $_POST['depatureTime'], $_POST['arrival'], $_POST['
                         $id = $insert_stmt->insert_id;;
                         $insert_stmt->close();
                         $message = json_encode($message);
+                        $message2 = json_encode($message2);
 
-                        if ($insert_stmt2 = $db->prepare("INSERT INTO sales_cart (sale_id, departure_airport, destination_airport, dimensionW, dimensionL, dimensionH, dimension_unit, volumetric_weight, number_of_carton, weight_of_cargo, total_cargo_weight, cargo_ready_time, pickup_address, pickup_pic, pickup_contact, pickup_email, delivery_address, delivery_pic, delivery_contact, delivery_email, route, pickup_charge, export_clearances, air_ticket, flyers_fee, import_clearance, delivery_charges, total_amount, pickup_charge_chk, export_clearances_chk, air_ticket_chk, flyers_fee_chk, import_clearance_chk, delivery_charges_chk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                            $insert_stmt2->bind_param('ssssssssssssssssssssssssssssssssss', $id, $inputDepAirport, $inputDesAirport, $inputDimensionW, $inputDimensionL, $inputDimensionH, $inputUnit, $inputVolumetricWeight, $inputNumberofCarton, $inputCartonPiecesWeight, $inputTotalCartonWeight, $cargoReadyTime, $inputPickupAddress, $inputPickupName, $inputPickupContactNum, $inputPickupEmail, $inputDeliveryAddress, $inputDeliveryName, $inputDeliveryContactNum, $inputDeliveryEmail, $message, $inputPickupCharge, $inputExportClearances, $inputAirTicket, $inputFlyersFee, $inputImportClearance, $inputDeliveryCharges, $inputTotalCharges, $checkboxPickup, $checkboxExport, $checkboxAir, $checkboxFlyers, $checkboxImport, $checkboxDelivery);
+                        if ($insert_stmt2 = $db->prepare("INSERT INTO sales_cart (sale_id, departure_airport, destination_airport, weight_data, volumetric_weight, number_of_carton, total_cargo_weight, cargo_ready_time, pickup_address, pickup_pic, pickup_contact, pickup_email, delivery_address, delivery_pic, delivery_contact, delivery_email, route, pickup_charge, export_clearances, air_ticket, flyers_fee, import_clearance, delivery_charges, total_amount, pickup_charge_chk, export_clearances_chk, air_ticket_chk, flyers_fee_chk, import_clearance_chk, delivery_charges_chk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                            $insert_stmt2->bind_param('ssssssssssssssssssssssssssssss', $id, $inputDepAirport, $inputDesAirport, $message2, $inputVolumetricWeight, $inputNumberofCarton, $inputTotalCartonWeight, $cargoReadyTime, $inputPickupAddress, $inputPickupName, $inputPickupContactNum, $inputPickupEmail, $inputDeliveryAddress, $inputDeliveryName, $inputDeliveryContactNum, $inputDeliveryEmail, $message, $inputPickupCharge, $inputExportClearances, $inputAirTicket, $inputFlyersFee, $inputImportClearance, $inputDeliveryCharges, $inputTotalCharges, $checkboxPickup, $checkboxExport, $checkboxAir, $checkboxFlyers, $checkboxImport, $checkboxDelivery);
                             // Execute the prepared query.
                             if (! $insert_stmt2->execute()) {
                                 echo json_encode(

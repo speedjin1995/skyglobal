@@ -28,10 +28,11 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$empQuery = "select job.id, job.sales_cart_id, sales_cart.sale_id, sales_cart.dimension, sales_cart.number_of_carton, 
-sales_cart.weight_of_cargo, sales_cart.cargo_ready_time, sales_cart.pickup_address, sales_cart.pickup_charge, 
-sales_cart.export_clearances, sales_cart.air_ticket, sales_cart.flyers_fee, sales_cart.import_clearance, 
-sales_cart.delivery_charges, sales_cart.total_amount, job.created_datetime from job, sales_cart".$searchQuery." limit ".$row.",".$rowperpage;
+$empQuery = "select job.id, job.sales_cart_id, sales_cart.sale_id, sales_cart.departure_airport, sales_cart.destination_airport, sales_cart.weight_data, 
+sales_cart.number_of_carton, sales_cart.volumetric_weight, sales_cart.total_cargo_weight, sales_cart.cargo_ready_time, sales_cart.pickup_address, 
+sales_cart.pickup_pic, sales_cart.pickup_contact, sales_cart.pickup_email, sales_cart.delivery_address, sales_cart.delivery_pic, sales_cart.delivery_contact,
+sales_cart.delivery_email, sales_cart.route, sales_cart.pickup_charge, sales_cart.export_clearances, sales_cart.air_ticket, sales_cart.flyers_fee, 
+sales_cart.import_clearance, sales_cart.delivery_charges, sales_cart.total_amount, job.created_datetime from job, sales_cart".$searchQuery." limit ".$row.",".$rowperpage;
 $empRecords = mysqli_query($db, $empQuery);
 $data = array();
 
@@ -40,11 +41,22 @@ while($row = mysqli_fetch_assoc($empRecords)) {
       "id"=>$row['id'],
       "sales_cart_id"=>$row['sales_cart_id'],
       "sale_id"=>$row['sale_id'],
-      "dimension"=>$row['dimension'],
+      "departure_airport"=>$row['departure_airport'],
+      "destination_airport"=>$row['destination_airport'],
+      "weight_data"=>$row['weight_data'],
       "number_of_carton"=>$row['number_of_carton'],
-      "weight_of_cargo"=>$row['weight_of_cargo'],
+      "volumetric_weight"=>$row['volumetric_weight'],
+      "total_cargo_weight"=>$row['total_cargo_weight'],
       "cargo_ready_time"=>$row['cargo_ready_time'],
       "pickup_address"=>$row['pickup_address'],
+      "pickup_pic"=>$row['pickup_pic'],
+      "pickup_contact"=>$row['pickup_contact'],
+      "pickup_email"=>$row['pickup_email'],
+      "delivery_address"=>$row['delivery_address'],
+      "delivery_pic"=>$row['delivery_pic'],
+      "delivery_contact"=>$row['delivery_contact'],
+      "delivery_email"=>$row['delivery_email'],
+      "route"=>$row['route'],
       "pickup_charge"=>$row['pickup_charge'],
       "export_clearances"=>$row['export_clearances'],
       "air_ticket"=>$row['air_ticket'],

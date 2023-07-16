@@ -38,7 +38,8 @@ while($row = mysqli_fetch_assoc($empRecords)) {
       "supplier_name"=>$row['supplier_name'],
       "supplier_address"=>$row['supplier_address'],
       "supplier_phone"=>$row['supplier_phone'],
-      "supplier_email"=>$row['supplier_email']
+      "supplier_email"=>$row['supplier_email'],
+      "passport_expiry_date"=>$row['passport_expiry_date']
     );
 }
 

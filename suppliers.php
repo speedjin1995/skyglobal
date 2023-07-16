@@ -45,6 +45,7 @@ else{
 									<th>Address</th>
 									<th>Phone</th>
 									<th>Email</th>
+                                    <th>Passport Expiry Date</th>
 									<th>Actions</th>
 								</tr>
 							</thead>
@@ -61,7 +62,7 @@ else{
       <div class="modal-content">
         <form role="form" id="supplierForm">
             <div class="modal-header">
-              <h4 class="modal-title">Add Suppliers</h4>
+              <h4 class="modal-title">Add Flyer</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -72,7 +73,7 @@ else{
                   <input type="hidden" class="form-control" id="id" name="id">
                 </div>
                 <div class="form-group">
-                  <label for="name">Supplier Name *</label>
+                  <label for="name">Name *</label>
                   <input type="text" class="form-control" name="name" id="name" placeholder="Enter Supplier Name" required>
                 </div>
                 <div class="form-group"> 
@@ -86,6 +87,33 @@ else{
                 <div class="form-group"> 
                   <label for="email">Email *</label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                  <label for="passport">Passport *</label>
+                  <input type="text" class="form-control" name="passport" id="passport" placeholder="Enter Passport" required>
+                </div>
+                <div class="form-group"> 
+                    <label for="passportExpiry">Passport Expiry Date *</label>
+                    <div class="input-group date" id="passportExpiry" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" id="passportExpiry" name="passportExpiry" data-target="#passportExpiry" required/>
+                        <div class="input-group-append" data-target="#passportExpiry" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profilePic">Picture</label>
+                    <div id="image-preview">
+                        <label for="image-upload" id="image-label">Choose Image</label>
+                        <input type="file" name="image-upload" id="image-upload" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="visaPic">Visa Picture</label>
+                    <div id="image-preview2">
+                        <label for="image-upload2" id="image-label2">Choose Image</label>
+                        <input type="file" name="image-upload2" id="image-upload2" required/>
+                    </div>
                 </div>
               </div>
             </div>
@@ -102,6 +130,28 @@ else{
 
 <script>
 $(function () {
+    $('#passportExpiry').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+
+    $.uploadPreview({
+        input_field: "#image-upload",   // Default: .image-upload
+        preview_box: "#image-preview",  // Default: .image-preview
+        label_field: "#image-label",    // Default: .image-label
+        label_default: "Choose Image",   // Default: Choose File
+        label_selected: "Change Image",  // Default: Change File
+        no_label: false                 // Default: false
+    });
+
+    $.uploadPreview({
+        input_field: "#image-upload2",   // Default: .image-upload
+        preview_box: "#image-preview2",  // Default: .image-preview
+        label_field: "#image-label2",    // Default: .image-label
+        label_default: "Choose Image",   // Default: Choose File
+        label_selected: "Change Image",  // Default: Change File
+        no_label: false                 // Default: false
+    });
+
     $("#supplierTable").DataTable({
         "responsive": true,
         "autoWidth": false,
@@ -116,6 +166,7 @@ $(function () {
             { data: 'supplier_address' },
             { data: 'supplier_phone' },
             { data: 'supplier_email' },
+            { data: 'passport_expiry_date' },
             { 
                 data: 'id',
                 render: function ( data, type, row ) {
@@ -130,7 +181,7 @@ $(function () {
             $('#spinnerLoading').show();
             $.post('php/suppliers.php', $('#supplierForm').serialize(), function(data){
                 var obj = JSON.parse(data); 
-                
+
                 if(obj.status === 'success'){
                     $('#addModal').modal('hide');
                     toastr["success"](obj.message, "Success:");
@@ -148,7 +199,42 @@ $(function () {
                     toastr["error"]("Something wrong when edit", "Failed:");
                     $('#spinnerLoading').hide();
                 }
-            });
+            })
+            /*$.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "php/suppliers.php",
+                data: $('#supplierForm').serialize(),
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 60000,
+                success: function (data) {
+                    var obj = JSON.parse(data); 
+                
+                    if(obj.status === 'success'){
+                        $('#addModal').modal('hide');
+                        toastr["success"](obj.message, "Success:");
+                        
+                        $.get('suppliers.php', function(data) {
+                            $('#mainContents').html(data);
+                            $('#spinnerLoading').hide();
+                        });
+                    }
+                    else if(obj.status === 'failed'){
+                        toastr["error"](obj.message, "Failed:");
+                        $('#spinnerLoading').hide();
+                    }
+                    else{
+                        toastr["error"]("Something wrong when edit", "Failed:");
+                        $('#spinnerLoading').hide();
+                    }
+                },
+                error: function (e) {
+                    toastr["error"](e.responseText, "Failed:");
+                    $('#spinnerLoading').hide();
+                }
+            });*/
         }
     });
 
@@ -158,6 +244,8 @@ $(function () {
         $('#addModal').find('#address').val("");
         $('#addModal').find('#phone').val("");
         $('#addModal').find('#email').val("");
+        $('#addModal').find('#passport').val("");
+        $('#addModal').find('#passportExpiry').val("");
         $('#addModal').modal('show');
         
         $('#supplierForm').validate({
@@ -187,6 +275,8 @@ function edit(id){
             $('#addModal').find('#address').val(obj.message.supplier_address);
             $('#addModal').find('#phone').val(obj.message.supplier_phone);
             $('#addModal').find('#email').val(obj.message.supplier_email);
+            $('#addModal').find('#passport').val(obj.message.passport);
+            $('#addModal').find('#passportExpiry').val(obj.message.passport_expiry_date);
             $('#addModal').modal('show');
             
             $('#supplierForm').validate({

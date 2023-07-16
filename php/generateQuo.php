@@ -87,7 +87,7 @@ if(isset($_POST['salesID'])){
 								</div>";
 
 					$message.= "<table style='padding-top:1%; width:100%'>
-					              <tr><td style='border-top: 1px solid; border-bottom: 1px solid;'>Item</td><td style='border-top: 1px solid; border-bottom: 1px solid;'>Dimension</td><td style='border-top: 1px solid; border-bottom: 1px solid;'>Number of Carton</td><td style='border-top: 1px solid; border-bottom: 1px solid;'>Weight of Carton (kg)</td><td style='border-top: 1px solid; border-bottom: 1px solid;'>U/Price Disc (RM)</td></tr>";
+					              <tr><td style='border-top: 1px solid; border-bottom: 1px solid;'>Item</td><td style='border-top: 1px solid; border-bottom: 1px solid;'> Total Weight (KG)</td><td style='border-top: 1px solid; border-bottom: 1px solid;'>U/Price Disc (RM)</td></tr>";
 								
 					//To get sales cart
 					$totalamount=0;
@@ -100,7 +100,13 @@ if(isset($_POST['salesID'])){
 						while ($row3 = $result3->fetch_assoc()) {
 							$count++;
 							$totalamount+= $row3['total_amount'];
-							$message.="<tr><td style='width: 10%;'>".$count."</td><td style='width: 20%;'>".$row3['dimension']."</td><td style='width: 20%; text-align: center;'>".$row3['number_of_carton']."</td><td style='width: 20%; text-align: center;'>".$row3['weight_of_cargo']."</td><td style='width: 20%; text-align: center;'>".$row3['total_amount']."</td></tr>";
+							
+							if((float)$row3['volumetric_weight'] > (float)$row3['total_cargo_weight']){
+								$message.="<tr><td style='width: 10%;'>".$count."</td><td style='width: 70%;'>Total Volumetric Weight = ".$row3['volumetric_weight']." KG</td><td style='width: 20%; text-align: center;'>".$row3['total_amount']."</td></tr>";
+							}
+							else{
+								$message.="<tr><td style='width: 10%;'>".$count."</td><td style='width: 70%;'>Total Carton Weight = ".$row3['total_cargo_weight']." KG</td><td style='width: 20%; text-align: center;'>".$row3['total_amount']."</td></tr>";
+							}
 				    	}
 					}
 					else{

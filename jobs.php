@@ -41,11 +41,10 @@ else{
             <table id="tableforOrder" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Dimension</th>
                   <th>Number of Carton</th>
-                  <th>Weight of Cargo</th>
                   <th>Cargo Ready Time</th>
                   <th>Picked Up Address</th>
+                  <th>Delivery Address</th>
                   <th>Total Amount</th>
                   <th></th>
                 </tr>
@@ -294,11 +293,10 @@ $(function () {
       'url':'php/loadJobs.php'
     },
     'columns': [
-      { data: 'dimension' },
       { data: 'number_of_carton' },
-      { data: 'weight_of_cargo' },
       { data: 'cargo_ready_time' },
       { data: 'pickup_address' },
+      { data: 'delivery_address' },
       { data: 'total_amount' },
       { 
         className: 'dt-control',
@@ -471,14 +469,100 @@ $(function () {
 });
 
 function format (row) {
-  return '<div class="row"><div class="col-md-3"><p>Pickup Charge: '+row.pickup_charge+
-  '</p></div><div class="col-md-3"><p>Export Clearance: '+row.export_clearances+
-  '</p></div><div class="col-md-3"><p>Air Ticket: '+row.air_ticket+
-  '</p></div><div class="col-md-3"><p>Flyers Fee: '+row.flyers_fee+
-  '</p></div></div><div class="row"><div class="col-md-3"><p>Import Clearance: '+row.import_clearance+
-  '</p></div><div class="col-md-3"><p>Delivery Charges: '+row.delivery_charges+
-  '</p></div><div class="col-md-3"><p>Total Amount: '+row.total_amount+
-  '</p></div></div><hr><h5>Status:</h5><p>Created at: <br>' + row.created_datetime +'</p>';
+  var returnString = "";
+  var weightData = JSON.parse(row.weight_data);
+  var routeData = JSON.parse(row.route);
+
+  returnString += '<div class="row"><div class="col-3"><p>Shipper Address: '+row.pickup_address+
+  '</p></div><div class="col-3"><p>Shipper PIC: '+row.pickup_pic+
+  '</p></div><div class="col-3"><p>Shipper PIC Contact: '+row.pickup_contact+
+  '</p></div><div class="col-3"><p>Shipper PIC Email: '+row.pickup_email+
+  '</p></div><div class="col-3"><p>Receiver Address: '+row.delivery_address+
+  '</p></div><div class="col-3"><p>Receiver PIC: '+row.delivery_pic+
+  '</p></div><div class="col-3"><p>Receiver PIC Contact: '+row.delivery_contact+
+  '</p></div><div class="col-3"><p>Receiver PIC Email: '+row.delivery_email+
+  '</p></div><div class="col-3"><p>Number of Cartons: '+row.number_of_carton+
+  '</p></div><div class="col-3"><p>Cargo Ready Time: '+row.cargo_ready_time+
+  '</p></div><div class="col-3"><p>Weight ('+((parseFloat(row.volumetric_weight) > parseFloat(row.total_cargo_weight)) ? 'Volumetric': 'Total Carton')+
+  '): '+((parseFloat(row.volumetric_weight) > parseFloat(row.total_cargo_weight)) ? row.volumetric_weight: row.total_cargo_weight)+'</p></div><div class="col-md-3"><div class="row"><div class="col-3"><button type="button" class="btn btn-warning btn-sm" onclick="edit('+row.sale_id+
+  ')"><i class="fas fa-pen"></i></button></div><div class="col-3"><button type="button" class="btn btn-danger btn-sm" onclick="completed('+row.sale_id+
+  ')"><i class="fas fa-check-circle"></i></button></div><div class="col-3"><button type="button" class="btn btn-info btn-sm" onclick="printQuote('+row.sale_id+
+  ')"><i class="fas fa-print"></i></button></div><div class="col-3"><button type="button" class="btn btn-danger btn-sm" onclick="cancel('+row.sale_id+
+  ')"><i class="fas fa-trash"></i></button></div></div></div></div>';
+  
+  returnString += '<hr><h5>Cargo Details:</h5><table style="width: 100%;"><thead><tr><th>Piece Densed Weight</th><th>Dimension Length (cm)</th><th>Dimension Width (cm)</th><th>Dimension Height (cm)</th><th>Volumetric Weight</th></tr></thead><tbody>';
+  
+  for(var i=0; i<weightData.length; i++){
+    returnString += '<tr><td>'+weightData[i].Weight+' KG</td><td>'+weightData[i].L+'</td><td>'+weightData[i].W+'</td><td>'+weightData[i].H+'</td><td>'+calVolumetric(weightData[i].W, weightData[i].L, weightData[i].H, weightData[i].Unit).toString()+' KG</td></tr>';
+  }
+  
+  returnString += '</tbody></table><br><div class="row"><div class="col-6"><p>Volumetric Weight: '+row.volumetric_weight+
+  ' KG</p></div><div class="col-6"><p>Total Cargo Weight: '+row.total_cargo_weight+' KG</p></div></div>';
+
+  returnString += '<hr><h5>Status:</h5><p>Created at: <br>' + row.created_datetime +'</p>';
+
+  return returnString;
+}
+
+function edit(id){
+  $('#spinnerLoading').show();
+  $.post('php/getAirports.php', {userID: id}, function(data){
+    var obj = JSON.parse(data);
+    
+    if(obj.status === 'success'){
+      /*$('#addModal').find('#id').val(obj.message.id);
+      $('#addModal').find('#name').val(obj.message.name);
+      $('#addModal').find('#iata').val(obj.message.iata);
+      $('#addModal').find('#icao').val(obj.message.icao);
+      $('#addModal').modal('show');
+      
+      $('#customerForm').validate({
+          errorElement: 'span',
+          errorPlacement: function (error, element) {
+              error.addClass('invalid-feedback');
+              element.closest('.form-group').append(error);
+          },
+          highlight: function (element, errorClass, validClass) {
+              $(element).addClass('is-invalid');
+          },
+          unhighlight: function (element, errorClass, validClass) {
+              $(element).removeClass('is-invalid');
+          }
+      });*/
+    }
+    else if(obj.status === 'failed'){
+        toastr["error"](obj.message, "Failed:");
+    }
+    else{
+        toastr["error"]("Something wrong when activate", "Failed:");
+    }
+    $('#spinnerLoading').hide();
+  });
+}
+
+function printQuote(row) {
+  $('#spinnerLoading').show();
+  $.post('php/generateQuo.php', {salesID: row}, function(data){
+    var obj = JSON.parse(data); 
+    
+    if(obj.status === 'success'){
+      var printWindow = window.open('', '', 'height=400,width=800');
+      printWindow.document.write(obj.message);
+      printWindow.document.close();
+      setTimeout(function(){
+          printWindow.print();
+          printWindow.close();
+      }, 1000);
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when edit", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
 }
 
 function cancel(id) {
