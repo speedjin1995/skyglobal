@@ -59,7 +59,7 @@ else{
             <div class="row">
                 <div class="col-9"></div>
                 <div class="col-3">
-                  <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addOrder">Create New Order</button>
+                  <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addOrder">Create New Mission Quotation</button>
                 </div>
             </div>
           </div>
@@ -67,7 +67,7 @@ else{
             <table id="tableforOrder" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Order</th>
+                  <th>Missions Quotation</th>
                   <th>Details</th>
                   <th>Status</th>
                 </tr>
@@ -85,7 +85,7 @@ else{
     <div class="modal-content">
       <form role="form" id="orderForm">
         <div class="modal-header">
-          <h4 class="modal-title">Create New Job Quotation</h4>
+          <h4 class="modal-title">Create New Mission Quotation</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -94,6 +94,9 @@ else{
           <div class="container-fluid">
             <div class="card card-primary">
               <div class="card-body">
+                <div class="row">
+                  <h4>Mission General Informations</h4>
+                </div>
                 <div class="row">
                   <div class="col-4">
                     <div class="form-group">
@@ -169,6 +172,9 @@ else{
             <div class="card card-primary">
               <div class="card-body">
                 <div class="row">
+                  <h4>Mission Pickup & Delivery Informations</h4>
+                </div>
+                <div class="row">
                   <div class="col-3">
                     <div class="form-group">
                       <label>Pickup Company Name & Address (Shipper)</label>
@@ -227,7 +233,7 @@ else{
             <div class="card card-primary">
               <div class="card-body" id="itemList">
                 <div class="row">
-                  <h4>Job Quotation Shipment Informations</h4>
+                  <h4>Mission Shipment Informations</h4>
                   <!--button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary add-row">Add Shipment</button-->
                 </div>
                 <div class="row">
@@ -338,7 +344,7 @@ else{
                     <div class="form-group" id="pickupCharges">
                       <label>
                         Pickup Charge &nbsp&nbsp
-                        <input type="checkbox" id="checkboxPickup" name="checkboxPickup">Customer RFQ</input>
+                        <input type="checkbox" id="checkboxPickup" name="checkboxPickup">Excluded</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -352,7 +358,7 @@ else{
                     <div class="form-group" id="exportClearance">
                       <label>
                         Export Clearances &nbsp&nbsp
-                        <input type="checkbox" id="checkboxExport" name="checkboxExport">Customer RFQ</input>
+                        <input type="checkbox" id="checkboxExport" name="checkboxExport">Excluded</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -366,7 +372,7 @@ else{
                     <div class="form-group">
                       <label>
                         Air Ticket &nbsp&nbsp
-                        <input type="checkbox" id="checkboxAir" name="checkboxAir">Customer RFQ</input>
+                        <input type="checkbox" id="checkboxAir" name="checkboxAir">Excluded</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -380,7 +386,7 @@ else{
                     <div class="form-group">
                       <label>
                         Flyers Fee &nbsp&nbsp
-                        <input type="checkbox" id="checkboxFlyers" name="checkboxFlyers">Customer RFQ</input>
+                        <input type="checkbox" id="checkboxFlyers" name="checkboxFlyers">Excluded</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -394,7 +400,7 @@ else{
                     <div class="form-group">
                       <label>
                         Import Clearance &nbsp&nbsp
-                        <input type="checkbox" id="checkboxImport" name="checkboxImport">Customer RFQ</input>
+                        <input type="checkbox" id="checkboxImport" name="checkboxImport">Excluded</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -408,7 +414,7 @@ else{
                     <div class="form-group">
                       <label>
                         Delivery Charges &nbsp&nbsp
-                        <input type="checkbox" id="checkboxDelivery" name="checkboxDelivery">Customer RFQ</input>
+                        <input type="checkbox" id="checkboxDelivery" name="checkboxDelivery">Excluded</input>
                       </label>
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -587,7 +593,7 @@ $(function () {
     $('#orderModal').find('#inputAddress').val("");
     $('#orderModal').find('#inputNotesInternal').val("");
     $('#orderModal').find('#inputNotestoCustomer').val("");
-    $('#itemList').find('.TableId').remove();
+    $('#orderModal').find('.TableId').remove();
     $('#itemList').find('.shipmentlist').remove();
     size2 = 0;
     size = 0;
@@ -794,6 +800,72 @@ $(function () {
     $("#TableId").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
     $(this).parents('.details').remove();
   });
+  
+  $("#checkboxPickup").on('click', function () {
+    if($("#checkboxPickup").is(":checked")){
+      $("#inputPickupCharge").val('');
+      $("#inputPickupCharge").attr('readonly', true);
+    }
+    else{
+      $("#inputPickupCharge").val('');
+      $("#inputPickupCharge").attr('readonly', false);
+    }
+  });
+
+  $("#checkboxExport").on('click', function () {
+    if($("#checkboxExport").is(":checked")){
+      $("#inputExportClearances").val('');
+      $("#inputExportClearances").attr('readonly', true);
+    }
+    else{
+      $("#inputExportClearances").val('');
+      $("#inputExportClearances").attr('readonly', false);
+    }
+  });
+
+  $("#checkboxAir").on('click', function () {
+    if($("#checkboxAir").is(":checked")){
+      $("#inputAirTicket").val('');
+      $("#inputAirTicket").attr('readonly', true);
+    }
+    else{
+      $("#inputAirTicket").val('');
+      $("#inputAirTicket").attr('readonly', false);
+    }
+  });
+
+  $("#checkboxFlyers").on('click', function () {
+    if($("#checkboxFlyers").is(":checked")){
+      $("#inputFlyersFee").val('');
+      $("#inputFlyersFee").attr('readonly', true);
+    }
+    else{
+      $("#inputFlyersFee").val('');
+      $("#inputFlyersFee").attr('readonly', false);
+    }
+  });
+
+  $("#checkboxImport").on('click', function () {
+    if($("#checkboxImport").is(":checked")){
+      $("#inputImportClearance").val('');
+      $("#inputImportClearance").attr('readonly', true);
+    }
+    else{
+      $("#inputImportClearance").val('');
+      $("#inputImportClearance").attr('readonly', false);
+    }
+  });
+
+  $("#checkboxDelivery").on('click', function () {
+    if($("#checkboxDelivery").is(":checked")){
+      $("#inputDeliveryCharges").val('');
+      $("#inputDeliveryCharges").attr('readonly', true);
+    }
+    else{
+      $("#inputDeliveryCharges").val('');
+      $("#inputDeliveryCharges").attr('readonly', false);
+    }
+  });
 
   $("#inputPickupCharge").on('change', function () {
     var inputPickupCharge = $("#inputPickupCharge").val() ? $("#inputPickupCharge").val() : 0.00;
@@ -906,6 +978,14 @@ function order(row) {
 
   if(row.delivery_charges != null && row.delivery_charges != ''){
     returnString += '<div class="row"><div class="col-8">Delivery Charges</div><div class="col-4">' + row.delivery_charges + '</div></div>';
+  }
+
+  if(row.extra_charges != null && row.extra_charges != ''){
+    var weightData = JSON.parse(row.extra_charges);
+
+    for(var i=0; i<weightData.length; i++){
+      returnString += '<div class="row"><div class="col-8">' + weightData[i].extraChargesName + '</div><div class="col-4">' + parseFloat(weightData[i].extraChargesAmount).toFixed(2)  + '</div></div>';
+    }
   }
 
   returnString += '<hr><div class="row"><div class="col-8">Total Amount (USD)</div><div class="col-4">' + row.total_amount + '</div></div><hr>';

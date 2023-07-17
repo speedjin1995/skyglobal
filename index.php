@@ -32,6 +32,15 @@ else{
   <!-- daterange picker -->
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  <!-- BS Stepper -->
+  <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
+  <!-- dropzonejs -->
+  <link rel="stylesheet" href="plugins/dropzone/min/dropzone.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -158,7 +167,7 @@ else{
           <li class="nav-item">
             <a href="#sales" data-file="sales.php" class="nav-link link">
               <i class="nav-icon fas fa-home"></i>
-              <p>Sales</p>
+              <p>Quotations</p>
             </a>
           </li>
           <!--li class="nav-item">
@@ -199,7 +208,9 @@ else{
                       <p>Customer</p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                </ul>
+              </li>';
+                  /*<li class="nav-item">
                     <a href="#airlines" data-file="airlines.php" class="nav-link link">
                       <i class="nav-icon fas fa-file"></i>
                       <p>Airlines</p>
@@ -210,9 +221,7 @@ else{
                       <i class="nav-icon fas fa-plane"></i>
                       <p>Airports</p>
                     </a>
-                  </li>
-                </ul>
-              </li>';
+                  </li>*/
             }
           ?>
           <li class="nav-item has-treeview">
@@ -314,6 +323,10 @@ else{
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script src="plugins/jquery-validation/jquery.validate.min.js"></script>
 <script src="plugins/image-preview/jquery.uploadPreview.min.js"></script>
+<script src="plugins/select2/js/select2.full.min.js"></script>
+<script src="plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="plugins/bs-stepper/js/bs-stepper.min.js"></script>
+<script src="plugins/dropzone/min/dropzone.min.js"></script>
 <script>
 var ouStartDate = "";
 var ouEndDate = "";

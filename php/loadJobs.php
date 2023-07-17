@@ -28,7 +28,7 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$empQuery = "select job.id, job.sales_cart_id, sales_cart.sale_id, sales_cart.departure_airport, sales_cart.destination_airport, sales_cart.weight_data, 
+$empQuery = "select job.id, job.log, job.sales_cart_id, sales_cart.sale_id, sales_cart.departure_airport, sales_cart.destination_airport, sales_cart.weight_data, 
 sales_cart.number_of_carton, sales_cart.volumetric_weight, sales_cart.total_cargo_weight, sales_cart.cargo_ready_time, sales_cart.pickup_address, 
 sales_cart.pickup_pic, sales_cart.pickup_contact, sales_cart.pickup_email, sales_cart.delivery_address, sales_cart.delivery_pic, sales_cart.delivery_contact,
 sales_cart.delivery_email, sales_cart.route, sales_cart.pickup_charge, sales_cart.export_clearances, sales_cart.air_ticket, sales_cart.flyers_fee, 
@@ -39,6 +39,7 @@ $data = array();
 while($row = mysqli_fetch_assoc($empRecords)) {
     $data[] = array( 
       "id"=>$row['id'],
+      "log"=>$row['log'],
       "sales_cart_id"=>$row['sales_cart_id'],
       "sale_id"=>$row['sale_id'],
       "departure_airport"=>$row['departure_airport'],

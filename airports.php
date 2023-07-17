@@ -33,7 +33,7 @@ else{
               <div class="row">
                   <div class="col-9"></div>
                   <div class="col-3">
-                      <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addCustomers">Add Customers</button>
+                      <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addCustomers">Add Airports</button>
                   </div>
               </div>
           </div>

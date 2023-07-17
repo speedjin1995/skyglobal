@@ -32,7 +32,7 @@ $empQuery = "select sales.id, sales.quotation_no, sales.sales_no, customers.cust
 sales.total_amount, sales.customer_notes, sales.internal_notes, sales.shipment_type, sales.created_by, sales.created_datetime, sales.updated_by, 
 sales.updated_datetime, users.name, sales.quoted_datetime, sales.paid_datetime, sales.shipped_datetime, sales.completed_datetime, sales.cancelled_datetime, 
 sales_cart.departure_airport, sales_cart.destination_airport, sales_cart.pickup_charge, sales_cart.export_clearances, sales_cart.air_ticket, sales_cart.flyers_fee,
-sales_cart.import_clearance, sales_cart.delivery_charges, sales_cart.total_amount from sales, customers, users, sales_cart".$searchQuery." limit ".$row.",".$rowperpage;
+sales_cart.import_clearance, sales_cart.delivery_charges, sales_cart.total_amount, sales_cart.extra_charges from sales, customers, users, sales_cart".$searchQuery." limit ".$row.",".$rowperpage;
 $empRecords = mysqli_query($db, $empQuery);
 $data = array();
 
@@ -67,6 +67,7 @@ while($row = mysqli_fetch_assoc($empRecords)) {
       "flyers_fee"=>$row['flyers_fee'],
       "import_clearance"=>$row['import_clearance'],
       "delivery_charges"=>$row['delivery_charges'],
+      "extra_charges"=>$row['extra_charges'],
       "total_amount"=>$row['total_amount']
     );
 }
