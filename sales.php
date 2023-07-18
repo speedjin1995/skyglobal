@@ -14,6 +14,8 @@ else{
   $customers2 = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
   $airport = $db->query("SELECT * FROM airport");
   $airport2 = $db->query("SELECT * FROM airport");
+  $airport3 = $db->query("SELECT * FROM airport");
+  $airport4 = $db->query("SELECT * FROM airport");
 }
 ?>
 
@@ -31,10 +33,18 @@ else{
 <section class="content">
 	<div class="container-fluid">
     <div class="row">
-      <div class="col-12">
+      <!--div class="col-12">
         <div class="card">
           <div class="card-header">
-            Filters
+            <div class="row">
+                <div class="col-8">Filter</div>
+                <div class="col-2">
+                  <button type="button" class="btn btn-block bg-gradient-success btn-sm" id="filterOrder">Filter</button>
+                </div>
+                <div class="col-2">
+                  <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addOrder">Create Mission Quotation</button>
+                </div>
+            </div>
           </div>
           <div class="card-body">
             <div class="row">
@@ -50,9 +60,8 @@ else{
                 </div>
               </div>
             </div>
-          </div><!-- /.card-body -->
         </div>
-      </div>
+      </div-->
       <div class="col-12">
         <div class="card">
           <div class="card-header">
@@ -67,9 +76,9 @@ else{
             <table id="tableforOrder" class="table table-bordered table-striped">
               <thead>
                 <tr>
+                  <th>Missions Details</th>
                   <th>Missions Quotation</th>
-                  <th>Details</th>
-                  <th>Status</th>
+                  <th>Missions Log</th>
                 </tr>
               </thead>
             </table>
@@ -228,6 +237,30 @@ else{
                     </div>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>Origin Airport</label>
+                      <select id="inputDepAirport" name="inputDepAirport" class="form-control">
+                        <option value="" selected disabled hidden>Please Select</option>
+                        <?php while($airportRow3=mysqli_fetch_assoc($airport3)){ ?>
+                          <option value="<?=$airportRow3['iata'] ?>"><?=$airportRow3['iata'] ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>Destination Airport</label>
+                      <select id="inputDesAirport" name="inputDesAirport" class="form-control">
+                        <option value="" selected disabled hidden>Please Select</option>
+                        <?php while($airportRow4=mysqli_fetch_assoc($airport4)){ ?>
+                          <option value="<?=$airportRow4['iata'] ?>"><?=$airportRow4['iata'] ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="card card-primary">
@@ -275,7 +308,7 @@ else{
                         <th>Dimension Length (cm)</th>
                         <th>Dimension Width (cm)</th>
                         <th>Dimension Height (cm)</th>
-                        <th>Action</th>
+                        <th>Delete</th>
                       </tr>
                     </thead>
                     <tbody id="shipmentlist"></tbody>
@@ -330,7 +363,7 @@ else{
                       <th>Departure Time</th>
                       <th>Arrival</th>
                       <th>Arrival time</th>
-                      <th>Action</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody id="TableId"></tbody>
@@ -534,13 +567,13 @@ $(function () {
       { 
         data: 'id',
         render: function ( data, type, row ) {
-          return order(row);
+          return details(row);
         }
       },
       { 
         data: 'id',
         render: function ( data, type, row ) {
-          return details(row);
+          return order(row);
         }
       },
       { 
@@ -598,6 +631,7 @@ $(function () {
     size2 = 0;
     size = 0;
     $("#newPieces").trigger('click');
+    $(".add-row").trigger('click');
     $('#newPieces').hide();
     $('[data-mask]').inputmask();
     $('#orderModal').modal('show');
@@ -739,7 +773,8 @@ $(function () {
 
   $("#shipmentlist").on('click', 'button[id^="remove"]', function () {
     var index = $(this).parents('.details').attr('data-index');
-    $("#shipmentlist").append('<input type="hidden" name="deletedShip[]" value="'+index+'"/>');
+    //$("#shipmentlist").append('<input type="hidden" name="deletedShip[]" value="'+index+'"/>');
+    size2--;
     $(this).parents('.details').remove();
   });
 
@@ -797,7 +832,8 @@ $(function () {
 
   $("#TableId").on('click', 'button[id^="remove"]', function () {
     var index = $(this).parents('.details').attr('data-index');
-    $("#TableId").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
+    //$("#TableId").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
+    size--;
     $(this).parents('.details').remove();
   });
   
@@ -938,21 +974,10 @@ $(function () {
     var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
     $("#inputTotalCharges").val(inputTotalCharges);
   });
-
-  
-
-  
 });
 
 function order(row) {
   var returnString = "";
-
-  if(row.sales_no != null && row.sales_no != ''){
-    returnString += '<div class="row"><div class="col-12">' + row.sales_no + '</div></div><br>';
-  }
-  else{
-    returnString += '<div class="row"><div class="col-12">' + row.quotation_no + '</div></div><br>';
-  }
 
   returnString += '<div class="row"><div class="col-8">Items</div><div class="col-4">Amount</div></div><hr>';
 
@@ -994,16 +1019,29 @@ function order(row) {
 }
 
 function details(row) {
-  return '<div class="row"><div class="col-12">Handler Name: ' + row.handled_by 
+  var returnString = "";
+
+  if(row.sales_no != null && row.sales_no != ''){
+    returnString += '<div class="row"><div class="col-12">' + row.sales_no + '</div></div><br>';
+  }
+  else{
+    returnString += '<div class="row"><div class="col-12">' + row.quotation_no + '</div></div><br>';
+  }
+
+  returnString += '<div class="row"><div class="col-12">Handler Name: ' + row.handled_by 
   + '</div></div><div class="row"><div class="col-12">Customer Name: ' + row.customer_name 
   + '</div></div><div class="row"><div class="col-12">Address: '+ row.customer_address 
   + '</div></div><div class="row"><div class="col-12">Contact Number: ' + row.contact_no 
   + '</div></div><div class="row"><div class="col-12">Email: ' + row.email 
   + '</div></div><div class="row"><div class="col-12">Shipment Type: '+ row.shipment_type 
-  + '</div></div><div class="row"><div class="col-12">Route: '+ row.departure_airport + ' -> ' + row.destination_airport 
+  + '</div></div><div class="row"><div class="col-12">Departure Airport: '+ row.departure_airport 
+  + '</div></div><div class="row"><div class="col-12">Destination Airport: '+ row.destination_airport 
+  + '</div></div><div class="row"><div class="col-12">Total Amount (USD): '+ row.total_amount 
   + '</div></div><div class="row"><div class="col-12">Notes (Internal): ' + row.internal_notes 
   + '</div></div><div class="row"><div class="col-12">Notes to Customer: ' + row.customer_notes 
   + '</div></div>';
+
+  return returnString;
 }
 
 function status(row) {
@@ -1026,10 +1064,24 @@ function status(row) {
   }
     
   returnString += '<p><small>Status:</small></p>';
-  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="shipped('+
-  row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div><div class="col-3"><button type="button" onclick="printQuote('+
-  row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
-  row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
+
+  if(row.shipped_datetime != null && row.shipped_datetime != ''){
+    returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
+    row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
+  }
+  else if(row.cancelled_datetime != null && row.cancelled_datetime != ''){
+    returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div></div>';
+  }
+  else{
+    returnString += '<div class="row"><div class="col-3"><button type="button" onclick="shipped('+
+    row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div><div class="col-3"><button type="button" onclick="printQuote('+
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
+    row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
+  }
+
+  
 
   //returnString += '<h5>Files:</h5>';
 

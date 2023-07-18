@@ -29,13 +29,16 @@ if(isset($_POST['jobID'], $_POST['jobStatus'])){
             $result = $select_stmt->get_result();
 
             if ($row = $result->fetch_assoc()) {
-                $jobLog = json_decode($row['log'], true);
+                if($row['log'] != null && $row['log'] != ''){
+                    $jobLog = json_decode($row['log'], true);
+                }
             }
 
             $select_stmt->close();
             array_push($jobLog, array(
                 'status' => $jobStatus,
-                'timestamp' => date("Y-m-d H:i:s")
+                'timestamp' => date("Y-m-d H:i:s"),
+                'images' => array()
             ));
             $jobLog = json_encode($jobLog);
             

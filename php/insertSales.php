@@ -48,6 +48,14 @@ $_POST['inputTotalCharges'])){
     $message = array();
     $message2 = array();
 
+    if(isset($_POST['inputDepAirport']) && $_POST['inputDepAirport'] != null && $_POST['inputDepAirport'] != ""){
+        $inputDepAirport = filter_input(INPUT_POST, 'inputDepAirport', FILTER_SANITIZE_STRING);
+    }
+
+    if(isset($_POST['inputDesAirport']) && $_POST['inputDesAirport'] != null && $_POST['inputDesAirport'] != ""){
+        $inputDesAirport = filter_input(INPUT_POST, 'inputDesAirport', FILTER_SANITIZE_STRING);
+    }
+
     if($_POST['inputNotesInternal'] != null && $_POST['inputNotesInternal'] != ""){
         $inputNotesInternal = filter_input(INPUT_POST, 'inputNotesInternal', FILTER_SANITIZE_STRING);
     }
@@ -141,11 +149,15 @@ $_POST['inputTotalCharges'])){
                 );
 
                 if($i == 0){
-                    $inputDepAirport = $departure[$i];
+                    if(!isset($_POST['inputDepAirport']) || $_POST['inputDepAirport'] == null || $_POST['inputDepAirport'] == ""){
+                        $inputDepAirport = $departure[$i];
+                    }
                 }
 
                 if($i == (count($route) - 1)){
-                    $inputDesAirport = $arrival[$i];
+                    if(!isset($_POST['inputDesAirport']) || $_POST['inputDesAirport'] != null || $_POST['inputDesAirport'] != ""){
+                        $inputDesAirport = $arrival[$i];
+                    }
                 }
             }
         }

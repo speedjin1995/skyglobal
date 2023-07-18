@@ -21,7 +21,7 @@ else{
     <div class="container-fluid">
         <div class="row mb-2">
 			<div class="col-sm-6">
-				<h1 class="m-0 text-dark">Jobs</h1>
+				<h1 class="m-0 text-dark">Missions</h1>
 			</div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -33,24 +33,21 @@ else{
     <div class="row">
       <div class="col-12">
         <div class="card">
-          <div class="card-header">
-            <!--div class="row">
-                <div class="col-9"></div>
-                <div class="col-3">
-                  <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addOrder">Create New Jobs</button>
-                </div>
-            </div-->
-          </div>
+          <!--div class="card-header">
+            <div class="row">
+              <div class="col-9"></div>
+              <div class="col-3">
+                <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addOrder">Create New Jobs</button>
+              </div>
+            </div>
+          </div-->
           <div class="card-body">
             <table id="tableforOrder" class="table table-bordered table-striped">
-              <thead>
+            <thead>
                 <tr>
-                  <th>Number of Carton</th>
-                  <th>Cargo Ready Time</th>
-                  <th>Picked Up Address</th>
-                  <th>Delivery Address</th>
-                  <th>Total Amount</th>
-                  <th></th>
+                  <th style="width: 35%;">Missions Details</th>
+                  <th style="width: 35%;">Missions Shipment Details</th>
+                  <th style="width: 30%;">Missions Log</th>
                 </tr>
               </thead>
             </table>
@@ -249,7 +246,7 @@ else{
                         <th>Dimension Length (cm)</th>
                         <th>Dimension Width (cm)</th>
                         <th>Dimension Height (cm)</th>
-                        <th>Action</th>
+                        <th>Delete</th>
                       </tr>
                     </thead>
                     <tbody id="shipmentlist"></tbody>
@@ -295,7 +292,7 @@ else{
                       <th>Departure Time</th>
                       <th>Arrival</th>
                       <th>Arrival time</th>
-                      <th>Action</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody id="TableId"></tbody>
@@ -436,6 +433,36 @@ else{
   <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="viewModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <form role="form" id="viewForm">
+        <div class="modal-header">
+          <h4 class="modal-title">View & upload Pitures</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="card card-primary">
+              <div class="card-body">
+                <div class="row" id="imagesList"></div>
+              </div>
+            </div>
+          </div><!-- /.container-fluid -->
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="submit" id="submitOrder">Save Change</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 <script type="text/html" id="addContents">
   <tr class="details">
     <td><input id="route" type="text" class="form-control" readonly></td>
@@ -541,23 +568,28 @@ $(function () {
       'url':'php/loadJobs.php'
     },
     'columns': [
-      { data: 'number_of_carton' },
-      { data: 'cargo_ready_time' },
-      { data: 'pickup_address' },
-      { data: 'delivery_address' },
-      { data: 'total_amount' },
       { 
-        className: 'dt-control',
-        orderable: false,
-        data: null,
+        data: 'id',
         render: function ( data, type, row ) {
-          return '<td class="table-elipse" data-toggle="collapse" data-target="#demo'+row.id+'"><i class="fas fa-angle-down"></i></td>';
+          return details(row);
+        }
+      },
+      { 
+        data: 'id',
+        render: function ( data, type, row ) {
+          return order(row);
+        }
+      },
+      { 
+        data: 'id',
+        render: function ( data, type, row ) {
+          return status(row);
         }
       }
     ]       
   });
 
-  $('#tableforOrder tbody').on('click', 'td.dt-control', function () {
+  /*$('#tableforOrder tbody').on('click', 'td.dt-control', function () {
     var tr = $(this).closest('tr');
     var row = table.row( tr );
 
@@ -569,7 +601,7 @@ $(function () {
     else {
       row.child( format(row.data()) ).show();tr.addClass("shown");
     }
-  });
+  });*/
 
   $('#inputCargoReadyTime').datetimepicker({
     icons: { time: 'far fa-clock' },
@@ -903,9 +935,100 @@ function format (row) {
   return returnString;
 }
 
+function order(row) {
+  var returnString = "";
+  var weightData = JSON.parse(row.weight_data);
+
+  returnString += '<div class="row"><div class="col-6"><p>Shipper Address: '+row.pickup_address+
+  '</p></div><div class="col-6"><p>Shipper PIC: '+row.pickup_pic+
+  '</p></div><div class="col-6"><p>Shipper PIC Contact: '+row.pickup_contact+
+  '</p></div><div class="col-6"><p>Shipper PIC Email: '+row.pickup_email+
+  '</p></div><div class="col-6"><p>Receiver Address: '+row.delivery_address+
+  '</p></div><div class="col-6"><p>Receiver PIC: '+row.delivery_pic+
+  '</p></div><div class="col-6"><p>Receiver PIC Contact: '+row.delivery_contact+
+  '</p></div><div class="col-6"><p>Receiver PIC Email: '+row.delivery_email+
+  '</p></div><div class="col-6"><p>Number of Cartons: '+row.number_of_carton+
+  '</p></div><div class="col-6"><p>Cargo Ready Time: '+row.cargo_ready_time+
+  '</p></div><div class="col-6"><p>Weight ('+((parseFloat(row.volumetric_weight) > parseFloat(row.total_cargo_weight)) ? 'Volumetric': 'Total Carton')+
+  '): '+((parseFloat(row.volumetric_weight) > parseFloat(row.total_cargo_weight)) ? row.volumetric_weight: row.total_cargo_weight)+'</p></div><div class="col-6"><div class="row"><div class="col-3"><button type="button" class="btn btn-warning btn-sm" onclick="edit('+row.sale_id+
+  ')"><i class="fas fa-pen"></i></button></div><div class="col-3"><button type="button" class="btn btn-success btn-sm" onclick="completed('+row.sale_id+
+  ')"><i class="fas fa-check-circle"></i></button></div><div class="col-3"><button type="button" class="btn btn-info btn-sm" onclick="printQuote('+row.sale_id+
+  ')"><i class="fas fa-print"></i></button></div><div class="col-3"><button type="button" class="btn btn-danger btn-sm" onclick="cancel('+row.sale_id+
+  ')"><i class="fas fa-trash"></i></button></div></div></div></div>';
+
+  returnString += '<br><h5>Cargo Details:</h5><table style="width: 100%;"><thead><tr><th>Piece Densed Weight</th><th>Dimension Length (cm)</th><th>Dimension Width (cm)</th><th>Dimension Height (cm)</th><th>Volumetric Weight</th></tr></thead><tbody>';
+  
+  for(var i=0; i<weightData.length; i++){
+    returnString += '<tr><td>'+weightData[i].Weight+' KG</td><td>'+weightData[i].L+'</td><td>'+weightData[i].W+'</td><td>'+weightData[i].H+'</td><td>'+calVolumetric(weightData[i].W, weightData[i].L, weightData[i].H, weightData[i].Unit).toString()+' KG</td></tr>';
+  }
+  
+  returnString += '</tbody></table><br><div class="row"><div class="col-6"><p>Volumetric Weight: '+row.volumetric_weight+
+  ' KG</p></div><div class="col-6"><p>Total Cargo Weight: '+row.total_cargo_weight+' KG</p></div></div>';
+
+  return returnString;
+}
+
+function details(row) {
+  var weightData = JSON.parse(row.route);
+  var returnString = '<div class="row"><div class="col-12">' + row.job_no + '</div></div><br>';
+
+  if(row.sales_no != null && row.sales_no != ''){
+    returnString += '<div class="row"><div class="col-12">Sales No.: ' + row.sales_no + '</div></div>';
+  }
+  else{
+    returnString += '<div class="row"><div class="col-12">Quotation No.: ' + row.quotation_no + '</div></div>';
+  }
+
+  returnString += '<div class="row"><div class="col-12">Handler Name: ' + row.handled_by 
+  + '</div></div><div class="row"><div class="col-12">Customer Name: ' + row.customer_name 
+  + '</div></div><div class="row"><div class="col-12">Address: '+ row.customer_address 
+  + '</div></div><div class="row"><div class="col-12">Contact Number: ' + row.contact_no 
+  + '</div></div><div class="row"><div class="col-12">Email: ' + row.email 
+  + '</div></div><div class="row"><div class="col-12">Shipment Type: '+ row.shipment_type 
+  + '</div></div><div class="row"><div class="col-12">Departure Airport: '+ row.departure_airport 
+  + '</div></div><div class="row"><div class="col-12">Destination Airport: '+ row.destination_airport 
+  + '</div></div><div class="row"><div class="col-12">Total Amount (USD): '+ row.total_amount 
+  + '</div></div><div class="row"><div class="col-12">Notes (Internal): ' + row.internal_notes 
+  + '</div></div><div class="row"><div class="col-12">Notes to Customer: ' + row.customer_notes 
+  + '</div></div>';
+
+  returnString += '<br><h5>Route Details:</h5><table style="width: 100%;"><thead><tr><th></th><th>Departure</th><th>Departure Time</th><th>Arrival</th><th>Arrival Time</th></tr></thead><tbody>';
+  
+  for(var i=0; i<weightData.length; i++){
+    returnString += '<tr><td>'+weightData[i].route+'</td><td>'+weightData[i].departure+'</td><td>'+weightData[i].depatureTime+'</td><td>'+weightData[i].arrival+'</td><td>'+weightData[i].arrivalTime+'</td></tr>';
+  }
+
+  returnString += '</tbody></table>';
+  return returnString;
+}
+
+function status(row) {
+  var returnString = '<div class="row"><div class="col-3"><h5>Status:</h5></div><div class="col-7"><select id="updateStatusDd'+row.id+'" class="form-control"><option value="" selected disabled hidden>Please Select</option><option value="Cargo collected">Cargo collected</option><option value="Cargo received by courier">Cargo received by courier</option><option value="Courier check-in cargo">Courier check-in cargo</option><option value="Customs clearance completed">Customs clearance completed</option><option value="Baggage confirmed on board">Baggage confirmed on board</option><option value="Courier boarded">Courier boarded</option><option value="Courier arrived">Courier arrived</option><option value="Cargo retrieved">Cargo retrieved</option><option value="Customs cleared">Customs cleared</option><option value="Courier has handed shipment">Courier has handed shipment</option></select></div><div class="col-2"><button type="button" class="btn btn-danger btn-sm" onclick="updateLog('+row.id+')">Update</button></div></div><hr>';
+  returnString += '<p>Job created at ' + row.created_datetime +'</p>';
+
+  if(row.log != null && row.log != ""){
+    var logData = JSON.parse(row.log);
+
+    for(var i=0; i<logData.length; i++){
+      returnString += '<p>' + logData[i].status + ' at ' + logData[i].timestamp +'<button type="button" class="btn btn-primary btn-sm" onclick="upload('+row.id+', '+logData[i].images+')"><i class="fas fa-eye"></i></button></p>';
+    }
+  }
+
+  return returnString;
+}
+
+function upload(id, images){
+  /*debugger;
+  for(var i=0; i<images.length; i++){
+    $('#viewModal').find('#imagesList').append('<div class="col-4"><img src="'+images[i]+'" width="100%"></div>');
+  }*/
+
+  $('#viewModal').modal('show');
+}
+
 function updateLog(id){
   $('#spinnerLoading').show();
-  var status = $('#updateStatusDd').val();
+  var status = $('#updateStatusDd' + id).val();
 
   $.post('php/updateLog.php', {jobID: id, jobStatus: status}, function(data){
     var obj = JSON.parse(data); 
@@ -924,6 +1047,30 @@ function updateLog(id){
     $('#spinnerLoading').hide();
   });
 }
+
+/*function status(row) {
+  var returnString = '<h5>Status:</h5><hr>';
+  returnString += '<p>Job created at ' + row.created_datetime +'</p>';
+  var statusList = ["Cargo collected", "Cargo received by courier", "Courier check-in cargo", "Customs clearance completed", "Baggage confirmed on board", "Courier boarded", "Courier arrived", "Cargo retrieved", "Customs cleared", "Courier has handed shipment"];
+  var statusList2 = [];
+
+  if(row.log != null && row.log != ""){
+    var logData = JSON.parse(row.log);
+
+    for(var i=0; i<logData.length; i++){
+      returnString += '<p>' + logData[i].status + ' at ' + logData[i].timestamp +'</p>';
+      statusList2.push(logData[i].status);
+    }
+  }
+
+  for(var i=0; i<statusList.length; i++){
+    if(!statusList2.includes(statusList[i])){
+      returnString += '<p>' + statusList[i] +'</p>';
+    }
+  }
+
+  return returnString;
+}*/
 
 function edit(id){
   $('#spinnerLoading').show();

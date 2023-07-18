@@ -179,7 +179,7 @@ else{
           <li class="nav-item">
             <a href="#jobs" data-file="jobs.php" class="nav-link link">
               <i class="nav-icon fas fa-tasks"></i>
-              <p>Jobs</p>
+              <p>Missions</p>
             </a>
           </li>
           <?php 
