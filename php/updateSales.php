@@ -12,7 +12,7 @@ if(isset($_POST['inputHandler'], $_POST['inputCustomerName'], $_POST['inputConta
 $_POST['inputPickupContactNum'], $_POST['inputPickupEmail'], $_POST['inputDeliveryAddress'], $_POST['inputDeliveryName'], $_POST['inputDeliveryContactNum'], $_POST['inputDeliveryEmail'], 
 $_POST['inputDimensionW'], $_POST['inputDimensionL'], $_POST['inputDimensionH'], $_POST['inputVolumetricWeight'],
 $_POST['inputNumberofCarton'], $_POST['inputTotalCartonWeight'], $_POST['cargoReadyTime'], $_POST['inputPickupName'], 
-$_POST['inputTotalCharges'])){
+$_POST['inputTotalCharges'], $_POST['inputFlyerName'])){
     $inputHandler = filter_input(INPUT_POST, 'inputHandler', FILTER_SANITIZE_STRING);
     $inputCustomerName = filter_input(INPUT_POST, 'inputCustomerName', FILTER_SANITIZE_STRING);
     $inputContactNum = filter_input(INPUT_POST, 'inputContactNum', FILTER_SANITIZE_STRING);
@@ -33,6 +33,7 @@ $_POST['inputTotalCharges'])){
     $inputNumberofCarton = filter_input(INPUT_POST, 'inputNumberofCarton', FILTER_SANITIZE_STRING);
     $inputTotalCartonWeight = filter_input(INPUT_POST, 'inputTotalCartonWeight', FILTER_SANITIZE_STRING);
     $inputTotalCharges = filter_input(INPUT_POST, 'inputTotalCharges', FILTER_SANITIZE_STRING);
+    $inputFlyerName = filter_input(INPUT_POST, 'inputFlyerName', FILTER_SANITIZE_STRING);
     $inputNotesInternal = "";
     $inputNotestoCustomer = "";
     $checkboxPickup = "NO";
@@ -95,15 +96,29 @@ $_POST['inputTotalCharges'])){
         $depatureTime = $_POST['depatureTime'];
         $arrival = $_POST['arrival'];
         $arrivalTime = $_POST['arrivalTime'];
+        $flightNo = $_POST['flightNo'];
 
         for($i=0; $i<count($route); $i++){
-            $message[] = array( 
-                'route' => $route[$i],
-                'departure' => $departure[$i],
-                'depatureTime' => $depatureTime[$i],
-                'arrival' => $arrival[$i],
-                'arrivalTime' => $arrivalTime[$i]
-            );
+            if($flightNo[$i] != null){
+                $message[] = array( 
+                    'route' => $route[$i],
+                    'departure' => $departure[$i],
+                    'depatureTime' => $depatureTime[$i],
+                    'arrival' => $arrival[$i],
+                    'arrivalTime' => $arrivalTime[$i],
+                    'flightNo' => $flightNo[$i]
+                );
+            }
+            else{
+                $message[] = array( 
+                    'route' => $route[$i],
+                    'departure' => $departure[$i],
+                    'depatureTime' => $depatureTime[$i],
+                    'arrival' => $arrival[$i],
+                    'arrivalTime' => $arrivalTime[$i],
+                    'flightNo' => ''
+                );
+            }
 
             if($i == 0){
                 $inputDepAirport = $departure[$i];
@@ -156,8 +171,8 @@ $_POST['inputTotalCharges'])){
                 $message2 = json_encode($message2);
                 $message3 = json_encode($message3);
                 
-                if ($update_stmt2 = $db->prepare("UPDATE sales_cart SET departure_airport = ?, destination_airport = ?, weight_data = ?, volumetric_weight = ?, number_of_carton = ?, total_cargo_weight = ?, cargo_ready_time = ?, pickup_address = ?, pickup_pic = ?, pickup_contact = ?, pickup_email = ?, delivery_address = ?, delivery_pic = ?, delivery_contact = ?, delivery_email = ?, route = ?, pickup_charge = ?, export_clearances = ?, air_ticket = ?, flyers_fee = ?, import_clearance = ?, delivery_charges = ?, extra_charges = ?, total_amount = ?  WHERE id=?")) {
-                    $update_stmt2->bind_param('sssssssssssssssssssssssss', $inputDepAirport, $inputDesAirport, $message2, $inputVolumetricWeight, $inputNumberofCarton, $inputTotalCartonWeight, $cargoReadyTime, $inputPickupAddress, $inputPickupName, $inputPickupContactNum, $inputPickupEmail, $inputDeliveryAddress, $inputDeliveryName, $inputDeliveryContactNum, $inputDeliveryEmail, $message, $inputPickupCharge, $inputExportClearances, $inputAirTicket, $inputFlyersFee, $inputImportClearance, $inputDeliveryCharges, $message3, $inputTotalCharges, $_POST['id']);
+                if ($update_stmt2 = $db->prepare("UPDATE sales_cart SET flyers = ?, departure_airport = ?, destination_airport = ?, weight_data = ?, volumetric_weight = ?, number_of_carton = ?, total_cargo_weight = ?, cargo_ready_time = ?, pickup_address = ?, pickup_pic = ?, pickup_contact = ?, pickup_email = ?, delivery_address = ?, delivery_pic = ?, delivery_contact = ?, delivery_email = ?, route = ?, pickup_charge = ?, export_clearances = ?, air_ticket = ?, flyers_fee = ?, import_clearance = ?, delivery_charges = ?, extra_charges = ?, total_amount = ?  WHERE id=?")) {
+                    $update_stmt2->bind_param('ssssssssssssssssssssssssss', $inputFlyerName, $inputDepAirport, $inputDesAirport, $message2, $inputVolumetricWeight, $inputNumberofCarton, $inputTotalCartonWeight, $cargoReadyTime, $inputPickupAddress, $inputPickupName, $inputPickupContactNum, $inputPickupEmail, $inputDeliveryAddress, $inputDeliveryName, $inputDeliveryContactNum, $inputDeliveryEmail, $message, $inputPickupCharge, $inputExportClearances, $inputAirTicket, $inputFlyersFee, $inputImportClearance, $inputDeliveryCharges, $message3, $inputTotalCharges, $_POST['id']);
                 
                     if (! $update_stmt2->execute()) {
                         echo json_encode(

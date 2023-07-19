@@ -50,8 +50,8 @@ else{
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <style>
     #image-preview {
-      width: 400px;
-      height: 400px;
+      width: 200px;
+      height: 200px;
       position: relative;
       overflow: hidden;
       background-color: #ffffff;
@@ -86,8 +86,8 @@ else{
     }
 
     #image-preview2 {
-      width: 400px;
-      height: 400px;
+      width: 200px;
+      height: 200px;
       position: relative;
       overflow: hidden;
       background-color: #ffffff;
@@ -103,6 +103,42 @@ else{
     }
 
     #image-preview2 label {
+      position: absolute;
+      z-index: 5;
+      opacity: 0.8;
+      cursor: pointer;
+      background-color: #bdc3c7;
+      width: 200px;
+      height: 50px;
+      font-size: 20px;
+      line-height: 50px;
+      text-transform: uppercase;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      text-align: center;
+    }
+
+    #image-preview3 {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      background-color: #ffffff;
+      color: #ecf0f1;
+    }
+
+    #image-preview3 input {
+      line-height: 200px;
+      font-size: 200px;
+      position: absolute;
+      opacity: 0;
+      z-index: 10;
+    }
+
+    #image-preview3 label {
       position: absolute;
       z-index: 5;
       opacity: 0.8;

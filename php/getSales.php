@@ -11,7 +11,8 @@ if(isset($_POST['userID'])){
     sales_cart.number_of_carton, sales_cart.volumetric_weight, sales_cart.total_cargo_weight, sales_cart.cargo_ready_time, sales_cart.pickup_address, 
     sales_cart.pickup_pic, sales_cart.pickup_contact, sales_cart.pickup_email, sales_cart.delivery_address, sales_cart.delivery_pic, sales_cart.delivery_contact,
     sales_cart.delivery_email, sales_cart.route, sales_cart.pickup_charge, sales_cart.export_clearances, sales_cart.air_ticket, sales_cart.flyers_fee, 
-    sales_cart.import_clearance, sales_cart.delivery_charges, sales_cart.total_amount, sales_cart.id, sales_cart.extra_charges FROM sales, sales_cart WHERE sales.id = sales_cart.sale_id AND sales.id=?")) {
+    sales_cart.import_clearance, sales_cart.delivery_charges, sales_cart.total_amount, sales_cart.id, sales_cart.extra_charges, sales_cart.flyers FROM sales, sales_cart 
+    WHERE sales.id = sales_cart.sale_id AND sales.id=?")) {
         $update_stmt->bind_param('s', $id);
         
         // Execute the prepared query.
@@ -62,6 +63,7 @@ if(isset($_POST['userID'])){
                 $message['extra_charges'] = $row['extra_charges'];
                 $message['total_amount'] = $row['total_amount'];
                 $message['id'] = $row['id'];
+                $message['flyers'] = $row['flyers'];
             }
             
             echo json_encode(

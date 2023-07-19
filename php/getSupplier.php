@@ -29,6 +29,9 @@ if(isset($_POST['userID'])){
                 $message['supplier_email'] = $row['supplier_email'];
                 $message['passport'] = $row['passport'];
                 $message['passport_expiry_date'] = $row['passport_expiry_date'];
+                $message['picture'] = $row['picture'];
+                $message['passport_pic'] = $row['passport_pic'];
+                $message['visa_pic'] = $row['visa_pic'];
             }
             
             echo json_encode(

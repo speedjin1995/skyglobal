@@ -14,6 +14,7 @@ else{
   $customers2 = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
   $airport = $db->query("SELECT * FROM airport");
   $airport2 = $db->query("SELECT * FROM airport");
+  $suppliers = $db->query("SELECT * FROM suppliers WHERE supplier_status = '0'");
 }
 ?>
 
@@ -281,17 +282,65 @@ else{
             <div class="card card-primary">
               <div class="card-body">
                 <div class="row">
-                  <h4>Job Quotation Route Informations</h4>
+                  <h4>Missions Flyer Informations</h4>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="inputFlyerName">Flyers Name</label>
+                      <select class="form-control" style="width: 100%;" id="inputFlyerName" name="inputFlyerName">
+                        <option value="" selected disabled hidden>Please Select</option>
+                        <?php while($suppliersRow=mysqli_fetch_assoc($suppliers)){ ?>
+                          <option value="<?=$suppliersRow['id'] ?>"><?=$suppliersRow['supplier_name'] ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPhoneNo">Flyers Phone</label>
+                      <input type="text" class="form-control" id="flyerPhoneNo" name="flyerPhoneNo" placeholder="Example: 01X-1234567" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerEmail">Flyers Email</label>
+                      <input type="text" class="form-control" id="flyerEmail" name="flyerEmail" placeholder="Example: abc@mail.com" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassport">Flyers Passport</label>
+                      <input type="text" class="form-control" id="flyerPassport" name="flyerPassport" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassportExpiry">Passport Expiry Date</label>
+                      <input type="text" class="form-control" id="flyerPassportExpiry" name="flyerPassportExpiry" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                  <!--div class="col-4">
+                    <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary" id="viewDetails">View Details</button>
+                  </div-->
+                </div>
+              </div>
+            </div>
+            <div class="card card-primary">
+              <div class="card-body">
+                <div class="row">
+                  <h4>Missions Route Informations</h4>
                   <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary add-row">Add Route</button>
                 </div>
                 <table style="width: 100%;">
                   <thead>
                     <tr>
                       <th>Route</th>
+                      <th>Flight No</th>
                       <th>Departure</th>
-                      <th>Departure Time</th>
+                      <th>Departure Date & Time</th>
                       <th>Arrival</th>
-                      <th>Arrival time</th>
+                      <th>Arrival Date & Time</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -383,7 +432,6 @@ else{
                 </div>
               </div>
             </div>
-
             <div class="card card-primary">
               <div class="card-body">
                 <div class="row">
@@ -417,6 +465,12 @@ else{
                       </div>
                     </div>
                   </div>
+                  <!--div class="col-4">
+                    <div class="form-group" id="pickupCharges">
+                      <label>Customer Reference</label>
+                      <input type="text" class="form-control" id="custumerRef" name="custumerRef" placeholder="Enter Customer PO" />
+                    </div>
+                  </div-->
                 </div>
               </div>
             </div>
@@ -530,9 +584,75 @@ else{
   <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="flyersModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <form role="form" id="viewForm">
+        <div class="modal-header">
+          <h4 class="modal-title">View flyer details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="card card-primary">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4" id="profile"></div>
+                  <div class="col-4" id="passport"></div>
+                  <div class="col-4" id="visa"></div>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPhoneNo">Flyers Name</label>
+                      <input type="text" class="form-control" id="flyerNameView" name="flyerNameView" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPhoneNo">Flyers Phone</label>
+                      <input type="text" class="form-control" id="flyerPhoneNoView" name="flyerPhoneNoView" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerEmail">Flyers Email</label>
+                      <input type="text" class="form-control" id="flyerEmailView" name="flyerEmailView" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassport">Flyers Passport</label>
+                      <input type="text" class="form-control" id="flyerPassportView" name="flyerPassportView" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassportExpiry">Passport Expiry Date</label>
+                      <input type="text" class="form-control" id="flyerPassportExpiryView" name="flyerPassportExpiryView" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.container-fluid -->
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 <script type="text/html" id="addContents">
   <tr class="details">
     <td><input id="route" type="text" class="form-control" readonly></td>
+    <td><input id="flightNo" type="text" class="form-control"></td>
     <td>
       <select id="departure" class="form-control">
         <option value="" selected disabled hidden>Please Select</option>
@@ -761,6 +881,27 @@ $(function () {
     }
   });
 
+  $("#inputFlyerName").change(function(){
+    var id = $(this).val();
+
+    $.post('php/getSupplier.php', {userID: id}, function(data){
+      var obj = JSON.parse(data);
+      
+      if(obj.status === 'success'){
+        $('#flyerPhoneNo').val(obj.message.supplier_phone);
+        $('#flyerEmail').val(obj.message.supplier_email);
+        $('#flyerPassport').val(obj.message.passport);
+        $('#flyerPassportExpiry').val(obj.message.passport_expiry_date);
+      }
+      else if(obj.status === 'failed'){
+          toastr["error"](obj.message, "Failed:");
+      }
+      else{
+          toastr["error"]("Something wrong when activate", "Failed:");
+      }
+    });
+  });
+
   $('#addOrder').on('click', function(){
     $('#orderModal').find('#id').val("");
     $('#orderModal').find('#inputHandler').val("<?=$user ?>");
@@ -810,6 +951,7 @@ $(function () {
     $("#TableId").find('#remove:last').attr("id", "remove" + size);
 
     $("#TableId").find('#route:last').attr('name', 'route['+size+']').attr("id", "route" + size).val((size+1).toString());
+    $("#TableId").find('#flightNo:last').attr('name', 'flightNo['+size+']').attr("id", "flightNo" + size);
     $("#TableId").find('#departure:last').attr('name', 'departure['+size+']').attr("id", "departure" + size);
     $("#TableId").find('#depatureTime:last').attr('name', 'depatureTime['+size+']').attr("id", "depatureTime" + size).attr("data-target", "#depatureTimePicker" + size);
     $("#TableId").find('#arrival:last').attr('name', 'arrival['+size+']').attr("id", "arrival" + size);
@@ -1081,7 +1223,8 @@ function order(row) {
   ')"><i class="fas fa-pen"></i></button></div><div class="col-3"><button type="button" class="btn btn-success btn-sm" onclick="completed('+row.sale_id+
   ')"><i class="fas fa-check-circle"></i></button></div><div class="col-3"><button type="button" class="btn btn-info btn-sm" onclick="printQuote('+row.sale_id+
   ')"><i class="fas fa-print"></i></button></div><div class="col-3"><button type="button" class="btn btn-danger btn-sm" onclick="cancel('+row.sale_id+
-  ')"><i class="fas fa-trash"></i></button></div></div></div></div>';
+  ')"><i class="fas fa-trash"></i></button></div></div></div></div><div class="row"><div class="col-6"><p>Flyer Name: '+row.supplier_name+' '+row.last_name+
+  '<button type="button" class="btn btn-primary btn-sm" onclick="flyerDetails('+row.flyers+')"><i class="fas fa-eye"></i></button></p></div></div>';
 
   returnString += '<br><h5>Cargo Details:</h5><table style="width: 100%;"><thead><tr><th>Piece Densed Weight</th><th>Dimension Length (cm)</th><th>Dimension Width (cm)</th><th>Dimension Height (cm)</th><th>Volumetric Weight</th></tr></thead><tbody>';
   
@@ -1164,6 +1307,31 @@ function upload(id, images, status){
   jobStatus = status;
 
   $('#viewModal').modal('show');
+}
+
+function flyerDetails(id){
+  $('#spinnerLoading').show();
+
+  $.post('php/getSupplier.php', {userID: id}, function(data){
+    var obj = JSON.parse(data);
+    
+    if(obj.status === 'success'){
+      $('#flyerPhoneNoView').val(obj.message.supplier_phone);
+      $('#flyerEmailView').val(obj.message.supplier_email);
+      $('#flyerPassportView').val(obj.message.passport);
+      $('#flyerPassportExpiryView').val(obj.message.passport_expiry_date);
+      $('#profile').html('<img src="assets/'+obj.message.picture+'" width="100%">');
+      $('#passport').html('<img src="assets/'+obj.message.passport_pic+'" width="100%">');
+      $('#visa').html('<img src="assets/'+obj.message.visa_pic+'" width="100%">');
+      $('#flyersModal').modal('show');
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when activate", "Failed:");
+    }
+  });
 }
 
 function updateLog(id){
@@ -1267,6 +1435,10 @@ function edit(id){
         size2++;
       }
 
+      // Flyer Info
+      $('#orderModal').find("#inputFlyerName").val(obj.message.flyers);
+      $('#orderModal').find("#inputFlyerName").trigger('change');
+
       // Route Info
       var routeData = JSON.parse(obj.message.route);
 
@@ -1279,6 +1451,7 @@ function edit(id){
         $("#TableId").find('#remove:last').attr("id", "remove" + size);
 
         $("#TableId").find('#route:last').attr('name', 'route['+size+']').attr("id", "route" + size).val(routeData[i].route);
+        $("#TableId").find('#flightNo:last').attr('name', 'flightNo['+size+']').attr("id", "flightNo" + size).val(routeData[i].flightNo);
         $("#TableId").find('#departure:last').attr('name', 'departure['+size+']').attr("id", "departure" + size).val(routeData[i].departure);
         $("#TableId").find('#depatureTime:last').attr('name', 'depatureTime['+size+']').attr("id", "depatureTime" + size).attr("data-target", "#depatureTimePicker" + size).val(routeData[i].depatureTime);
         $("#TableId").find('#arrival:last').attr('name', 'arrival['+size+']').attr("id", "arrival" + size).val(routeData[i].arrival);

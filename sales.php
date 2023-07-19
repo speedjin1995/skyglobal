@@ -12,6 +12,8 @@ else{
   $users = $db->query("SELECT * FROM users WHERE deleted = '0'");
   $customers = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
   $customers2 = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
+  $suppliers = $db->query("SELECT * FROM suppliers WHERE supplier_status = '0'");
+  $suppliers2 = $db->query("SELECT * FROM suppliers WHERE supplier_status = '0'");
   $airport = $db->query("SELECT * FROM airport");
   $airport2 = $db->query("SELECT * FROM airport");
   $airport3 = $db->query("SELECT * FROM airport");
@@ -193,7 +195,7 @@ else{
                   <div class="col-3">
                     <div class="form-group">
                       <label for="inputEmail">Pickup Company PIC</label>
-                      <input type="text" class="form-control" id="inputPickupName" name="inputPickupName" placeholder="Example: dummy@mail.com">
+                      <input type="text" class="form-control" id="inputPickupName" name="inputPickupName" placeholder="Example: John Wick">
                     </div>
                   </div>
                   <div class="col-3">
@@ -220,7 +222,7 @@ else{
                   <div class="col-3">
                     <div class="form-group">
                       <label for="inputEmail">Delivery Company PIC</label>
-                      <input type="text" class="form-control" id="inputDeliveryName" name="inputDeliveryName" placeholder="Example: dummy@mail.com">
+                      <input type="text" class="form-control" id="inputDeliveryName" name="inputDeliveryName" placeholder="Example: John Wick">
                     </div>
                   </div>
                   <div class="col-3">
@@ -238,7 +240,7 @@ else{
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col-4">
                     <div class="form-group">
                       <label>Origin Airport</label>
                       <select id="inputDepAirport" name="inputDepAirport" class="form-control">
@@ -249,7 +251,7 @@ else{
                       </select>
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col-4">
                     <div class="form-group">
                       <label>Destination Airport</label>
                       <select id="inputDesAirport" name="inputDesAirport" class="form-control">
@@ -257,6 +259,15 @@ else{
                         <?php while($airportRow4=mysqli_fetch_assoc($airport4)){ ?>
                           <option value="<?=$airportRow4['iata'] ?>"><?=$airportRow4['iata'] ?></option>
                         <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>FTZ</label>
+                      <select id="ftz" name="ftz" class="form-control">
+                        <option value="Y">Yes</option>
+                        <option value="N" selected>No</option>
                       </select>
                     </div>
                   </div>
@@ -281,10 +292,19 @@ else{
                       </div>
                     </div>
                   </div>
-                  <div class="col-3">
+                  <div class="col-2">
                     <div class="form-group">
                       <label>Number of Carton</label>
                       <input id="inputNumberofCarton" name="inputNumberofCarton" type="number" class="form-control" value="1">
+                    </div>
+                  </div>
+                  <div class="col-2" id="unitsCol">
+                    <div class="form-group">
+                      <label>Units</label>
+                      <select id="inputUnit" name="inputUnit" class="form-control">
+                        <option value="CM" selected>CM</option>
+                        <option value="M">M</option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-3">
@@ -296,7 +316,7 @@ else{
                       </select>
                     </div>
                   </div>
-                  <div class="col-3">
+                  <div class="col-2">
                     <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary new-pieces" id="newPieces">Add New Pieces</button>
                   </div>
                 </div>
@@ -315,15 +335,6 @@ else{
                   </table>
                 </div>
                 <div class="row">
-                  <div class="col-2" id="unitsCol">
-                    <div class="form-group">
-                      <label>Units</label>
-                      <select id="inputUnit" name="inputUnit" class="form-control">
-                        <option value="CM" selected>CM</option>
-                        <option value="M">M</option>
-                      </select>
-                    </div>
-                  </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label>Total Volumetric Weight</label>
@@ -352,17 +363,65 @@ else{
             <div class="card card-primary">
               <div class="card-body">
                 <div class="row">
-                  <h4>Job Quotation Route Informations</h4>
+                  <h4>Missions Flyer Informations</h4>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="inputFlyerName">Flyers Name</label>
+                      <select class="form-control" style="width: 100%;" id="inputFlyerName" name="inputFlyerName">
+                        <option value="" selected disabled hidden>Please Select</option>
+                        <?php while($suppliersRow=mysqli_fetch_assoc($suppliers)){ ?>
+                          <option value="<?=$suppliersRow['id'] ?>"><?=$suppliersRow['supplier_name'] ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPhoneNo">Flyers Phone</label>
+                      <input type="text" class="form-control" id="flyerPhoneNo" name="flyerPhoneNo" placeholder="Example: 01X-1234567" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerEmail">Flyers Email</label>
+                      <input type="text" class="form-control" id="flyerEmail" name="flyerEmail" placeholder="Example: abc@mail.com" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassport">Flyers Passport</label>
+                      <input type="text" class="form-control" id="flyerPassport" name="flyerPassport" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassportExpiry">Passport Expiry Date</label>
+                      <input type="text" class="form-control" id="flyerPassportExpiry" name="flyerPassportExpiry" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                  <!--div class="col-4">
+                    <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary" id="viewDetails">View Details</button>
+                  </div-->
+                </div>
+              </div>
+            </div>
+            <div class="card card-primary">
+              <div class="card-body">
+                <div class="row">
+                  <h4>Missions Route Informations</h4>
                   <button style="margin-left:auto;margin-right: 25px;" type="button" class="btn btn-primary add-row">Add Route</button>
                 </div>
                 <table style="width: 100%;">
                   <thead>
                     <tr>
                       <th>Route</th>
+                      <th>Flight No</th>
                       <th>Departure</th>
-                      <th>Departure Time</th>
+                      <th>Departure Date & Time</th>
                       <th>Arrival</th>
-                      <th>Arrival time</th>
+                      <th>Arrival Date & Time</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
@@ -373,10 +432,14 @@ else{
             <div class="card card-primary">
               <div class="card-body">
                 <div class="row">
+                  <h4>Missions Quotation </h4>
+                  <p style="color: red;" id="ftzLabel"> **Please take note that this is a FTZ quotation **</p>
+                </div>
+                <div class="row">
                   <div class="col-4">
                     <div class="form-group" id="pickupCharges">
                       <label>
-                        Pickup Charge &nbsp&nbsp
+                        Pickup Charge &nbsp&nbsp 
                         <input type="checkbox" id="checkboxPickup" name="checkboxPickup">Excluded</input>
                       </label>
                       <div class="input-group">
@@ -468,6 +531,12 @@ else{
                       </div>
                     </div>
                   </div>
+                  <div class="col-4">
+                    <div class="form-group" id="pickupCharges">
+                      <label>Customer Reference</label>
+                      <input type="text" class="form-control" id="custumerRef" name="custumerRef" placeholder="Enter Customer PO"/>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -484,9 +553,148 @@ else{
   <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="viewModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <form role="form" id="viewForm">
+        <div class="modal-header">
+          <h4 class="modal-title">View flyer details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="card card-primary">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4" id="profile"></div>
+                  <div class="col-4" id="passport"></div>
+                  <div class="col-4" id="visa"></div>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPhoneNo">Flyers Name</label>
+                      <input type="text" class="form-control" id="flyerNameView" name="flyerNameView" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPhoneNo">Flyers Phone</label>
+                      <input type="text" class="form-control" id="flyerPhoneNoView" name="flyerPhoneNoView" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerEmail">Flyers Email</label>
+                      <input type="text" class="form-control" id="flyerEmailView" name="flyerEmailView" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassport">Flyers Passport</label>
+                      <input type="text" class="form-control" id="flyerPassportView" name="flyerPassportView" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassportExpiry">Passport Expiry Date</label>
+                      <input type="text" class="form-control" id="flyerPassportExpiryView" name="flyerPassportExpiryView" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.container-fluid -->
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="editModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <form role="form" id="editForm">
+        <div class="modal-header">
+          <h4 class="modal-title">Choose flyer details</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="card card-primary">
+              <div class="card-body">
+                <input type="hidden" class="form-control" id="id" name="id">
+                <input type="hidden" class="form-control" id="saleId" name="saleId">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPhoneNo">Flyers Name</label>
+                      <select class="form-control" style="width: 100%;" id="inputFlyerNameEdit" name="inputFlyerNameEdit">
+                        <option value="" selected disabled hidden>Please Select</option>
+                        <?php while($suppliersRow2=mysqli_fetch_assoc($suppliers2)){ ?>
+                          <option value="<?=$suppliersRow2['id'] ?>"><?=$suppliersRow2['supplier_name'] ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPhoneNo">Flyers Phone</label>
+                      <input type="text" class="form-control" id="flyerPhoneNoEdit" name="flyerPhoneNoEdit" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerEmail">Flyers Email</label>
+                      <input type="text" class="form-control" id="flyerEmailEdit" name="flyerEmailEdit" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassport">Flyers Passport</label>
+                      <input type="text" class="form-control" id="flyerPassportEdit" name="flyerPassportEdit" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="flyerPassportExpiry">Passport Expiry Date</label>
+                      <input type="text" class="form-control" id="flyerPassportExpiryEdit" name="flyerPassportExpiryEdit" placeholder="Example: A1234xxxx" readonly>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-4" id="profileE"></div>
+                  <div class="col-4" id="passportE"></div>
+                  <div class="col-4" id="visaE"></div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.container-fluid -->
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="submit" id="submitFlyers">Save Change</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 <script type="text/html" id="addContents">
   <tr class="details">
     <td><input id="route" type="text" class="form-control" readonly></td>
+    <td><input id="flightNo" type="text" class="form-control"></td>
     <td>
       <select id="departure" class="form-control">
         <option value="" selected disabled hidden>Please Select</option>
@@ -606,10 +814,29 @@ $(function () {
           $('#spinnerLoading').hide();
         });
       }
+      else if($('#editModal').hasClass('show')){
+        $('#spinnerLoading').show();
+        $.post('php/updateSalesCart.php', $('#editForm').serialize(), function(data){
+          var obj = JSON.parse(data); 
+          if(obj.status === 'success'){
+            $('#editModal').modal('hide');
+            shipped($('#editModal').find('#saleId').val());
+          }
+          else if(obj.status === 'failed'){
+            toastr["error"](obj.message, "Failed:");
+          }
+          else{
+            toastr["error"]("Something wrong when edit", "Failed:");
+          }
+
+          $('#spinnerLoading').hide();
+        });
+      }
     }
   });
 
-  $('#unitsCol').hide();
+  //$('#unitsCol').hide();
+  $('#ftzLabel').hide();
 
   $('#inputCargoReadyTime').datetimepicker({
     icons: { time: 'far fa-clock' },
@@ -673,43 +900,82 @@ $(function () {
   $("#inputShipmentType").change(function(){
     if($('#inputShipmentType').val() == 'Airport to airport'){
       $('#inputAirTicket').attr('readonly', false);
+      $('#checkboxAir').prop('checked', false);
       $('#inputFlyersFee').attr('readonly', false);
+      $('#checkboxFlyers').prop('checked', false);
       $("#inputPickupCharge").attr('readonly', true);
+      $('#checkboxPickup').prop('checked', true);
       $('#inputExportClearances').attr('readonly', true);
+      $('#checkboxExport').prop('checked', true);
       $('#inputImportClearance').attr('readonly', true);
+      $('#checkboxImport').prop('checked', true);
       $('#inputDeliveryCharges').attr('readonly', true);
+      $('#checkboxDelivery').prop('checked', true);
     }
     else if($('#inputShipmentType').val() == 'Door to origin airport'){
       $("#inputPickupCharge").attr('readonly', false);
+      $('#checkboxPickup').prop('checked', false);
       $('#inputExportClearances').attr('readonly', false);
+      $('#checkboxExport').prop('checked', false);
       $('#inputAirTicket').attr('readonly', true);
+      $('#checkboxAir').prop('checked', true);
       $('#inputFlyersFee').attr('readonly', true);
+      $('#checkboxFlyers').prop('checked', true);
       $('#inputImportClearance').attr('readonly', true);
+      $('#checkboxImport').prop('checked', true);
       $('#inputDeliveryCharges').attr('readonly', true);
+      $('#checkboxDelivery').prop('checked', true);
     }
     else if($('#inputShipmentType').val() == 'Door to destination airport'){
       $("#inputPickupCharge").attr('readonly', false);
+      $('#checkboxPickup').prop('checked', false);
       $('#inputExportClearances').attr('readonly', false);
+      $('#checkboxExport').prop('checked', false);
       $('#inputAirTicket').attr('readonly', false);
+      $('#checkboxAir').prop('checked', false);
       $('#inputFlyersFee').attr('readonly', false);
+      $('#checkboxFlyers').prop('checked', false);
       $('#inputImportClearance').attr('readonly', true);
+      $('#checkboxImport').prop('checked', true);
       $('#inputDeliveryCharges').attr('readonly', true);
+      $('#checkboxDelivery').prop('checked', true);
     }
     else if($('#inputShipmentType').val() == 'Airport to door'){
       $('#inputPickupCharge').attr('readonly', true);
+      $('#checkboxPickup').prop('checked', true);
       $('#inputExportClearances').attr('readonly', true);
+      $('#checkboxExport').prop('checked', true);
       $('#inputAirTicket').attr('readonly', true);
+      $('#checkboxAir').prop('checked', true);
       $('#inputFlyersFee').attr('readonly', true);
+      $('#checkboxFlyers').prop('checked', true);
       $('#inputImportClearance').attr('readonly', false);
+      $('#checkboxImport').prop('checked', false);
       $('#inputDeliveryCharges').attr('readonly', false);
+      $('#checkboxDelivery').prop('checked', false);
     }
     else if($('#inputShipmentType').val() == 'Origin Airport to door'){
       $('#inputPickupCharge').attr('readonly', true);
+      $('#checkboxPickup').prop('checked', true);
       $('#inputExportClearances').attr('readonly', true);
+      $('#checkboxExport').prop('checked', true);
       $('#inputAirTicket').attr('readonly', false);
+      $('#checkboxAir').prop('checked', false);
       $('#inputFlyersFee').attr('readonly', false);
+      $('#checkboxFlyers').prop('checked', false);
       $('#inputImportClearance').attr('readonly', false);
+      $('#checkboxImport').prop('checked', false);
       $('#inputDeliveryCharges').attr('readonly', false);
+      $('#checkboxDelivery').prop('checked', false);
+    }
+  });
+
+  $('#ftz').change(function(){
+    if($(this).val() == 'Y'){
+      $('#ftzLabel').show();
+    }
+    else{
+      $('#ftzLabel').hide();
     }
   });
 
@@ -722,6 +988,7 @@ $(function () {
     $("#TableId").find('#remove:last').attr("id", "remove" + size);
 
     $("#TableId").find('#route:last').attr('name', 'route['+size+']').attr("id", "route" + size).val((size+1).toString());
+    $("#TableId").find('#flightNo:last').attr('name', 'flightNo['+size+']').attr("id", "flightNo" + size);
     $("#TableId").find('#departure:last').attr('name', 'departure['+size+']').attr("id", "departure" + size);
     $("#TableId").find('#depatureTime:last').attr('name', 'depatureTime['+size+']').attr("id", "depatureTime" + size).attr("data-target", "#depatureTimePicker" + size);
     $("#TableId").find('#arrival:last').attr('name', 'arrival['+size+']').attr("id", "arrival" + size);
@@ -828,6 +1095,27 @@ $(function () {
     var inputTotalCharges = $('#inputTotalCartonWeight').val();
     var newWeight = parseFloat(inputTotalCharges) + parseFloat(inputCartonPiecesWeight);
     $("#inputTotalCartonWeight").val(parseFloat(newWeight).toFixed(2));
+  });
+
+  $("#inputFlyerName").change(function(){
+    var id = $(this).val();
+
+    $.post('php/getSupplier.php', {userID: id}, function(data){
+      var obj = JSON.parse(data);
+      
+      if(obj.status === 'success'){
+        $('#flyerPhoneNo').val(obj.message.supplier_phone);
+        $('#flyerEmail').val(obj.message.supplier_email);
+        $('#flyerPassport').val(obj.message.passport);
+        $('#flyerPassportExpiry').val(obj.message.passport_expiry_date);
+      }
+      else if(obj.status === 'failed'){
+          toastr["error"](obj.message, "Failed:");
+      }
+      else{
+          toastr["error"]("Something wrong when activate", "Failed:");
+      }
+    });
   });
 
   $("#TableId").on('click', 'button[id^="remove"]', function () {
@@ -974,6 +1262,30 @@ $(function () {
     var inputTotalCharges = calTotal(inputPickupCharge, inputExportClearances, inputAirTicket, inputFlyersFee, inputImportClearance, inputDeliveryCharges);
     $("#inputTotalCharges").val(inputTotalCharges);
   });
+
+  $("#inputFlyerNameEdit").change(function(){
+    var id = $(this).val();
+
+    $.post('php/getSupplier.php', {userID: id}, function(data){
+      var obj = JSON.parse(data);
+      
+      if(obj.status === 'success'){
+        $('#flyerPhoneNoEdit').val(obj.message.supplier_phone);
+        $('#flyerEmailEdit').val(obj.message.supplier_email);
+        $('#flyerPassportEdit').val(obj.message.passport);
+        $('#flyerPassportExpiryEdit').val(obj.message.passport_expiry_date);
+        $('#profileE').html('<img src="assets/'+obj.message.picture+'" width="100%">');
+        $('#passportE').html('<img src="assets/'+obj.message.passport_pic+'" width="100%">');
+        $('#visaE').html('<img src="assets/'+obj.message.visa_pic+'" width="100%">');
+      }
+      else if(obj.status === 'failed'){
+          toastr["error"](obj.message, "Failed:");
+      }
+      else{
+          toastr["error"]("Something wrong when activate", "Failed:");
+      }
+    });
+  });
 });
 
 function order(row) {
@@ -1081,8 +1393,6 @@ function status(row) {
     row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
   }
 
-  
-
   //returnString += '<h5>Files:</h5>';
 
   return returnString;
@@ -1130,12 +1440,55 @@ function paid(id) {
 
 function shipped(id) {
   $('#spinnerLoading').show();
-  $.post('php/shipSales.php', {salesID: id}, function(data){
+  $.post('php/checkFlyers.php', {salesID: id}, function(data){
     var obj = JSON.parse(data); 
     
     if(obj.status === 'success'){
-      toastr["success"](obj.message, "Success:");
-      $('#tableforOrder').DataTable().ajax.reload();
+      if(obj.message.flyers != null && obj.message.flyers != "" && obj.message.flyers != "0"){
+        $.post('php/shipSales.php', {salesID: id}, function(data){
+          var obj = JSON.parse(data); 
+          
+          if(obj.status === 'success'){
+            toastr["success"](obj.message, "Success:");
+            $('#tableforOrder').DataTable().ajax.reload();
+          }
+          else if(obj.status === 'failed'){
+            toastr["error"](obj.message, "Failed:");
+          }
+          else{
+            toastr["error"]("Something wrong when edit", "Failed:");
+          }
+
+          $('#spinnerLoading').hide();
+        });
+      }
+      else{
+        $('#editModal').find('#id').val(obj.message.id);
+        $('#editModal').find('#saleId').val(id);
+        $('#editModal').find('#inputFlyerNameEdit').val("");
+        $('#editModal').find('#flyerPhoneNoEdit').val("");
+        $('#editModal').find('#flyerEmailEdit').val("");
+        $('#editModal').find('#flyerPassportEdit').val("");
+        $('#editModal').find('#flyerPassportExpiryEdit').val("");
+        $('#editModal').find('#profileE').html("");
+        $('#editModal').find('#passportE').html("");
+        $('#editModal').find('#visaE').html("");
+        $('#editModal').modal('show');
+        
+        $('#editForm').validate({
+          errorElement: 'span',
+          errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+          },
+          highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+          },
+          unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+          }
+        });
+      }
     }
     else if(obj.status === 'failed'){
       toastr["error"](obj.message, "Failed:");

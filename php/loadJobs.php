@@ -12,7 +12,7 @@ $rowperpage = $_POST['length']; // Rows display per page
 $searchValue = mysqli_real_escape_string($db,$_POST['search']['value']); // Search value
 
 ## Search 
-$searchQuery = " WHERE job.sales_cart_id = sales_cart.id AND sales.id = sales_cart.sale_id AND customers.id = sales.customer_name AND users.id = sales.handled_by";
+$searchQuery = " WHERE job.sales_cart_id = sales_cart.id AND sales.id = sales_cart.sale_id AND customers.id = sales.customer_name AND users.id = sales.handled_by AND suppliers.id = sales_cart.flyers";
 //if($searchValue != ''){
   //$searchQuery = " and (customer_name like '%".$searchValue."%' or customer_code like '%".$searchValue."%')";
 //}
@@ -23,7 +23,7 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['allcount'];
 
 ## Total number of record with filtering
-$sel = mysqli_query($db,"select count(*) as allcount from job, sales_cart, sales, customers, users".$searchQuery);
+$sel = mysqli_query($db,"select count(*) as allcount from job, sales_cart, sales, customers, users, suppliers".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
@@ -33,7 +33,8 @@ sales_cart.number_of_carton, sales_cart.volumetric_weight, sales_cart.total_carg
 sales_cart.pickup_pic, sales_cart.pickup_contact, sales_cart.pickup_email, sales_cart.delivery_address, sales_cart.delivery_pic, sales_cart.delivery_contact, sales.contact_no, 
 sales_cart.delivery_email, sales_cart.route, sales_cart.pickup_charge, sales_cart.export_clearances, sales_cart.air_ticket, sales_cart.flyers_fee, customers.customer_address,
 sales_cart.import_clearance, sales_cart.delivery_charges, sales_cart.total_amount, job.created_datetime, users.name, sales.email, sales.customer_notes, sales.internal_notes, 
-sales.shipment_type, sales_cart.weight_data from job, sales_cart, sales, customers, users".$searchQuery." limit ".$row.",".$rowperpage;
+sales.shipment_type, sales_cart.weight_data, sales_cart.flyers, suppliers.supplier_name, suppliers.last_name from job, sales_cart, sales, customers, users, 
+suppliers".$searchQuery." limit ".$row.",".$rowperpage;
 $empRecords = mysqli_query($db, $empQuery);
 $data = array();
 
@@ -77,6 +78,9 @@ while($row = mysqli_fetch_assoc($empRecords)) {
       "customer_address"=>$row['customer_address'],
       "contact_no"=>$row['contact_no'],
       "email"=>$row['email'],
+      "flyers"=>$row['flyers'],
+      "supplier_name"=>$row['supplier_name'],
+      "last_name"=>$row['last_name']
     );
 }
 

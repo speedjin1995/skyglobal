@@ -87,6 +87,10 @@ else{
                   <label for="email">Email *</label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                 </div>
+                <div class="form-group">
+                  <label for="pic">Attention PIC</label>
+                  <input type="text" class="form-control" name="pic" id="pic" placeholder="PIC Name">
+                </div>
               </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -162,6 +166,7 @@ $(function () {
         $('#addModal').find('#address').val("");
         $('#addModal').find('#phone').val("");
         $('#addModal').find('#email').val("");
+        $('#addModal').find('#pic').val("");
         $('#addModal').modal('show');
         
         $('#customerForm').validate({
@@ -191,6 +196,7 @@ function edit(id){
             $('#addModal').find('#address').val(obj.message.customer_address);
             $('#addModal').find('#phone').val(obj.message.customer_phone);
             $('#addModal').find('#email').val(obj.message.customer_email);
+            $('#addModal').find('#pic').val(obj.message.pic);
             $('#addModal').modal('show');
             
             $('#customerForm').validate({
