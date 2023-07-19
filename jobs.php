@@ -438,7 +438,7 @@ else{
     <div class="modal-content">
       <form role="form" id="viewForm">
         <div class="modal-header">
-          <h4 class="modal-title">View & upload Pitures</h4>
+          <h4 class="modal-title">View & upload files</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -1150,7 +1150,13 @@ function upload(id, images, status){
 
   if(decodedImages != null){
     for(var i=0; i<decodedImages.length; i++){
-      $('#viewModal').find('#imagesList').append('<div class="col-4"><img src="jobs/'+decodedImages[i]+'" width="100%"></div>');
+      if(decodedImages[i].includes('.pdf')){
+        $('#viewModal').find('#imagesList').append('<div class="col-4"> <embed src="jobs/'+decodedImages[i]+'" width="100%" height="auto" /></div>');
+      }
+      else{
+        $('#viewModal').find('#imagesList').append('<div class="col-4"><img src="jobs/'+decodedImages[i]+'" width="100%"></div>');
+      }
+      
     }
   }
 
