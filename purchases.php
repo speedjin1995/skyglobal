@@ -801,7 +801,8 @@ function simplyShowCreatedDatetime(row) {
 
   returnString += '<p><small>Action:</small></p>';
 
-  returnString += '<div class="row"><div class="col-3"><button type="button" onclick="cancel('+
+  returnString += '<div class="row"><div class="col-3"><button type="button" class="btn btn-info btn-sm" onclick="printQuote('+row.id+
+  ')"><i class="fas fa-print"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
   row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
 
   return returnString;
@@ -830,6 +831,31 @@ function cancel(id) {
     if(obj.status === 'success'){
       toastr["success"](obj.message, "Success:");
       $('#tableforPurchase').DataTable().ajax.reload();
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when edit", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
+}
+
+function printQuote(id) {
+  $('#spinnerLoading').show();
+  $.post('php/generateReportPurchases.php', {purchasesID: id}, function(data){
+    var obj = JSON.parse(data); 
+    
+    if(obj.status === 'success'){
+      var printWindow = window.open('', '', 'height=400,width=800');
+      printWindow.document.write(obj.message);
+      printWindow.document.close();
+      setTimeout(function(){
+          printWindow.print();
+          printWindow.close();
+      }, 1000);
     }
     else if(obj.status === 'failed'){
       toastr["error"](obj.message, "Failed:");
