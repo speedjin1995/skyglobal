@@ -206,6 +206,12 @@ else{
               <p>Quotations</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="#purchases" data-file="purchases.php" class="nav-link link">
+              <i class="nav-icon fas fa-credit-card"></i>
+              <p>Purchases</p>
+            </a>
+          </li>
           <!--li class="nav-item">
             <a href="#purchase" data-file="purchase.php" class="nav-link link">
               <i class="nav-icon fas fa-home"></i>
