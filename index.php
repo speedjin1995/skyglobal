@@ -212,12 +212,6 @@ else{
               <p>Purchases</p>
             </a>
           </li>
-          <!--li class="nav-item">
-            <a href="#purchase" data-file="purchase.php" class="nav-link link">
-              <i class="nav-icon fas fa-home"></i>
-              <p>Purchase</p>
-            </a>
-          </li-->
           <li class="nav-item">
             <a href="#jobs" data-file="jobs.php" class="nav-link link">
               <i class="nav-icon fas fa-tasks"></i>

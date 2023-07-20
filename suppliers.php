@@ -286,13 +286,13 @@ $(function () {
     $.validator.setDefaults({
         submitHandler: function () {
             $('#spinnerLoading').show();
-            $.post('php/suppliers.php', $('#supplierForm').serialize(), function(data){
+            /*$.post('php/suppliers.php', $('#supplierForm').serialize(), function(data){
                 var obj = JSON.parse(data); 
 
                 if(obj.status === 'success'){
                     $('#addModal').modal('hide');
                     toastr["success"](obj.message, "Success:");
-                    
+
                     $.get('suppliers.php', function(data) {
                         $('#mainContents').html(data);
                         $('#spinnerLoading').hide();
@@ -306,12 +306,14 @@ $(function () {
                     toastr["error"]("Something wrong when edit", "Failed:");
                     $('#spinnerLoading').hide();
                 }
-            })
-            /*$.ajax({
+            });*/
+            var formData = new FormData($('#supplierForm')[0]);
+
+            $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
                 url: "php/suppliers.php",
-                data: $('#supplierForm').serialize(),
+                data: formData, // Use the FormData object
                 processData: false,
                 contentType: false,
                 cache: false,
@@ -341,7 +343,7 @@ $(function () {
                     toastr["error"](e.responseText, "Failed:");
                     $('#spinnerLoading').hide();
                 }
-            });*/
+            });
         }
     });
 

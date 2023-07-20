@@ -250,7 +250,7 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
         if($_POST['id'] != null && $_POST['id'] != ''){
             if($uploadOk == 1 && $uploadOk2 == 1 && $uploadOk3 == 1){
                 if ($update_stmt = $db->prepare("UPDATE suppliers SET username=?, supplier_name=?, last_name=?, supplier_address=?, supplier_phone=?, supplier_email=?, station_country=?, nationality=?, dob=?, remark=?, passport_pic=?, passport=?, picture=?, passport_expiry_date=?, visa_pic=? WHERE id=?")) {
-                    $update_stmt->bind_param('ssssssssssssssss', $username, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $path3, $passport, $path, $passportExpiry, $path2, $_POST['id']);
+                    $update_stmt->bind_param('ssssssssssssssss', $username, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $filePath3, $passport, $filePath, $passportExpiry, $filePath2, $_POST['id']);
                     
                     // Execute the prepared query.
                     if (! $update_stmt->execute()) {
@@ -268,7 +268,7 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
                         echo json_encode(
                             array(
                                 "status"=> "success", 
-                                "message"=> "Updated Successfully!!" 
+                                "message"=> "Updated Successfully!!"
                             )
                         );
                     }
@@ -294,7 +294,7 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
                         echo json_encode(
                             array(
                                 "status"=> "success", 
-                                "message"=> "Updated Successfully!!" 
+                                "message"=> "Updated Successfully!!"
                             )
                         );
                     }
@@ -304,7 +304,7 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
         else{
             if($uploadOk == 1 && $uploadOk2 == 1 && $uploadOk3 == 1){
                 if ($insert_stmt = $db->prepare("INSERT INTO suppliers (username, password, salt, supplier_name, last_name, supplier_address, supplier_phone, supplier_email, station_country, nationality, dob, remark, passport_pic, passport, picture, passport_expiry_date, visa_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                    $insert_stmt->bind_param('sssssssssssssssss', $username, $password, $random_salt, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $path3, $passport, $path, $passportExpiry, $path2);
+                    $insert_stmt->bind_param('sssssssssssssssss', $username, $password, $random_salt, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $filePath3, $passport, $filePath, $passportExpiry, $filePath2);
                     
                     // Execute the prepared query.
                     if (! $insert_stmt->execute()) {
@@ -322,7 +322,7 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
                         echo json_encode(
                             array(
                                 "status"=> "success", 
-                                "message"=> "Added Successfully!!" 
+                                "message"=> "Added Successfully!!"
                             )
                         );
                     }
@@ -348,7 +348,7 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
                         echo json_encode(
                             array(
                                 "status"=> "success", 
-                                "message"=> "Added Successfully!!" 
+                                "message"=> "Added Successfully!!"
                             )
                         );
                     }
