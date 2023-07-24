@@ -207,15 +207,15 @@ else{
             </a>
           </li>
           <li class="nav-item">
-            <a href="#purchases" data-file="purchases.php" class="nav-link link">
-              <i class="nav-icon fas fa-credit-card"></i>
-              <p>Purchases</p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="#jobs" data-file="jobs.php" class="nav-link link">
               <i class="nav-icon fas fa-tasks"></i>
               <p>Missions</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#purchases" data-file="purchases.php" class="nav-link link">
+              <i class="nav-icon fas fa-credit-card"></i>
+              <p>Purchases</p>
             </a>
           </li>
           <?php 

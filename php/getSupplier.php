@@ -32,6 +32,8 @@ if(isset($_POST['userID'])){
                 $message['picture'] = $row['picture'];
                 $message['passport_pic'] = $row['passport_pic'];
                 $message['visa_pic'] = $row['visa_pic'];
+                $message['supplier_phone2'] = $row['supplier_phone2'];
+                $message['vaccination_status'] = $row['vaccination_status'];
             }
             
             echo json_encode(

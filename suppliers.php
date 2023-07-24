@@ -141,6 +141,20 @@ else{
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
+                            <label for="phone">Phone 2</label>
+                            <input type="text" class="form-control" name="phone2" id="phone2" placeholder="Enter phone number">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group"> 
+                            <label for="email">Vacination Status (1 Dose/2 Dose/ Booster) *</label>
+                            <input type="email" class="form-control" id="vaccine" name="vaccine" placeholder="Enter your vaccination status" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
                             <label for="nationality">Nationality *</label>
                             <select class="form-control" style="width: 100%;" id="nationality" name="nationality">
                                 <option value="" selected disabled hidden>Please Select</option>
@@ -355,6 +369,8 @@ $(function () {
         $('#addModal').find('#email').val("");
         $('#addModal').find('#passport').val("");
         $('#addModal').find('#passportExpiry').val("");
+        $('#addModal').find('#phone2').val("");
+        $('#addModal').find('#vaccine').val("");
         $('#addModal').modal('show');
         
         $('#supplierForm').validate({
@@ -379,13 +395,42 @@ function edit(id){
         var obj = JSON.parse(data);
         
         if(obj.status === 'success'){
+            var picturePath = 'assets/' + obj.message.picture;
+            var passportPicPath = 'assets/' + obj.message.passport_pic;
+            var visaPicPath = 'assets/' + obj.message.visa_pic;
+
             $('#addModal').find('#id').val(obj.message.id);
             $('#addModal').find('#name').val(obj.message.supplier_name);
             $('#addModal').find('#address').val(obj.message.supplier_address);
             $('#addModal').find('#phone').val(obj.message.supplier_phone);
+            $('#addModal').find('#phone2').val(obj.message.supplier_phone2);
+            $('#addModal').find('#vaccine').val(obj.message.vaccination_status);
             $('#addModal').find('#email').val(obj.message.supplier_email);
             $('#addModal').find('#passport').val(obj.message.passport);
             $('#addModal').find('#passportExpiry').val(obj.message.passport_expiry_date);
+
+            $('#addModal').find('#image-preview').css("background-image", "url(" + picturePath + ")");
+            $('#addModal').find('#image-preview').css("background-size", "cover");
+            $('#addModal').find('#image-preview').css("background-position", "center center");
+
+            // Passport Picture Preview
+            $('#addModal').find('#image-preview3').css("background-image", "url(" + passportPicPath + ")");
+            $('#addModal').find('#image-preview3').css("background-size", "cover");
+            $('#addModal').find('#image-preview3').css("background-position", "center center");
+
+            // Visa Picture Preview
+            $('#addModal').find('#image-preview2').css("background-image", "url(" + visaPicPath + ")");
+            $('#addModal').find('#image-preview2').css("background-size", "cover");
+            $('#addModal').find('#image-preview2').css("background-position", "center center");
+
+            // Call the success_callback function if needed.
+            /*if (settings.success_callback) {
+                settings.success_callback();
+            }*/
+
+            /*$('#addModal').find('#image-upload').val(obj.message.picture);
+            $('#addModal').find('#image-upload3').val(obj.message.passport_pic);
+            $('#addModal').find('#image-upload2').val(obj.message.visa_pic);*/
             $('#addModal').modal('show');
             
             $('#supplierForm').validate({

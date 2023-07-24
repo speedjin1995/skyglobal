@@ -28,10 +28,16 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
     $stationCountry = filter_input(INPUT_POST, 'stationCountry', FILTER_SANITIZE_STRING);
     $nationality = filter_input(INPUT_POST, 'nationality', FILTER_SANITIZE_STRING);
     $dob = filter_input(INPUT_POST, 'dob', FILTER_SANITIZE_STRING);
+    $vaccine = filter_input(INPUT_POST, 'vaccine', FILTER_SANITIZE_STRING);
     $remark = null;
+    $phone2 = null;
 
     if($_POST['remark'] != null && $_POST['remark'] != ""){
         $remark = filter_input(INPUT_POST, 'remark', FILTER_SANITIZE_STRING);
+    }
+
+    if($_POST['phone2'] != null && $_POST['phone2'] != ""){
+        $phone2 = filter_input(INPUT_POST, 'phone2', FILTER_SANITIZE_STRING);
     }
 
     $path = $path.'profile/';
@@ -249,8 +255,8 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
         if($_POST['id'] != null && $_POST['id'] != ''){
             if($uploadOk == 1 && $uploadOk2 == 1 && $uploadOk3 == 1){
-                if ($update_stmt = $db->prepare("UPDATE suppliers SET username=?, supplier_name=?, last_name=?, supplier_address=?, supplier_phone=?, supplier_email=?, station_country=?, nationality=?, dob=?, remark=?, passport_pic=?, passport=?, picture=?, passport_expiry_date=?, visa_pic=? WHERE id=?")) {
-                    $update_stmt->bind_param('ssssssssssssssss', $username, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $filePath3, $passport, $filePath, $passportExpiry, $filePath2, $_POST['id']);
+                if ($update_stmt = $db->prepare("UPDATE suppliers SET username=?, supplier_name=?, last_name=?, supplier_address=?, supplier_phone=?, supplier_email=?, station_country=?, nationality=?, dob=?, remark=?, passport_pic=?, passport=?, picture=?, passport_expiry_date=?, visa_pic=?, vaccination_status=?, supplier_phone2=? WHERE id=?")) {
+                    $update_stmt->bind_param('ssssssssssssssssss', $username, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $filePath3, $passport, $filePath, $passportExpiry, $filePath2, $vaccine, $phone2, $_POST['id']);
                     
                     // Execute the prepared query.
                     if (! $update_stmt->execute()) {
@@ -275,8 +281,8 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
                 }
             }
             else{
-                if ($update_stmt = $db->prepare("UPDATE suppliers SET username=?, supplier_name=?, last_name=?, supplier_address=?, supplier_phone=?, supplier_email=?, station_country=?, nationality=?, dob=?, remark=?, passport=?, passport_expiry_date=? WHERE id=?")) {
-                    $update_stmt->bind_param('ssssssssssssssss', $username, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $passport, $passportExpiry, $_POST['id']);
+                if ($update_stmt = $db->prepare("UPDATE suppliers SET username=?, supplier_name=?, last_name=?, supplier_address=?, supplier_phone=?, supplier_email=?, station_country=?, nationality=?, dob=?, remark=?, passport=?, passport_expiry_date=?, vaccination_status=?, supplier_phone2=? WHERE id=?")) {
+                    $update_stmt->bind_param('ssssssssssssssssss', $username, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $passport, $passportExpiry, $vaccine, $phone2, $_POST['id']);
                     
                     // Execute the prepared query.
                     if (! $update_stmt->execute()) {
@@ -303,8 +309,8 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
         }
         else{
             if($uploadOk == 1 && $uploadOk2 == 1 && $uploadOk3 == 1){
-                if ($insert_stmt = $db->prepare("INSERT INTO suppliers (username, password, salt, supplier_name, last_name, supplier_address, supplier_phone, supplier_email, station_country, nationality, dob, remark, passport_pic, passport, picture, passport_expiry_date, visa_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                    $insert_stmt->bind_param('sssssssssssssssss', $username, $password, $random_salt, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $filePath3, $passport, $filePath, $passportExpiry, $filePath2);
+                if ($insert_stmt = $db->prepare("INSERT INTO suppliers (username, password, salt, supplier_name, last_name, supplier_address, supplier_phone, supplier_email, station_country, nationality, dob, remark, passport_pic, passport, picture, passport_expiry_date, visa_pic, vaccination_status, supplier_phone2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                    $insert_stmt->bind_param('sssssssssssssssssss', $username, $password, $random_salt, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $filePath3, $passport, $filePath, $passportExpiry, $filePath2, $vaccine, $phone2);
                     
                     // Execute the prepared query.
                     if (! $insert_stmt->execute()) {
@@ -329,8 +335,8 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
                 }
             }
             else{
-                if ($insert_stmt = $db->prepare("INSERT INTO suppliers (username, password, salt, supplier_name, last_name, supplier_address, supplier_phone, supplier_email, station_country, nationality, dob, remark, passport, passport_expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                    $insert_stmt->bind_param('ssssssssssssss', $username, $password, $random_salt, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $passport, $passportExpiry);
+                if ($insert_stmt = $db->prepare("INSERT INTO suppliers (username, password, salt, supplier_name, last_name, supplier_address, supplier_phone, supplier_email, station_country, nationality, dob, remark, passport, passport_expiry_date, vaccination_status, supplier_phone2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                    $insert_stmt->bind_param('ssssssssssssssss', $username, $password, $random_salt, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $passport, $passportExpiry, $vaccine, $phone2);
                     
                     // Execute the prepared query.
                     if (! $insert_stmt->execute()) {
