@@ -363,14 +363,20 @@ $(function () {
 
     $('#addSuppliers').on('click', function(){
         $('#addModal').find('#id').val("");
-        $('#addModal').find('#name').val("");
+        $('#addModal').find('#username').val("");
+        $('#addModal').find('#stationCountry').val("");
+        $('#addModal').find('#firstName').val("");
+        $('#addModal').find('#lastName').val("");
         $('#addModal').find('#address').val("");
         $('#addModal').find('#phone').val("");
-        $('#addModal').find('#email').val("");
-        $('#addModal').find('#passport').val("");
-        $('#addModal').find('#passportExpiry').val("");
         $('#addModal').find('#phone2').val("");
         $('#addModal').find('#vaccine').val("");
+        $('#addModal').find('#email').val("");
+        $('#addModal').find('#nationality').val("");
+        $('#addModal').find('#dob').val("");
+        $('#addModal').find('#passport').val("");
+        $('#addModal').find('#passportExpiry').val("");
+        $('#addModal').find('#remark').val("");
         $('#addModal').modal('show');
         
         $('#supplierForm').validate({
@@ -400,12 +406,17 @@ function edit(id){
             var visaPicPath = 'assets/' + obj.message.visa_pic;
 
             $('#addModal').find('#id').val(obj.message.id);
-            $('#addModal').find('#name').val(obj.message.supplier_name);
+            $('#addModal').find('#username').val(obj.message.username);
+            $('#addModal').find('#stationCountry').val(obj.message.station_country);
+            $('#addModal').find('#firstName').val(obj.message.supplier_name);
+            $('#addModal').find('#lastName').val(obj.message.last_name);
             $('#addModal').find('#address').val(obj.message.supplier_address);
             $('#addModal').find('#phone').val(obj.message.supplier_phone);
             $('#addModal').find('#phone2').val(obj.message.supplier_phone2);
             $('#addModal').find('#vaccine').val(obj.message.vaccination_status);
             $('#addModal').find('#email').val(obj.message.supplier_email);
+            $('#addModal').find('#nationality').val(obj.message.nationality);
+            $('#addModal').find('#dob').val(obj.message.dob);
             $('#addModal').find('#passport').val(obj.message.passport);
             $('#addModal').find('#passportExpiry').val(obj.message.passport_expiry_date);
 

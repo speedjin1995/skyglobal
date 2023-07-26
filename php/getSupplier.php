@@ -24,6 +24,8 @@ if(isset($_POST['userID'])){
             while ($row = $result->fetch_assoc()) {
                 $message['id'] = $row['id'];
                 $message['supplier_name'] = $row['supplier_name'];
+                $message['last_name'] = $row['last_name'];
+                $message['dob'] = $row['dob'];
                 $message['supplier_address'] = $row['supplier_address'];
                 $message['supplier_phone'] = $row['supplier_phone'];
                 $message['supplier_email'] = $row['supplier_email'];
@@ -34,6 +36,9 @@ if(isset($_POST['userID'])){
                 $message['visa_pic'] = $row['visa_pic'];
                 $message['supplier_phone2'] = $row['supplier_phone2'];
                 $message['vaccination_status'] = $row['vaccination_status'];
+                $message['nationality'] = $row['nationality'];
+                $message['station_country'] = $row['station_country'];
+                $message['username'] = $row['username'];
             }
             
             echo json_encode(
