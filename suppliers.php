@@ -167,9 +167,9 @@ else{
                     <div class="col-6">
                         <div class="form-group">
                             <label for="dob">Date of Birth *</label>
-                            <div class="input-group date" id="dob" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" id="dob" name="dob" data-target="#dob" required/>
-                                <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
+                            <div class="input-group date" id="dobContainer" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" id="dob" name="dob" data-target="#dobContainer" required/>
+                                <div class="input-group-append" data-target="#dobContainer" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
@@ -186,9 +186,9 @@ else{
                     <div class="col-6">
                         <div class="form-group"> 
                             <label for="passportExpiry">Passport Expiry Date *</label>
-                            <div class="input-group date" id="passportExpiry" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" id="passportExpiry" name="passportExpiry" data-target="#passportExpiry" required/>
-                                <div class="input-group-append" data-target="#passportExpiry" data-toggle="datetimepicker">
+                            <div class="input-group date" id="passportExpiryContainer" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" id="passportExpiry" name="passportExpiry" data-target="#passportExpiryContainer" required/>
+                                <div class="input-group-append" data-target="#passportExpiryContainer" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
@@ -238,11 +238,11 @@ else{
 
 <script>
 $(function () {
-    $('#passportExpiry').datetimepicker({
+    $('#addModal').find('#passportExpiryContainer').datetimepicker({
         format: 'YYYY-MM-DD'
     });
 
-    $('#dob').datetimepicker({
+    $('#addModal').find('#dobContainer').datetimepicker({
         format: 'YYYY-MM-DD'
     });
 
@@ -442,6 +442,14 @@ function edit(id){
             /*$('#addModal').find('#image-upload').val(obj.message.picture);
             $('#addModal').find('#image-upload3').val(obj.message.passport_pic);
             $('#addModal').find('#image-upload2').val(obj.message.visa_pic);*/
+
+            /*$('#addModal').find('#passportExpiry').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+
+            $('#addModal').find('#dob').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });*/
             $('#addModal').modal('show');
             
             $('#supplierForm').validate({
