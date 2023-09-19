@@ -68,8 +68,46 @@ else{
       <div class="col-12">
         <div class="card">
           <div class="card-header">
+          <div class="row">
+                  <!---<div class="col-4">
+                    <div class="form-group">
+                      <label>From Time</label>
+                      <div class="input-group date" id="inputStartTime" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" id="startTime" name="startTime" data-target="#inputStartTime" />
+                        <div class="input-group-append" data-target="#inputStartTime" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>To Time</label>
+                      <div class="input-group date" id="inputEndTime" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" id="endTime" name="endTime" data-target="#inputEndTime" />
+                        <div class="input-group-append" data-target="#inputEndTime" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>--->
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label for="inputName">Customer Name</label>
+                      <select class="form-control" style="width: 100%;" id="inputName" name="inputName">
+                        <option value="" selected disabled hidden>Please Select</option>
+                        <?php while($customers2Row=mysqli_fetch_assoc($customers2)){ ?>
+                          <option value="<?=$customers2Row['id'] ?>"><?=$customers2Row['customer_name'] ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
+          </div>
             <div class="row">
-                <div class="col-9"></div>
+                <div class="col-6"></div>
+                <div class="col-3">
+                <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="searchOrder">Search Mission Quotation</button>
+                </div>
                 <div class="col-3">
                   <button type="button" class="btn btn-block bg-gradient-warning btn-sm" id="addOrder">Create New Mission Quotation</button>
                 </div>
@@ -852,6 +890,18 @@ $(function () {
     format: 'YYYY-MM-DD HH:mm:ss'
   });
 
+  /*$('#inputStartTime').datetimepicker({
+    icons: { time: 'far fa-clock' },
+    format: 'YYYY-MM-DD HH:mm:ss'
+  });
+
+  $('#inputEndTime').datetimepicker({
+    icons: { time: 'far fa-clock' },
+    format: 'YYYY-MM-DD HH:mm:ss'
+  });*/
+  
+  $('[data-mask]').inputmask();
+
   $('#addOrder').on('click', function(){
     $('#orderModal').find('#id').val("");
     $('#orderModal').find('#inputHandler').val("<?=$user ?>");
@@ -885,6 +935,79 @@ $(function () {
         $(element).removeClass('is-invalid');
       }
     });
+  });
+
+  $('#searchOrder').on('click', function(){
+    var inputName = $("#inputName").val();
+    //var inputStartTime = $("#startTime").val();
+    //var inputEndTime = $("#endTime").val();
+
+    $("#tableforOrder").DataTable().clear().destroy();
+
+    var table = $("#tableforOrder").DataTable({
+    "responsive": true,
+    "autoWidth": false,
+    'processing': true,
+    'serverSide': true,
+    'searching': false,
+    'serverMethod': 'post',
+    'ordering': false,
+    'ajax': {
+    'type': 'POST',
+    'url':'php/searchSales.php',
+    'data': {
+       inputName: inputName
+       //, inputStartTime: inputStartTime, inputEndTime: inputEndTime
+      }
+    },
+    'columns': [
+      { 
+        data: 'id',
+        render: function ( data, type, row ) {
+          return details(row);
+        }
+      },
+      { 
+        data: 'id',
+        render: function ( data, type, row ) {
+          return order(row);
+        }
+      },
+      { 
+        data: 'id',
+        render: function ( data, type, row ) {
+          <?php
+            if($role == 'ADMIN'){
+              echo 'return status(row);';
+            }
+            else{
+              echo 'return status2(row);';
+            }
+          ?>
+          
+        }
+      }
+    ]       
+    });
+
+     
+  
+
+    /*$.post('php/getCustomer.php', {userID: id}, function(data){
+      var obj = JSON.parse(data);
+      
+      if(obj.status === 'success'){
+        $('#inputContactNum').val(obj.message.customer_phone);
+        $('#inputEmail').val(obj.message.customer_email);
+      }
+      else if(obj.status === 'failed'){
+          toastr["error"](obj.message, "Failed:");
+      }
+      else{
+          toastr["error"]("Something wrong when activate", "Failed:");
+      }
+    });*/
+    
   });
 
   $("#inputCustomerName").change(function(){
