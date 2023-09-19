@@ -1388,17 +1388,20 @@ function status(row) {
 
   if(row.shipped_datetime != null && row.shipped_datetime != ''){
     returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
-    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="copyclipboard('+
+    row.id+')" class="btn btn-success btn-sm"><i class="fas fa fa-clipboard"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
     row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
   }
   else if(row.cancelled_datetime != null && row.cancelled_datetime != ''){
     returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
-    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div></div>';
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="copyclipboard('+
+    row.id+')" class="btn btn-success btn-sm"><i class="fas fa fa-clipboard"></i></button></div></div>';
   }
   else{
     returnString += '<div class="row"><div class="col-3"><button type="button" onclick="shipped('+
     row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div><div class="col-3"><button type="button" onclick="printQuote('+
-    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="copyclipboard('+
+    row.id+')" class="btn btn-success btn-sm"><i class="fas fa fa-clipboard"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
     row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
   }
 
@@ -1430,16 +1433,19 @@ function status2(row) {
 
   if(row.shipped_datetime != null && row.shipped_datetime != ''){
     returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
-    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div></div>';
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="copyclipboard('+
+    row.id+')" class="btn btn-success btn-sm"><i class="fas fa fa-clipboard"></i></button></div></div>';
   }
   else if(row.cancelled_datetime != null && row.cancelled_datetime != ''){
     returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
-    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div></div>';
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="copyclipboard('+
+    row.id+')" class="btn btn-success btn-sm"><i class="fas fa fa-clipboard"></i></button></div></div>';
   }
   else{
     returnString += '<div class="row"><div class="col-3"><button type="button" onclick="shipped('+
     row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div><div class="col-3"><button type="button" onclick="printQuote('+
-    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div></div>';
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="copyclipboard('+
+    row.id+')" class="btn btn-success btn-sm"><i class="fas fa fa-clipboard"></i></button></div></div>';
   }
 
   //returnString += '<h5>Files:</h5>';
@@ -1465,6 +1471,41 @@ function cancel(id) {
 
     $('#spinnerLoading').hide();
   });
+}
+
+function copyclipboard(id) {
+  // Get the text field
+  /*var copyText = document.getElementById("myInput");
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+   // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);*/
+
+  $('#spinnerLoading').show();
+  $.post('php/copyPurchases.php', {salesID: id}, function(data){
+    var obj = JSON.parse(data); 
+    
+    if(obj.status === 'success'){
+      
+      var text= "Mode: "+obj.shipmentType+"\n\n"+"Pickup: "+obj.pickUpAddress+"\n\n"+"Delivery: "+obj.deliveryAddress
+      +"\n\n"+"Pickup Time: "+obj.cargoReadyTime+"\n\n"+"Price: "+obj.totalAmount+"USD" +"\n\n"+"Flight: \n"+obj.routeInfo
+      +"\n"+"Notes: "+obj.customerNotes;
+      
+      navigator.clipboard.writeText(text);
+    }
+    else if(obj.status === 'failed'){
+      toastr["error"](obj.message, "Failed:");
+    }
+    else{
+      toastr["error"]("Something wrong when copy", "Failed:");
+    }
+
+    $('#spinnerLoading').hide();
+  });
+
 }
 
 function paid(id) {
