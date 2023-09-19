@@ -1430,8 +1430,7 @@ function status2(row) {
 
   if(row.shipped_datetime != null && row.shipped_datetime != ''){
     returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
-    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
-    row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div></div>';
   }
   else if(row.cancelled_datetime != null && row.cancelled_datetime != ''){
     returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+

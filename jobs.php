@@ -9,6 +9,7 @@ if(!isset($_SESSION['userID'])){
 }
 else{
   $user = $_SESSION['userID'];
+  $role = $_SESSION['role'];
   $users = $db->query("SELECT * FROM users WHERE deleted = '0'");
   $customers = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
   $customers2 = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
@@ -766,7 +767,14 @@ $(function () {
       { 
         data: 'id',
         render: function ( data, type, row ) {
-          return order(row);
+          <?php
+            if($role == 'ADMIN'){
+              echo 'return order(row);';
+            }
+            else{
+              echo 'return order2(row);';
+            }
+          ?>
         }
       },
       { 
@@ -1224,6 +1232,39 @@ function order(row) {
   ')"><i class="fas fa-check-circle"></i></button></div><div class="col-3"><button type="button" class="btn btn-info btn-sm" onclick="printQuote('+row.sale_id+
   ')"><i class="fas fa-print"></i></button></div><div class="col-3"><button type="button" class="btn btn-danger btn-sm" onclick="cancel('+row.sale_id+
   ')"><i class="fas fa-trash"></i></button></div></div></div></div><div class="row"><div class="col-6"><p>Flyer Name: '+row.supplier_name+' '+row.last_name+
+  '<button type="button" class="btn btn-primary btn-sm" onclick="flyerDetails('+row.flyers+')"><i class="fas fa-eye"></i></button></p></div></div>';
+
+  returnString += '<br><h5>Cargo Details:</h5><table style="width: 100%;"><thead><tr><th>Piece Densed Weight</th><th>Dimension Length (cm)</th><th>Dimension Width (cm)</th><th>Dimension Height (cm)</th><th>Volumetric Weight</th></tr></thead><tbody>';
+  
+  for(var i=0; i<weightData.length; i++){
+    returnString += '<tr><td>'+weightData[i].Weight+' KG</td><td>'+weightData[i].L+'</td><td>'+weightData[i].W+'</td><td>'+weightData[i].H+'</td><td>'+calVolumetric(weightData[i].W, weightData[i].L, weightData[i].H, weightData[i].Unit).toString()+' KG</td></tr>';
+  }
+  
+  returnString += '</tbody></table><br><div class="row"><div class="col-6"><p>Volumetric Weight: '+row.volumetric_weight+
+  ' KG</p></div><div class="col-6"><p>Total Cargo Weight: '+row.total_cargo_weight+' KG</p></div></div>';
+
+  return returnString;
+}
+
+function order2(row) {
+  var returnString = "";
+  var weightData = JSON.parse(row.weight_data);
+
+  returnString += '<div class="row"><div class="col-6"><p>Shipper Address: '+row.pickup_address+
+  '</p></div><div class="col-6"><p>Shipper PIC: '+row.pickup_pic+
+  '</p></div><div class="col-6"><p>Shipper PIC Contact: '+row.pickup_contact+
+  '</p></div><div class="col-6"><p>Shipper PIC Email: '+row.pickup_email+
+  '</p></div><div class="col-6"><p>Receiver Address: '+row.delivery_address+
+  '</p></div><div class="col-6"><p>Receiver PIC: '+row.delivery_pic+
+  '</p></div><div class="col-6"><p>Receiver PIC Contact: '+row.delivery_contact+
+  '</p></div><div class="col-6"><p>Receiver PIC Email: '+row.delivery_email+
+  '</p></div><div class="col-6"><p>Number of Cartons: '+row.number_of_carton+
+  '</p></div><div class="col-6"><p>Cargo Ready Time: '+row.cargo_ready_time+
+  '</p></div><div class="col-6"><p>Weight ('+((parseFloat(row.volumetric_weight) > parseFloat(row.total_cargo_weight)) ? 'Volumetric': 'Total Carton')+
+  '): '+((parseFloat(row.volumetric_weight) > parseFloat(row.total_cargo_weight)) ? row.volumetric_weight: row.total_cargo_weight)+'</p></div><div class="col-6"><div class="row"><div class="col-3"><button type="button" class="btn btn-warning btn-sm" onclick="edit('+row.sale_id+
+  ')"><i class="fas fa-pen"></i></button></div><div class="col-3"><button type="button" class="btn btn-success btn-sm" onclick="completed('+row.sale_id+
+  ')"><i class="fas fa-check-circle"></i></button></div><div class="col-3"><button type="button" class="btn btn-info btn-sm" onclick="printQuote('+row.sale_id+
+  ')"><i class="fas fa-print"></i></button></div></div></div></div><div class="row"><div class="col-6"><p>Flyer Name: '+row.supplier_name+' '+row.last_name+
   '<button type="button" class="btn btn-primary btn-sm" onclick="flyerDetails('+row.flyers+')"><i class="fas fa-eye"></i></button></p></div></div>';
 
   returnString += '<br><h5>Cargo Details:</h5><table style="width: 100%;"><thead><tr><th>Piece Densed Weight</th><th>Dimension Length (cm)</th><th>Dimension Width (cm)</th><th>Dimension Height (cm)</th><th>Volumetric Weight</th></tr></thead><tbody>';

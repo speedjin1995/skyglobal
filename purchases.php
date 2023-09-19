@@ -9,6 +9,7 @@ if(!isset($_SESSION['userID'])){
 }
 else{
   $user = $_SESSION['userID'];
+  $role = $_SESSION['role'];
   $users = $db->query("SELECT * FROM users WHERE deleted = '0'");
   $customers = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
   $customers2 = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
@@ -574,7 +575,14 @@ $(function () {
       { 
         data: 'id',
         render: function ( data, type, row ) {
-          return simplyShowCreatedDatetime(row);
+          <?php
+            if($role == 'ADMIN'){
+              echo 'return simplyShowCreatedDatetime(row);';
+            }
+            else{
+              echo 'return simplyShowCreatedDatetime2(row);';
+            }
+          ?>  
         }
       }
     ]       
@@ -804,6 +812,18 @@ function simplyShowCreatedDatetime(row) {
   returnString += '<div class="row"><div class="col-3"><button type="button" class="btn btn-info btn-sm" onclick="printQuote('+row.id+
   ')"><i class="fas fa-print"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
   row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
+
+  return returnString;
+}
+
+function simplyShowCreatedDatetime2(row) {
+  //var weightData = JSON.parse(row.route);
+  var returnString = '<div class="row"><div class="col-12">'+row.created_datetime+'</div></div><br>';
+
+  returnString += '<p><small>Action:</small></p>';
+
+  returnString += '<div class="row"><div class="col-3"><button type="button" class="btn btn-info btn-sm" onclick="printQuote('+row.id+
+  ')"><i class="fas fa-print"></i></button></div></div>';
 
   return returnString;
 }
