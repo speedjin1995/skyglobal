@@ -247,7 +247,7 @@ else{
                       <select id="inputDepAirport" name="inputDepAirport" class="form-control">
                         <option value="" selected disabled hidden>Please Select</option>
                         <?php while($airportRow3=mysqli_fetch_assoc($airport3)){ ?>
-                          <option value="<?=$airportRow3['iata'] ?>"><?=$airportRow3['iata'] ?></option>
+                          <option value="<?=$airportRow3['iata'] ?>"><?=$airportRow3['iata']." - ".$airportRow3['airport_name'] ?></option>
                         <?php } ?>
                       </select>
                     </div>
@@ -258,7 +258,7 @@ else{
                       <select id="inputDesAirport" name="inputDesAirport" class="form-control">
                         <option value="" selected disabled hidden>Please Select</option>
                         <?php while($airportRow4=mysqli_fetch_assoc($airport4)){ ?>
-                          <option value="<?=$airportRow4['iata'] ?>"><?=$airportRow4['iata'] ?></option>
+                          <option value="<?=$airportRow4['iata'] ?>"><?=$airportRow4['iata']." - ".$airportRow4['airport_name'] ?></option>
                         <?php } ?>
                       </select>
                     </div>
@@ -700,7 +700,7 @@ else{
       <select id="departure" class="form-control">
         <option value="" selected disabled hidden>Please Select</option>
         <?php while($airportRow2=mysqli_fetch_assoc($airport2)){ ?>
-          <option value="<?=$airportRow2['iata'] ?>"><?=$airportRow2['iata'] ?></option>
+          <option value="<?=$airportRow2['iata'] ?>"><?= $airportRow2['iata']." - ".$airportRow2['airport_name'] ?></option>
         <?php } ?>
       </select>
     </td>
@@ -716,7 +716,7 @@ else{
       <select id="arrival" class="form-control">
         <option value="" selected disabled hidden>Please Select</option>
         <?php while($airportRow=mysqli_fetch_assoc($airport)){ ?>
-          <option value="<?=$airportRow['iata'] ?>"><?=$airportRow['iata'] ?></option>
+          <option value="<?=$airportRow['iata'] ?>"><?=$airportRow['iata']." - ".$airportRow['airport_name'] ?></option>
         <?php } ?>
       </select>
     </td>
