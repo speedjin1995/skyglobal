@@ -9,6 +9,7 @@ if(!isset($_SESSION['userID'])){
 }
 else{
   $user = $_SESSION['userID'];
+  $role = $_SESSION['role'];
   $users = $db->query("SELECT * FROM users WHERE deleted = '0'");
   $customers = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
   $customers2 = $db->query("SELECT * FROM customers WHERE customer_status = '0'");
@@ -787,7 +788,15 @@ $(function () {
       { 
         data: 'id',
         render: function ( data, type, row ) {
-          return status(row);
+          <?php
+            if($role == 'ADMIN'){
+              echo 'return status(row);';
+            }
+            else{
+              echo 'return status2(row);';
+            }
+          ?>
+          
         }
       }
     ]       
@@ -1391,6 +1400,47 @@ function status(row) {
     row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div><div class="col-3"><button type="button" onclick="printQuote('+
     row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
     row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
+  }
+
+  //returnString += '<h5>Files:</h5>';
+
+  return returnString;
+}
+
+function status2(row) {
+  var returnString = '<h5>Status:</h5><p>Created at: ' + row.created_datetime +'</p><p>Quoted at: ' + row.quoted_datetime +'</p>';
+
+  if(row.paid_datetime != null && row.paid_datetime != ''){
+    returnString += '<p>Paid at: ' + row.paid_datetime +'</p>';
+  }
+
+  if(row.shipped_datetime != null && row.shipped_datetime != ''){
+    returnString += '<p>Shipped at: ' + row.shipped_datetime +'</p>';
+  }
+
+  if(row.completed_datetime != null && row.completed_datetime != ''){
+    returnString += '<p>Completed at: ' + row.completed_datetime +'</p>';
+  }
+
+  if(row.cancelled_datetime != null && row.cancelled_datetime != ''){
+    returnString += '<p>Cancelled at: ' + row.cancelled_datetime +'</p>';
+  }
+    
+  returnString += '<p><small>Status:</small></p>';
+
+  if(row.shipped_datetime != null && row.shipped_datetime != ''){
+    returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div><div class="col-3"><button type="button" onclick="cancel('+
+    row.id+')" class="btn btn-danger btn-sm"><i class="fas fa fa-times"></i></button></div></div>';
+  }
+  else if(row.cancelled_datetime != null && row.cancelled_datetime != ''){
+    returnString += '<div class="row"><div class="col-3"><button type="button" onclick="printQuote('+
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div></div>';
+  }
+  else{
+    returnString += '<div class="row"><div class="col-3"><button type="button" onclick="shipped('+
+    row.id+')" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i></button></div><div class="col-3"><button type="button" onclick="printQuote('+
+    row.id+')" class="btn btn-primary btn-sm"><i class="fas fa-file"></i></button></div></div>';
   }
 
   //returnString += '<h5>Files:</h5>';
