@@ -218,6 +218,12 @@ else{
               <p>Purchases</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="#log" data-file="log.php" class="nav-link link">
+              <i class="nav-icon fas fa-history"></i>
+              <p>Logs</p>
+            </a>
+          </li>
           <?php 
             if($role == "ADMIN"){
               echo '<li class="nav-item">
