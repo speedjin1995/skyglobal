@@ -18,16 +18,16 @@ $searchQuery = " WHERE customers.id = sales.customer_name AND users.id = sales.h
 //}
 
 
-if(isset($_POST['inputName'])){
+if(isset($_POST['inputName']) && $_POST['inputName']!=null){
   $searchQuery.= " AND (sales.customer_name like '%".$_POST['inputName']."%')";
 }
 
-if(isset($_POST['inputStartTime'])){
- // $searchQuery.= " AND (sales.customer_name like '%".$_POST['inputName']."%')";
+if(isset($_POST['inputStartTime']) && $_POST['inputStartTime']!=null){
+  $searchQuery.= " AND (sales.created_datetime >= '".$_POST['inputStartTime']."')";
 }
 
-if(isset($_POST['inputEndTime'])){
-  
+if(isset($_POST['inputEndTime']) && $_POST['inputEndTime']!=null){
+  $searchQuery.= " AND (sales.created_datetime <= '".$_POST['inputEndTime']."')";
 }
 
 ## Total number of records without filtering

@@ -69,7 +69,7 @@ else{
         <div class="card">
           <div class="card-header">
           <div class="row">
-                  <!---<div class="col-4">
+                  <div class="col-4">
                     <div class="form-group">
                       <label>From Time</label>
                       <div class="input-group date" id="inputStartTime" data-target-input="nearest">
@@ -90,7 +90,7 @@ else{
                         </div>
                       </div>
                     </div>
-                  </div>--->
+                  </div>
                   <div class="col-4">
                     <div class="form-group">
                       <label for="inputName">Customer Name</label>
@@ -890,7 +890,7 @@ $(function () {
     format: 'YYYY-MM-DD HH:mm:ss'
   });
 
-  /*$('#inputStartTime').datetimepicker({
+  $('#inputStartTime').datetimepicker({
     icons: { time: 'far fa-clock' },
     format: 'YYYY-MM-DD HH:mm:ss'
   });
@@ -898,7 +898,7 @@ $(function () {
   $('#inputEndTime').datetimepicker({
     icons: { time: 'far fa-clock' },
     format: 'YYYY-MM-DD HH:mm:ss'
-  });*/
+  });
   
   $('[data-mask]').inputmask();
 
@@ -939,8 +939,8 @@ $(function () {
 
   $('#searchOrder').on('click', function(){
     var inputName = $("#inputName").val();
-    //var inputStartTime = $("#startTime").val();
-    //var inputEndTime = $("#endTime").val();
+    var inputStartTime = $("#startTime").val();
+    var inputEndTime = $("#endTime").val();
 
     $("#tableforOrder").DataTable().clear().destroy();
 
@@ -957,7 +957,7 @@ $(function () {
     'url':'php/searchSales.php',
     'data': {
        inputName: inputName
-       //, inputStartTime: inputStartTime, inputEndTime: inputEndTime
+       , inputStartTime: inputStartTime, inputEndTime: inputEndTime
       }
     },
     'columns': [
