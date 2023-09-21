@@ -51,6 +51,29 @@ if(isset($_POST['inputJobNo'], $_POST['inputDate'], $_POST['purchaseId'], $_POST
             );
         }
         else{
+            
+            $name = $_SESSION['name'];
+            $userId = $_SESSION['userID'];
+            $today = date("Y-m-d H:i:s");
+            
+            $action = "User : ".$name." Add Purchase id : ".$purchaseId." in customers table!";
+            
+            if ($log_insert_stmt = $db->prepare("INSERT INTO log (userId, userName, created_dateTime, action) VALUES (?,?,?,?)")) {
+                    $log_insert_stmt->bind_param('ssss', $userId, $name, $today, $action);
+                            
+                    if (! $log_insert_stmt->execute()) {
+                        echo json_encode(
+                            array(
+                                "status"=> "failed", 
+                                "message"=> $log_insert_stmt->error 
+                            )
+                        );
+                    }
+                    else{
+                        $log_insert_stmt->close();
+                    }
+            }
+
           echo json_encode(
             array(
                 "status"=> "success", 
