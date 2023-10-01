@@ -61,24 +61,29 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
             }
             else{
 
-                $action = "User : ".$name."Update Tray No : ".$bTrayNo." in grades table!";
-
-                if ($log_insert_stmt = $db->prepare("INSERT INTO log (userId , userName, action) VALUES (?, ?, ?)")) {
-                    $log_insert_stmt->bind_param('sss', $userID, $name, $action);
-                
-
-                    if (! $log_insert_stmt->execute()) {
-                        echo json_encode(
-                            array(
-                                "status"=> "failed", 
-                                "message"=> $log_insert_stmt->error 
-                            )
-                        );
+                  
+                $name = $_SESSION['name'];
+                $userId = $_SESSION['userID'];
+                $today = date("Y-m-d H:i:s");
+    
+    
+                $action = "User : ".$name." Modify weighing with Id : ".$_POST['id']."!";
+    
+                    if ($log_insert_stmt = $db->prepare("INSERT INTO log (userId, userName, created_dateTime, action) VALUES (?,?,?,?)")) {
+                        $log_insert_stmt->bind_param('ssss', $userId, $name, $today, $action);
+                    
+                        if (! $log_insert_stmt->execute()) {
+                            echo json_encode(
+                                array(
+                                    "status"=> "failed", 
+                                    "message"=> $log_insert_stmt->error 
+                                )
+                            );
+                        }
+                        else{
+                            $log_insert_stmt->close();
+                        }
                     }
-                    else{
-                        $log_insert_stmt->close();
-                    }
-                }
 
                 $update_stmt->close();
                 $db->close();
@@ -172,6 +177,30 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
                                     }
                                     else{
                                         $insert_stmt3->close();
+  
+                                        $name = $_SESSION['name'];
+                                        $userId = $_SESSION['userID'];
+                                        $today = date("Y-m-d H:i:s");
+                            
+                            
+                                        $action = "User : ".$name." Add job with Id : ".$sales_cart_id."!";
+                            
+                                            if ($log_insert_stmt = $db->prepare("INSERT INTO log (userId, userName, created_dateTime, action) VALUES (?,?,?,?)")) {
+                                                $log_insert_stmt->bind_param('ssss', $userId, $name, $today, $action);
+                                            
+                                                if (! $log_insert_stmt->execute()) {
+                                                    echo json_encode(
+                                                        array(
+                                                            "status"=> "failed", 
+                                                            "message"=> $log_insert_stmt->error 
+                                                        )
+                                                    );
+                                                }
+                                                else{
+                                                    $log_insert_stmt->close();
+                                                }
+                                            }
+
                                         $db->close();
 
                                         echo json_encode(

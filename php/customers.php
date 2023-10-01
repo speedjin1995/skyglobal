@@ -38,6 +38,42 @@ if(isset($_POST['name'], $_POST['address'], $_POST['phone'], $_POST['email'])){
                 }
                 else{
                     $update_stmt->close();
+
+                    $name = $_SESSION['name'];
+                    $userId = $_SESSION['userID'];
+                    $today = date("Y-m-d H:i:s");
+                                                 
+                    $get_stmt = $db->prepare("SELECT * FROM customers WHERE id=?");
+                    $get_stmt->bind_param('s', $id);
+                    $get_stmt->execute();
+                    
+                    $result = $get_stmt->get_result();
+                                
+                    if ($row = $result->fetch_assoc()) {
+                        $customer_name = $row['customer_name'];
+                    }
+                    
+                    $get_stmt->close();
+                    
+                    
+                    $action = "User : ".$name." Update Customer : ".$customer_name." in customers table!";
+                    
+                    if ($log_insert_stmt = $db->prepare("INSERT INTO log (userId, userName, created_dateTime, action) VALUES (?,?,?,?)")) {
+                            $log_insert_stmt->bind_param('ssss', $userId, $name, $today, $action);
+                                    
+                            if (! $log_insert_stmt->execute()) {
+                                echo json_encode(
+                                    array(
+                                        "status"=> "failed", 
+                                        "message"=> $log_insert_stmt->error 
+                                    )
+                                );
+                            }
+                            else{
+                                $log_insert_stmt->close();
+                            }
+                    }
+
                     $db->close();
                     
                     echo json_encode(
@@ -64,6 +100,42 @@ if(isset($_POST['name'], $_POST['address'], $_POST['phone'], $_POST['email'])){
                 }
                 else{
                     $insert_stmt->close();
+
+                    $name = $_SESSION['name'];
+                    $userId = $_SESSION['userID'];
+                    $today = date("Y-m-d H:i:s");
+                                                 
+                    $get_stmt = $db->prepare("SELECT * FROM customers WHERE id=?");
+                    $get_stmt->bind_param('s', $id);
+                    $get_stmt->execute();
+                    
+                    $result = $get_stmt->get_result();
+                                
+                    if ($row = $result->fetch_assoc()) {
+                        $customer_name = $row['customer_name'];
+                    }
+                    
+                    $get_stmt->close();
+                    
+                    
+                    $action = "User : ".$name." Add Customer : ".$customer_name." in customers table!";
+                    
+                    if ($log_insert_stmt = $db->prepare("INSERT INTO log (userId, userName, created_dateTime, action) VALUES (?,?,?,?)")) {
+                            $log_insert_stmt->bind_param('ssss', $userId, $name, $today, $action);
+                                    
+                            if (! $log_insert_stmt->execute()) {
+                                echo json_encode(
+                                    array(
+                                        "status"=> "failed", 
+                                        "message"=> $log_insert_stmt->error 
+                                    )
+                                );
+                            }
+                            else{
+                                $log_insert_stmt->close();
+                            }
+                    }
+
                     $db->close();
                     
                     echo json_encode(
