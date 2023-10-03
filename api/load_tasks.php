@@ -6,7 +6,7 @@ $post = json_decode(file_get_contents('php://input'), true);
 $userId=$post['userId'];
 
 //$stmt = $db->prepare("SELECT * from weighing WHERE created_datetime >= ?");
-$stmt = $db->prepare("SELECT job.id, job.accepted_by, job.handled_by, job.flight_no, job.log, job.created_datetime, sales.quotation_no, sales.customer_notes, 
+$stmt = $db->prepare("SELECT job.id, job.job_no, job.accepted_by, job.handled_by, job.flight_no, job.log, job.created_datetime, sales.quotation_no, sales.customer_notes, 
 sales.internal_notes, sales.shipment_type, customers.customer_name, sales_cart.departure_airport, sales_cart.destination_airport, sales_cart.number_of_carton, 
 sales_cart.pickup_address, sales_cart.pickup_pic, sales_cart.pickup_contact, sales_cart.pickup_email, sales_cart.delivery_address, sales_cart.delivery_pic, 
 sales_cart.delivery_contact, sales_cart.delivery_email, sales_cart.route from customers, job, sales, sales_cart WHERE customers.id = sales.customer_name AND 
@@ -19,6 +19,7 @@ $message = array();
 while($row = $result->fetch_assoc()){
 	$message[] = array( 
         'id'=>$row['id'],
+        'job_no'=>$row['job_no'],
         'accepted_by'=>$row['accepted_by'],
         'handled_by'=>$row['handled_by'],
         'flight_no'=>$row['flight_no'],
