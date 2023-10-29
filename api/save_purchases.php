@@ -7,7 +7,7 @@ $post = json_decode(file_get_contents('php://input'), true);
 
 if (isset($post['id'], $post['claims'])) {
     $jobNo = $post['id'];
-    $log = $post['claims'];
+    $log = json_decode($post['claims'], true);
     $currentDateTime = date('Y-m-d H:i:s');
         
     // Select data from the purchases table based on the jobNo
@@ -57,7 +57,7 @@ if (isset($post['id'], $post['claims'])) {
 	else {
 		$items = json_decode($purchasesData['items'], true);
 		$totalPrice = (float)$purchasesData['total'];
-		$index = count($items);
+		$index = count($items) + 1;
 
 		foreach ($log as $claim) {
 			$totalPrice += (float)$claim['price'];
