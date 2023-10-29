@@ -6,26 +6,14 @@ session_start();
 $post = json_decode(file_get_contents('php://input'), true);
 
 if(isset($post['id'], $post['log'])){
-
 	$id = $post['id'];
-	//$groupNumber = $post['groupNumber'];
 	$log = $post['log'];
-	$logList = json_decode($log, true);
-
-	if($logList != null){
-		for($i=0; $i<count($logList); $i++){
-			if($logList[$i]['images'].include('.png')){
-
-			}
-		}
-	}
 
 	if(isset($post['id']) && $post['id'] != null && $post['id'] != ''){
-		if ($update_stmt = $db->prepare("UPDATE job SET log=?, WHERE id=?")){
+		if ($update_stmt = $db->prepare("UPDATE job SET log=? WHERE id=?")){
 			$id = $post['id'];
-			$data = json_encode($weightDetails);
-			$data2 = json_encode($timestampData);
-			$update_stmt->bind_param('ss', $customerName, $id);
+			$data = json_encode($log);
+			$update_stmt->bind_param('ss', $data, $id);
 		
 			// Execute the prepared query.
 			if (! $update_stmt->execute()){
