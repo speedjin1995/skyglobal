@@ -56,9 +56,6 @@ else{
                   <label for="filterCustomerName">Customer Name</label>
                   <select class="form-control" style="width: 100%;" id="filterCustomerName" name="filterCustomerName">
                     <option value="" selected disabled hidden>Please Select</option>
-                    <?php while($customersRow=mysqli_fetch_assoc($customers)){ ?>
-                      <option value="<?=$customersRow['id'] ?>"><?=$customersRow['customer_name'] ?></option>
-                    <?php } ?>
                   </select>
                 </div>
               </div>
@@ -164,8 +161,8 @@ else{
                       <label for="inputCustomerName">Customer Name</label>
                       <select class="form-control" style="width: 100%;" id="inputCustomerName" name="inputCustomerName">
                         <option value="" selected disabled hidden>Please Select</option>
-                        <?php while($customers2Row=mysqli_fetch_assoc($customers2)){ ?>
-                          <option value="<?=$customers2Row['id'] ?>"><?=$customers2Row['customer_name'] ?></option>
+                        <?php while($customersRow=mysqli_fetch_assoc($customers)){ ?>
+                          <option value="<?=$customersRow['id'] ?>"><?=$customersRow['customer_name'] ?></option>
                         <?php } ?>
                       </select>
                     </div>
