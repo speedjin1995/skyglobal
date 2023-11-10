@@ -626,10 +626,7 @@ $(function () {
     var obj = JSON.parse(data);
     
     if(obj.status === 'success'){
-
-      obj.message = obj.message.replace("\\\"", "\"");
-      var items = JSON.parse(obj.message);
-
+      var items = obj.message;
 
       for(var i=0; i<items.length; i++) {
         var $addContents = $("#addContentsPurchase").clone();
@@ -640,9 +637,8 @@ $(function () {
         $("#TableId").find('#remove:last').attr("id", "remove" + size);
 
         $("#TableId").find('#purchaseId:last').attr('name', 'purchaseId['+size+']').attr("id", "purchaseId" + size).val((size+1).toString());
-        $("#TableId").find('#itemName:last').val(items[i].extraChargesName);
-        $("#TableId").find('#itemName:last').attr('name', 'itemName['+size+']').attr("id", "itemName" + size);
-        $("#TableId").find('#itemPrice:last').attr('name', 'itemPrice['+size+']').attr("id", "itemPrice" + size);
+        $("#TableId").find('#itemName:last').attr('name', 'itemName['+size+']').attr("id", "itemName" + size).val(items[i].extraChargesName);
+        $("#TableId").find('#itemPrice:last').attr('name', 'itemPrice['+size+']').attr("id", "itemPrice" + size).val(items[i].extraChargesAmount);
 
         size++;
       }

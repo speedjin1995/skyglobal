@@ -33,13 +33,57 @@ if(isset($_POST['jobId'])){
                 $getResult = $get_stmt->get_result();
 
                 if ($row = $getResult->fetch_assoc()) {
-                 $message = $row['extra_charges'];
+                    $message = json_decode($row['extra_charges'], true);
 
-                 echo json_encode(
-                    array(
-                        "status" => "success",
-                        "message" => $message
-                    ));   
+                    if($row['pickup_charge'] != null && $row['pickup_charge'] != '' && $row['pickup_charge'] != '0.00'){
+                        $message[] = array(
+                            'extraChargesName' => 'Pickup Charge',
+                            'extraChargesAmount' => $row['pickup_charge'],
+                        );
+                    }
+
+                    if($row['export_clearances'] != null && $row['export_clearances'] != '' && $row['export_clearances'] != '0.00'){
+                        $message[] = array(
+                            'extraChargesName' => 'Export Clearances',
+                            'extraChargesAmount' => $row['export_clearances'],
+                        );
+                    }
+
+                    if($row['air_ticket'] != null && $row['air_ticket'] != '' && $row['air_ticket'] != '0.00'){
+                        $message[] = array(
+                            'extraChargesName' => 'Air Ticket',
+                            'extraChargesAmount' => $row['air_ticket'],
+                        );
+                    }
+
+                    if($row['flyers_fee'] != null && $row['flyers_fee'] != '' && $row['flyers_fee'] != '0.00'){
+                        $message[] = array(
+                            'extraChargesName' => 'Flyers Fees',
+                            'extraChargesAmount' => $row['flyers_fee'],
+                        );
+                    }
+
+
+                    if($row['import_clearance'] != null && $row['import_clearance'] != '' && $row['import_clearance'] != '0.00'){
+                        $message[] = array(
+                            'extraChargesName' => 'Import Clearance',
+                            'extraChargesAmount' => $row['import_clearance'],
+                        );
+                    }
+
+                    if($row['delivery_charges'] != null && $row['delivery_charges'] != '' && $row['delivery_charges'] != '0.00'){
+                        $message[] = array(
+                            'extraChargesName' => 'Delivery Charges',
+                            'extraChargesAmount' => $row['delivery_charges'],
+                        );
+                    }
+
+                    echo json_encode(
+                        array(
+                            "status" => "success",
+                            "message" => $message
+                        )
+                    );   
                 }
                 else{
                   echo json_encode(
