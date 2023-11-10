@@ -124,6 +124,13 @@ else{
                     </tr>
                   </thead>
                   <tbody class="TableId" name="TableId" id="TableId"></tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th>Total</th>
+                      <th id="totalPurchases">0.00</th>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </div>
@@ -618,42 +625,57 @@ $(function () {
     $('#spinnerLoading').show();
 
     var jobId = $('#purchaseModal').find('#inputJobNo').val();
-
     $('#purchaseModal').find('#search').attr("disabled", "disabled");
-  
 
     $.post('php/getPurchases.php', {jobId: jobId}, function(data){
-    var obj = JSON.parse(data);
-    
-    if(obj.status === 'success'){
-      var items = obj.message;
+      var obj = JSON.parse(data);
+      
+      if(obj.status === 'success'){
+        var items = obj.message;
+        var total = parseFloat($('#totalPurchases').text());
 
-      for(var i=0; i<items.length; i++) {
-        var $addContents = $("#addContentsPurchase").clone();
-        $("#TableId").append($addContents.html());
+        for(var i=0; i<items.length; i++) {
+          var $addContents = $("#addContentsPurchase").clone();
+          $("#TableId").append($addContents.html());
 
-        $("#TableId").find('.details:last').attr("id", "detail" + size);
-        $("#TableId").find('.details:last').attr("data-index", size);
-        $("#TableId").find('#remove:last').attr("id", "remove" + size);
+          $("#TableId").find('.details:last').attr("id", "detail" + size);
+          $("#TableId").find('.details:last').attr("data-index", size);
+          $("#TableId").find('#remove:last').attr("id", "remove" + size);
 
-        $("#TableId").find('#purchaseId:last').attr('name', 'purchaseId['+size+']').attr("id", "purchaseId" + size).val((size+1).toString());
-        $("#TableId").find('#itemName:last').attr('name', 'itemName['+size+']').attr("id", "itemName" + size).val(items[i].extraChargesName);
-        $("#TableId").find('#itemPrice:last').attr('name', 'itemPrice['+size+']').attr("id", "itemPrice" + size).val(items[i].extraChargesAmount);
+          $("#TableId").find('#purchaseId:last').attr('name', 'purchaseId['+size+']').attr("id", "purchaseId" + size).val((size+1).toString());
+          $("#TableId").find('#itemName:last').attr('name', 'itemName['+size+']').attr("id", "itemName" + size).val(items[i].extraChargesName);
+          $("#TableId").find('#itemPrice:last').attr('name', 'itemPrice['+size+']').attr("id", "itemPrice" + size).val(items[i].extraChargesAmount);
 
-        size++;
+          total += parseFloat(items[i].extraChargesAmount);
+          $('#totalPurchases').text(total);
+
+          size++;
+        }
       }
-    }
-    else if(obj.status === 'failed'){
-        toastr["error"](obj.message, "Failed:");
-    }
-    else{
-        toastr["error"]("Something wrong when activate", "Failed:");
-    }
-    
+      else if(obj.status === 'failed'){
+          toastr["error"](obj.message, "Failed:");
+      }
+      else{
+          toastr["error"]("Something wrong when activate", "Failed:");
+      }
     });
     
     $('#spinnerLoading').hide();
   });
+
+  $("#TableId").on('change', 'input[id^="itemPrice"]', function () {
+    var total = 0;
+    var itemPriceInputs = $("#TableId input[id^='itemPrice']");
+
+    // Update total based on the changed input
+    itemPriceInputs.each(function () {
+      total += parseFloat($(this).val()) || 0;
+    });
+
+    // Update the totalPurchases element
+    $('#totalPurchases').text(total);
+  });
+
 
   $(".add-row").click(function(){
     var $addContents = $("#addContentsPurchase").clone();
@@ -710,7 +732,6 @@ $(function () {
     //$("#TableId").append('<input type="hidden" name="deleted[]" value="'+index+'"/>');
     $(this).parents('.details').remove();
   });
-
 
   $("#inputPickupCharge").on('change', function () {
     var inputTotalCharges = calTotal($("#inputPickupCharge").val(), $("#inputExportClearances").val(), $("#inputAirTicket").val(), $("#inputFlyersFee").val(), $("#inputImportClearance").val(), $("#inputDeliveryCharges").val());
