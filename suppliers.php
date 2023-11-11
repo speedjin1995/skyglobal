@@ -147,8 +147,8 @@ else{
                     </div>
                     <div class="col-6">
                         <div class="form-group"> 
-                            <label for="email">Vacination Status (1 Dose/2 Dose/ Booster) *</label>
-                            <input type="email" class="form-control" id="vaccine" name="vaccine" placeholder="Enter your vaccination status" required>
+                            <label for="vaccine">Vacination Status (1 Dose/2 Dose/ Booster) *</label>
+                            <input type="text" class="form-control" id="vaccine" name="vaccine" placeholder="Enter your vaccination status" required>
                         </div>
                     </div>
                 </div>
@@ -199,7 +199,8 @@ else{
                     <div class="col-12">
                         <div class="form-group"> 
                             <label for="remark">Remark </label>
-                            <textarea class="form-control" id="remark" name="remark" placeholder="Enter your remark"></textarea>
+                            <textarea class="textarea" id="engBlog" id="remark" name="remark" placeholder="Enter your remark"
+                              style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -245,6 +246,8 @@ $(function () {
     $('#addModal').find('#dobContainer').datetimepicker({
         format: 'YYYY-MM-DD'
     });
+
+    $('.textarea').summernote();
 
     $.uploadPreview({
         input_field: "#image-upload",   // Default: .image-upload
@@ -300,27 +303,6 @@ $(function () {
     $.validator.setDefaults({
         submitHandler: function () {
             $('#spinnerLoading').show();
-            /*$.post('php/suppliers.php', $('#supplierForm').serialize(), function(data){
-                var obj = JSON.parse(data); 
-
-                if(obj.status === 'success'){
-                    $('#addModal').modal('hide');
-                    toastr["success"](obj.message, "Success:");
-
-                    $.get('suppliers.php', function(data) {
-                        $('#mainContents').html(data);
-                        $('#spinnerLoading').hide();
-                    });
-                }
-                else if(obj.status === 'failed'){
-                    toastr["error"](obj.message, "Failed:");
-                    $('#spinnerLoading').hide();
-                }
-                else{
-                    toastr["error"]("Something wrong when edit", "Failed:");
-                    $('#spinnerLoading').hide();
-                }
-            });*/
             var formData = new FormData($('#supplierForm')[0]);
 
             $.ajax({
@@ -338,11 +320,8 @@ $(function () {
                     if(obj.status === 'success'){
                         $('#addModal').modal('hide');
                         toastr["success"](obj.message, "Success:");
-                        
-                        $.get('suppliers.php', function(data) {
-                            $('#mainContents').html(data);
-                            $('#spinnerLoading').hide();
-                        });
+                        $('#supplierTable').DataTable().ajax.reload();
+                        $('#spinnerLoading').hide();
                     }
                     else if(obj.status === 'failed'){
                         toastr["error"](obj.message, "Failed:");
@@ -376,7 +355,7 @@ $(function () {
         $('#addModal').find('#dob').val("");
         $('#addModal').find('#passport').val("");
         $('#addModal').find('#passportExpiry').val("");
-        $('#addModal').find('#remark').val("");
+        $('#addModal').find('#remark').summernote("code", "");
         $('#addModal').modal('show');
         
         $('#supplierForm').validate({
@@ -419,40 +398,33 @@ function edit(id){
             $('#addModal').find('#dob').val(obj.message.dob);
             $('#addModal').find('#passport').val(obj.message.passport);
             $('#addModal').find('#passportExpiry').val(obj.message.passport_expiry_date);
+            $('#addModal').find('#remark').summernote("code", obj.message.remark);
 
-            $('#addModal').find('#image-preview').css("background-image", "url(" + picturePath + ")");
-            $('#addModal').find('#image-preview').css("background-size", "cover");
-            $('#addModal').find('#image-preview').css("background-position", "center center");
+            $('#addModal #image-preview').css({
+                "background-image": "url(" + picturePath + ")",
+                "background-size": "cover",
+                "background-position": "center center"
+            });
+
+            // Set the value of 'image-upload' input
+            $('#addModal #image-upload').val("");
 
             // Passport Picture Preview
             $('#addModal').find('#image-preview3').css("background-image", "url(" + passportPicPath + ")");
             $('#addModal').find('#image-preview3').css("background-size", "cover");
             $('#addModal').find('#image-preview3').css("background-position", "center center");
+            $('#addModal').find('#image-upload3').val("");
 
             // Visa Picture Preview
             $('#addModal').find('#image-preview2').css("background-image", "url(" + visaPicPath + ")");
             $('#addModal').find('#image-preview2').css("background-size", "cover");
             $('#addModal').find('#image-preview2').css("background-position", "center center");
+            $('#addModal').find('#image-upload2').val("");
 
-            // Call the success_callback function if needed.
-            /*if (settings.success_callback) {
-                settings.success_callback();
-            }*/
-
-            /*$('#addModal').find('#image-upload').val(obj.message.picture);
-            $('#addModal').find('#image-upload3').val(obj.message.passport_pic);
-            $('#addModal').find('#image-upload2').val(obj.message.visa_pic);*/
-
-            /*$('#addModal').find('#passportExpiry').datetimepicker({
-                format: 'YYYY-MM-DD'
-            });
-
-            $('#addModal').find('#dob').datetimepicker({
-                format: 'YYYY-MM-DD'
-            });*/
             $('#addModal').modal('show');
             
             $('#supplierForm').validate({
+                ignore: ':hidden, #image-upload, #image-upload2, #image-upload3',
                 errorElement: 'span',
                 errorPlacement: function (error, element) {
                     error.addClass('invalid-feedback');
@@ -483,10 +455,8 @@ function deactivate(id){
         
         if(obj.status === 'success'){
             toastr["success"](obj.message, "Success:");
-            $.get('suppliers.php', function(data) {
-                $('#mainContents').html(data);
-                $('#spinnerLoading').hide();
-            });
+            $('#supplierTable').DataTable().ajax.reload();
+            $('#spinnerLoading').hide();
         }
         else if(obj.status === 'failed'){
             toastr["error"](obj.message, "Failed:");

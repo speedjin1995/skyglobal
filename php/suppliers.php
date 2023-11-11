@@ -33,7 +33,7 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
     $phone2 = null;
 
     if($_POST['remark'] != null && $_POST['remark'] != ""){
-        $remark = filter_input(INPUT_POST, 'remark', FILTER_SANITIZE_STRING);
+        $remark = $_POST['remark'];
     }
 
     if($_POST['phone2'] != null && $_POST['phone2'] != ""){
@@ -317,7 +317,7 @@ $_POST['passport'], $_POST['passportExpiry'], $_POST['stationCountry'], $_POST['
             }
             else{
                 if ($update_stmt = $db->prepare("UPDATE suppliers SET username=?, supplier_name=?, last_name=?, supplier_address=?, supplier_phone=?, supplier_email=?, station_country=?, nationality=?, dob=?, remark=?, passport=?, passport_expiry_date=?, vaccination_status=?, supplier_phone2=? WHERE id=?")) {
-                    $update_stmt->bind_param('ssssssssssssssssss', $username, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $passport, $passportExpiry, $vaccine, $phone2, $_POST['id']);
+                    $update_stmt->bind_param('sssssssssssssss', $username, $firstName, $lastName, $address, $phone, $email, $stationCountry, $nationality, $dob, $remark, $passport, $passportExpiry, $vaccine, $phone2, $_POST['id']);
                     
                     // Execute the prepared query.
                     if (! $update_stmt->execute()) {

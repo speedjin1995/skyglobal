@@ -39,6 +39,7 @@ if(isset($_POST['userID'])){
                 $message['nationality'] = $row['nationality'];
                 $message['station_country'] = $row['station_country'];
                 $message['username'] = $row['username'];
+                $message['remark'] = $row['remark'];
             }
             
             echo json_encode(

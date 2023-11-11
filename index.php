@@ -48,6 +48,8 @@ else{
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <style>
     #image-preview {
       width: 200px;
@@ -375,6 +377,8 @@ else{
 <script src="plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <script src="plugins/dropzone/min/dropzone.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
 <script>
 var ouStartDate = "";
 var ouEndDate = "";
