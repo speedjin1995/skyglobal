@@ -140,7 +140,7 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
                         );
                     }
                     else{
-                        $id = $insert_stmt->insert_id;;
+                        $id = $insert_stmt->insert_id;
                         $insert_stmt->close();
 
                         if ($insert_stmt2 = $db->prepare("INSERT INTO sales_cart (sale_id, dimension, number_of_carton, weight_of_cargo, cargo_ready_time, pickup_address, pickup_charge, export_clearances, air_ticket, flyers_fee, import_clearance, delivery_charges, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
@@ -158,7 +158,7 @@ $_POST['inputDeliveryCharges'], $_POST['inputTotalCharges'])){
                                 );
                             }
                             else{
-                                $sales_cart_id = $insert_stmt2->insert_id;;
+                                $sales_cart_id = $insert_stmt2->insert_id;
                                 $insert_stmt2->close();
 
                                 if ($insert_stmt3 = $db->prepare("INSERT INTO job (sales_cart_id, created_by) VALUES (?, ?)")) {
